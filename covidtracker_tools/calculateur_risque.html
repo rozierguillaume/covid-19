@@ -151,6 +151,14 @@ progress[type=black]::-webkit-progress-value{ /* Safari/Chrome */
       <span id="resultat" style="font-size: 50px;"></span><br>
 
       <span id="progress_bar"></span>
+        
+      <br>
+      <br>
+      <br>
+
+      <b><p>Si l’ensemble des Français prenait un risque équivalent, le nombre de personnes en contact avec un cas positif serait de :</p></b>
+      <span id="resultat_france" style="font-size: 50px; color: red"></span><br>
+
 
     </div>
 
@@ -302,9 +310,13 @@ progress[type=black]::-webkit-progress-value{ /* Safari/Chrome */
     function myFunction(tauxincid) {
 
       pers = document.getElementById('pers').value
-      resultat = Math.round((1-(1-tauxincid/100000)**pers) *100)
+      resultat = 1-(1-tauxincid/100000)**pers;
+  
+      resultat_france = Math.round(resultat * 67848156)
+      resultat = Math.round(resultat*100);
 
       document.getElementById("resultat").innerHTML = resultat.toString() + " %";
+      document.getElementById("resultat_france").innerHTML = Intl.NumberFormat("fr", {style: "decimal", maximumFractionDigits: 0}).format(resultat_france);
 
       document.getElementById("nb_pers_result").innerHTML = pers;
       document.getElementById("nb_pers_result_buttons").innerHTML = pers;
