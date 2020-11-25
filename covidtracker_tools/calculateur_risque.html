@@ -151,7 +151,12 @@ progress[type=black]::-webkit-progress-value{ /* Safari/Chrome */
       <span id="resultat" style="font-size: 50px;"></span><br>
 
       <span id="progress_bar"></span>
+      <br>
 
+    </div>
+
+    <div class="myDiv" style="margin-top: 40px;">
+      <p style="margin-top: 20px;">Si tous les français se réunissaient dans des événements de <span id="nb_pers_result_cas_contacts">--</span> personnes dans leur département, cela génèrerait <br><span style="font-size: 50px;" id="cas_contacts">--</span><br>cas contacts, qui pourraient eux-mêmes être contaminés si les gestes barrières n'ont pas été appliqués. Ce calcul utilise la population et le taux d'incidence actuel de chaque département.</p>
     </div>
 
       <div class="myDiv" style="margin-top: 40px;">
@@ -215,9 +220,10 @@ progress[type=black]::-webkit-progress-value{ /* Safari/Chrome */
           incidence_departements = data["donnees_departements"];
           updateList();
 
-          document.getElementById("date-update").innerHTML = data["date_donnees"];
-          document.getElementById("date-donnees").innerHTML = data["date_update"];
+          document.getElementById("date-update").innerHTML = data["date_update"];
+          document.getElementById("date-donnees").innerHTML = data["date_donnees"];
           create_buttons();
+          calculerNbCasContacts();
            
         })
        .catch(function () {
@@ -338,15 +344,22 @@ progress[type=black]::-webkit-progress-value{ /* Safari/Chrome */
 
     }
 
+    function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  }
+
     function calculerNbCasContacts(){
       pers = document.getElementById('pers').value;
       nb_contacts_risque_total = 0;
 
+      document.getElementById("nb_pers_result_cas_contacts").innerHTML = pers;
+
       departements.forEach(dep => {
         tauxincid = incidence_departements[dep]["incidence_cas"]
         population_dep = incidence_departements[dep]["population"]
-        console.log(population_dep)
-        risque = Math.round((1-(1-tauxincid/100000)**pers) * 100);
+        console.log(tauxincid)
+
+        risque = (1-(1-tauxincid*taux_correction/100000)**pers);
 
         nb_evenements_dans_dep = population_dep / pers
         nb_contacts_risque_total += risque * nb_evenements_dans_dep * (pers-1);
@@ -354,8 +367,9 @@ progress[type=black]::-webkit-progress-value{ /* Safari/Chrome */
       })
 
       console.log(nb_contacts_risque_total);
+      document.getElementById("cas_contacts").innerHTML = numberWithCommas(parseInt(nb_contacts_risque_total));
 
-    }
+    } 
 
     function updateButtonColor(dep){
 
