@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[9]:
+# In[1]:
 
 
 import requests
@@ -11,7 +11,7 @@ from tqdm import tqdm
 PATH = '../../'
 
 
-# In[16]:
+# In[14]:
 
 
 # Download data from Santé publique France and export it to local files
@@ -136,8 +136,8 @@ def import_data():
     
     df_incid = df_incid.merge(df_regions, left_on='dep', right_on='departmentCode')
     
-    df_incid = df_incid.merge(df_tests_viro[df_tests_viro["cl_age90"] == 0].drop("P", axis=1).drop("cl_age90", axis=1), left_on=['jour', 'dep'], right_on=['jour', 'dep'])
-    
+    df_incid = df_incid.merge(df_tests_viro[df_tests_viro["cl_age90"] == 0].drop("pop", axis=1).drop("P", axis=1).drop("cl_age90", axis=1), left_on=['jour', 'dep'], right_on=['jour', 'dep'])
+    print(df_incid)
     df_new = df_new.merge(df_regions, left_on='dep', right_on='departmentCode')
     df_new = df_new.merge(df_reg_pop, left_on='regionName', right_on='regionName')
     df_new = df_new.merge(df_dep_pop, left_on='dep', right_on='dep')
@@ -227,9 +227,15 @@ def import_data_tests_sexe():
         
 
 
-# In[17]:
+# In[15]:
 
 
 #download_data()
 #df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viro = import_data()
+
+
+# In[ ]:
+
+
+
 
