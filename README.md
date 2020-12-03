@@ -7,9 +7,12 @@ For more information and comments in French, you can follow me on Twitter: [@gui
 
 # [CovidTracker](http://www.guillaumerozier.fr): An All New Dashboard
 **An all new website has been built which contains many and detailed graphs, comments and articles about France and the World! 
-Check it out now: [CovidTracker (guillaumerozier.fr)](http://www.guillaumerozier.fr)!**
+Check it out now: [CovidTracker (covidtracker.fr)](http://www.covidtracker.fr)!**
 
 <a href="http://www.guillaumerozier.fr"><p align="center" ><img width="70%" src="images/covidtracker.png"></p></a>
+
+# Website sources
+You can find sources of some of the CovidTracker's webpages here: [covidtracker-tools](https://github.com/rozierguillaume/covidtracker-tools)
 
 # Requirements
 Please see the imports in each Jupyter Notebook. Nothing crazy.\
