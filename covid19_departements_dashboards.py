@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[17]:
+# In[1]:
 
 
 """
@@ -23,7 +23,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[18]:
+# In[2]:
 
 
 import pandas as pd
@@ -36,19 +36,19 @@ import math
 import os
 
 
-# In[19]:
+# In[3]:
 
 
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
 
 
-# In[20]:
+# In[4]:
 
 
 #df = df.groupby(["dep", "jour"]).first().reset_index()
 
 
-# In[21]:
+# In[5]:
 
 
 df_departements = df.groupby(["jour", "departmentName"]).sum().reset_index()
@@ -64,7 +64,7 @@ last_day_plot = (datetime.strptime(max(dates), '%Y-%m-%d') + timedelta(days=1)).
 departements_nb = list(dict.fromkeys(list(df_tests_viros['dep'].values))) 
 
 
-# In[22]:
+# In[6]:
 
 
 lits_reas = pd.read_csv('data/france/lits_rea.csv', sep=",")
@@ -72,7 +72,7 @@ lits_reas = pd.read_csv('data/france/lits_rea.csv', sep=",")
 df_departements_lits = df_departements.merge(lits_reas, left_on="departmentName", right_on="nom_dpt")
 
 
-# In[23]:
+# In[7]:
 
 
 def cas_journ(departement):
@@ -188,7 +188,7 @@ def cas_journ(departement):
     print("> " + name_fig)
 
 
-# In[24]:
+# In[8]:
 
 
 def hosp_journ(departement):   
@@ -291,7 +291,7 @@ def hosp_journ(departement):
     print("> " + name_fig)
 
 
-# In[25]:
+# In[9]:
 
 
 def hosp_comparaison_vagues(departement):   
@@ -453,7 +453,7 @@ def hosp_comparaison_vagues(departement):
 #hosp_comparaison_vagues("Savoie")
 
 
-# In[26]:
+# In[10]:
 
 
 def rea_journ(departement):
@@ -557,7 +557,7 @@ def rea_journ(departement):
 #rea_journ("Isère")
 
 
-# In[27]:
+# In[11]:
 
 
 def dc_journ(departement): 
@@ -674,7 +674,7 @@ def dc_journ(departement):
 #dc_journ("Paris")
 
 
-# In[28]:
+# In[12]:
 
 
 
@@ -765,7 +765,7 @@ def saturation_rea_journ(dep):
     print("> " + name_fig)
 
 
-# In[29]:
+# In[13]:
 
 
 import cv2
@@ -796,14 +796,14 @@ for dep in departements:
     os.remove('images/charts/france/departements_dashboards/dc_journ_{}.jpeg'.format(dep))
 
 
-# In[30]:
+# In[14]:
 
 
 for dep in departements:
     saturation_rea_journ(dep)
 
 
-# In[31]:
+# In[15]:
 
 
 """for idx,dep in enumerate(departements):
@@ -819,7 +819,7 @@ for dep in departements:
 """
 
 
-# In[32]:
+# In[16]:
 
 
 """#print("<!-- wp:buttons --><div class=\"wp-block-buttons\">\n")

@@ -1,16 +1,17 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[6]:
+# In[9]:
 
 
 import requests
 import pandas as pd
 import json
 from tqdm import tqdm
+PATH = '../../'
 
 
-# In[8]:
+# In[16]:
 
 
 # Download data from Santé publique France and export it to local files
@@ -27,15 +28,15 @@ def download_data():
     geojson = requests.get(url_geojson)
     pbar.update(3)
     
-    with open('data/france/metadata.csv', 'wb') as f:
+    with open(PATH + 'data/france/metadata.csv', 'wb') as f:
         f.write(metadata.content)
     pbar.update(4)
     
-    with open('data/france/dep.geojson', 'wb') as f:
+    with open(PATH + 'data/france/dep.geojson', 'wb') as f:
         f.write(geojson.content)
         
     pbar.update(5)
-    df_metadata = pd.read_csv('data/france/metadata.csv', sep=";")
+    df_metadata = pd.read_csv(PATH + 'data/france/metadata.csv', sep=";")
     
     url_data = df_metadata[df_metadata['url'].str.contains("/donnees-hospitalieres-covid19")]["url"].values[0] #donnees-hospitalieres-classe-age-covid19-2020-10-14-19h00.csv 
     url_data_new = df_metadata[df_metadata['url'].str.contains("/donnees-hospitalieres-nouveaux")]["url"].values[0]
@@ -61,34 +62,34 @@ def download_data():
     data_sexe = requests.get(url_data_sexe)
     
     pbar.update(7)
-    with open('data/france/donnes-hospitalieres-covid19.csv', 'wb') as f:
+    with open(PATH + 'data/france/donnes-hospitalieres-covid19.csv', 'wb') as f:
         f.write(data.content)
         
-    with open('data/france/donnes-hospitalieres-covid19-nouveaux.csv', 'wb') as f:
+    with open(PATH + 'data/france/donnes-hospitalieres-covid19-nouveaux.csv', 'wb') as f:
         f.write(data_new.content)
         
-    with open('data/france/donnes-tests-covid19-quotidien.csv', 'wb') as f:
+    with open(PATH + 'data/france/donnes-tests-covid19-quotidien.csv', 'wb') as f:
         f.write(data_tests.content)
         
-    with open('data/france/donnes-incidence-metropoles.csv', 'wb') as f:
+    with open(PATH + 'data/france/donnes-incidence-metropoles.csv', 'wb') as f:
         f.write(data_metropoles.content)
         
-    with open('data/france/indicateurs-deconf.csv', 'wb') as f:
+    with open(PATH + 'data/france/indicateurs-deconf.csv', 'wb') as f:
         f.write(data_deconf.content)
     
-    with open('data/france/sursaud-covid19-departement.csv', 'wb') as f:
+    with open(PATH + 'data/france/sursaud-covid19-departement.csv', 'wb') as f:
         f.write(data_sursaud.content)
         
-    with open('data/france/taux-incidence-dep-quot.csv', 'wb') as f:
+    with open(PATH + 'data/france/taux-incidence-dep-quot.csv', 'wb') as f:
         f.write(data_incidence.content)
         
-    with open('data/france/tests_viro-dep-quot.csv', 'wb') as f:
+    with open(PATH + 'data/france/tests_viro-dep-quot.csv', 'wb') as f:
         f.write(data_tests_viro.content)
         
-    with open('data/france/donnes-hospitalieres-clage-covid19.csv', 'wb') as f:
+    with open(PATH + 'data/france/donnes-hospitalieres-clage-covid19.csv', 'wb') as f:
         f.write(data_clage.content)
         
-    with open('data/france/tests_viro-fra-covid19.csv', 'wb') as f:
+    with open(PATH + 'data/france/tests_viro-fra-covid19.csv', 'wb') as f:
         f.write(data_sexe.content)
         
     pbar.update(8)
@@ -96,29 +97,32 @@ def download_data():
 # Import data from previously exported files to dataframes
 def import_data():
     
-    pbar = tqdm(total=4)
+    pbar = tqdm(total=8)
     pbar.update(1)
-    df = pd.read_csv('data/france/donnes-hospitalieres-covid19.csv', sep=";")
+    df = pd.read_csv(PATH + 'data/france/donnes-hospitalieres-covid19.csv', sep=";")
     
-    df_sursaud = pd.read_csv('data/france/sursaud-covid19-departement.csv', sep=";")
+    df_sursaud = pd.read_csv(PATH + 'data/france/sursaud-covid19-departement.csv', sep=";")
     df_sursaud["dep"] = df_sursaud["dep"].astype('str').str.replace(r"^([1-9])$", lambda m: "0"+m.group(0), regex=True)
     
-    df_new = pd.read_csv('data/france/donnes-hospitalieres-covid19-nouveaux.csv', sep=";")
-    df_tests = pd.read_csv('data/france/donnes-tests-covid19-quotidien.csv', sep=";")
-    df_deconf = pd.read_csv('data/france/indicateurs-deconf.csv', sep=",")
-    df_incid = pd.read_csv('data/france/taux-incidence-dep-quot.csv', sep=";")
+    df_new = pd.read_csv(PATH + 'data/france/donnes-hospitalieres-covid19-nouveaux.csv', sep=";")
+    df_tests = pd.read_csv(PATH + 'data/france/donnes-tests-covid19-quotidien.csv', sep=";")
+    df_deconf = pd.read_csv(PATH + 'data/france/indicateurs-deconf.csv', sep=",")
+    df_incid = pd.read_csv(PATH + 'data/france/taux-incidence-dep-quot.csv', sep=";")
     df_incid["dep"] = df_incid["dep"].astype('str')
     
-    df_tests_viro = pd.read_csv('data/france/tests_viro-dep-quot.csv', sep=";")
+    df_tests_viro = pd.read_csv(PATH + 'data/france/tests_viro-dep-quot.csv', sep=";")
+    
+    pbar.update(2)
+    
     df_tests_viro["dep"] = df_tests_viro["dep"].astype('str')
     
     pop_df_incid = df_incid["pop"]
     
-    lits_reas = pd.read_csv('data/france/lits_rea.csv', sep=",")
+    lits_reas = pd.read_csv(PATH + 'data/france/lits_rea.csv', sep=",")
     
-    df_regions = pd.read_csv('data/france/departments_regions_france_2016.csv', sep=",")
-    df_reg_pop = pd.read_csv('data/france/population_grandes_regions.csv', sep=",")
-    df_dep_pop = pd.read_csv('data/france/dep-pop.csv', sep=";")
+    df_regions = pd.read_csv(PATH + 'data/france/departments_regions_france_2016.csv', sep=",")
+    df_reg_pop = pd.read_csv(PATH + 'data/france/population_grandes_regions.csv', sep=",")
+    df_dep_pop = pd.read_csv(PATH + 'data/france/dep-pop.csv', sep=";")
     
     ###
     df = df.merge(df_regions, left_on='dep', right_on='departmentCode')
@@ -146,7 +150,7 @@ def import_data():
     df_sursaud = df_sursaud[df_sursaud["sursaud_cl_age_corona"] == "0"]
     df_sursaud["taux_covid"] = df_sursaud["nbre_pass_corona"] / df_sursaud["nbre_pass_tot"]
     
-    pbar.update(2)
+    pbar.update(3)
     
     df['rea_pop'] = df['rea']/df['regionPopulation']*100000
     df['rea_deppop'] = df['rea']/df['departmentPopulation']*100000
@@ -161,11 +165,11 @@ def import_data():
     
     df['hosp_nonrea_pop'] = df['hosp_nonrea']/df['regionPopulation']*100000
     
-    pbar.update(3)
-    
-    df_confirmed = pd.read_csv('data/data_confirmed.csv')
-    
     pbar.update(4)
+    
+    df_confirmed = pd.read_csv(PATH + 'data/data_confirmed.csv')
+    
+    pbar.update(5)
     
     deps = list(dict.fromkeys(list(df['departmentCode'].values))) 
     for d in deps:
@@ -176,6 +180,8 @@ def import_data():
     
     df_tests = df_tests.drop(['nb_test_h', 'nb_pos_h', 'nb_test_f', 'nb_pos_f'], axis=1)
     df_tests = df_tests[df_tests['clage_covid'] == "0"]
+    
+    pbar.update(6)
     
     # Correction du 14/05 (pas de données)
     #cols_to_change = df.select_dtypes(include=np.number).columns.tolist()
@@ -188,71 +194,42 @@ def import_data():
         for clage in [0, 9, 19, 29, 39, 49, 59, 69, 79, 89, 90]:
             df_incid.loc[(df_incid["dep"] == dep) & (df_incid["cl_age90"]==clage),"incidence"] = df_incid.loc[(df_incid["dep"] == dep) & (df_incid["cl_age90"]==clage)]["P"].rolling(window=7).sum()/df_incid.loc[(df_incid["dep"] == dep) & (df_incid["cl_age90"]==clage)]["pop"]*100000
     df_incid.loc[:,"incidence_color"] = ['Alerte Maximale' if x>= 250 else 'Alerte Renforcée' if x>=150 else 'Alerte' if x >= 50 else 'Risque Faible' for x in df_incid['incidence']]
-
+    
+    pbar.update(7)
+    
     df_tests_viro["pop"] = pop_df_incid
     
     df = df.groupby(["dep", "jour"]).first().reset_index()
     df_new = df_new.groupby(["dep", "jour"]).first().reset_index()
     
+    pbar.update(8)
+    
     return df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viro
 
 def import_data_metropoles():
-    df_metro = pd.read_csv('data/france/donnes-incidence-metropoles.csv', sep=";")
-    epci = pd.read_csv('data/france/metropole-epci.csv', sep=";", encoding="'windows-1252'")
+    df_metro = pd.read_csv(PATH + 'data/france/donnes-incidence-metropoles.csv', sep=";")
+    epci = pd.read_csv(PATH + 'data/france/metropole-epci.csv', sep=";", encoding="'windows-1252'")
     
     df_metro = df_metro.merge(epci, left_on='epci2020', right_on='EPCI').drop(['EPCI'], axis=1)
     
     return df_metro
 
 def import_data_hosp_clage():
-    df_hosp = pd.read_csv('data/france/donnes-hospitalieres-clage-covid19.csv', sep=";")
+    df_hosp = pd.read_csv(PATH + 'data/france/donnes-hospitalieres-clage-covid19.csv', sep=";")
     df_hosp = df_hosp.groupby(["reg", "jour", "cl_age90"]).first().reset_index()
     
     return df_hosp
 
 def import_data_tests_sexe():
-    df = pd.read_csv("data/france/tests_viro-fra-covid19.csv", sep=";")
+    df = pd.read_csv(PATH + 'data/france/tests_viro-fra-covid19.csv', sep=";")
     
     return df
         
 
 
-# In[9]:
-
-
-#download_data()
-
-
-# In[5]:
+# In[17]:
 
 
 #download_data()
 #df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viro = import_data()
-
-
-# In[20]:
-
-
-"""df[df["jour"]=="2020-10-15"]
-df2 = pd.read_csv('data/france/donnes-hospitalieres-covid19.csv', sep=";")
-df2.loc[df2["jour"] == "2020-10-15",:] = df2.loc[df2["jour"] == "2020-10-14",:]
-df2[df2["jour"]=="2020-10-15"]
-df2.append(["2020-10-15"], columns=["jour"])"""
-
-
-# In[4]:
-
-
-"""df_incid = pd.read_csv('data/france/taux-incidence-dep-quot.csv', sep=",")
-df_tests_viro = pd.read_csv('data/france/tests_viro-dep-quot.csv', sep=",")
-df_regions = pd.read_csv('data/france/departments_regions_france_2016.csv', sep=",")
-
-#df_incid = df_incid.merge(df_tests_viro.drop("p", axis=1).drop("cl_age90", axis=1), left_on=['jour', 'dep'], right_on=['jour', 'dep'])
-
-df_incid = df_incid[df_incid["cl_age90"] == 0]
-df_tests_viro = df_tests_viro[df_tests_viro["cl_age90"] == 0]
-    
-df_incid = df_incid.merge(df_regions, left_on='dep', right_on='departmentCode')
-df_incid = df_incid.merge(df_tests_viro.drop("p", axis=1).drop("cl_age90", axis=1), left_on=['jour', 'dep'], right_on=['jour', 'dep'])
-    """
 

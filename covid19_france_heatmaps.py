@@ -54,7 +54,7 @@ now = datetime.now()
 df, df_confirmed, dates, _, _, _, _, _, df_tests_viros = data.import_data()
 
 
-# In[ ]:
+# In[4]:
 
 
 deps_tests = list(dict.fromkeys(list(df_tests_viros['dep'].values))) 
@@ -170,7 +170,7 @@ for (name, data, title, scale_txt, data_example, digits) in [("cas", '', "Taux d
         plotly.offline.plot(fig, filename = 'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
 
 
-# In[ ]:
+# In[5]:
 
 
 """OLD
@@ -298,7 +298,7 @@ for (name, data, title, scale_txt, data_example, digits) in [("taux", 'P_taux', 
         plotly.offline.plot(fig, filename = 'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)"""
 
 
-# In[ ]:
+# In[6]:
 
 
 """string= ""
@@ -307,7 +307,7 @@ for dep in deps_tests:
 print(string)"""
 
 
-# In[ ]:
+# In[7]:
 
 
 """for (name, data, title, scale_txt, data_example, digits) in [("taux_reg", 'P_taux', "Taux de<br>positivité", "%", "%", 1)]:

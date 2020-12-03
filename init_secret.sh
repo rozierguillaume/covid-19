@@ -1,1 +1,0 @@
-sudo python3 covid19_france_charts.py && sudo python3 covid19_france_local_charts.py && sudo python3 covid19_regions_dashboards.py && sudo python3 covid19_departements_dashboards.py && sudo python3 covid19_france_metropoles.py && sudo python3 covid19_france_map_incid.py && sudo git add . && sudo git commit -m “update” && sudo git push
