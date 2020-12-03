@@ -23,7 +23,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[2]:
+# In[1]:
 
 
 import pandas as pd
@@ -34,21 +34,22 @@ from datetime import timedelta
 import plotly
 import math
 import os
+PATH = "../../"
 
 
-# In[3]:
+# In[2]:
 
 
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
 
 
-# In[4]:
+# In[3]:
 
 
 #df = df.groupby(["dep", "jour"]).first().reset_index()
 
 
-# In[5]:
+# In[9]:
 
 
 df_departements = df.groupby(["jour", "departmentName"]).sum().reset_index()
@@ -64,15 +65,15 @@ last_day_plot = (datetime.strptime(max(dates), '%Y-%m-%d') + timedelta(days=1)).
 departements_nb = list(dict.fromkeys(list(df_tests_viros['dep'].values))) 
 
 
-# In[6]:
+# In[11]:
 
 
-lits_reas = pd.read_csv('data/france/lits_rea.csv', sep=",")
+lits_reas = pd.read_csv(PATH+'data/france/lits_rea.csv', sep=",")
 
 df_departements_lits = df_departements.merge(lits_reas, left_on="departmentName", right_on="nom_dpt")
 
 
-# In[7]:
+# In[12]:
 
 
 def cas_journ(departement):
@@ -183,12 +184,12 @@ def cas_journ(departement):
             showarrow=True
         ),)
 
-    fig.write_image("images/charts/france/departements_dashboards/{}.jpeg".format(name_fig), scale=1.5, width=750, height=500)
+    fig.write_image(PATH+"images/charts/france/departements_dashboards/{}.jpeg".format(name_fig), scale=1.5, width=750, height=500)
 
     print("> " + name_fig)
 
 
-# In[8]:
+# In[13]:
 
 
 def hosp_journ(departement):   
@@ -286,12 +287,12 @@ def hosp_journ(departement):
             showarrow=True
         ),)
 
-    fig.write_image("images/charts/france/departements_dashboards/{}.jpeg".format(name_fig), scale=1.5, width=750, height=500)
+    fig.write_image(PATH+"images/charts/france/departements_dashboards/{}.jpeg".format(name_fig), scale=1.5, width=750, height=500)
 
     print("> " + name_fig)
 
 
-# In[9]:
+# In[14]:
 
 
 def hosp_comparaison_vagues(departement):   
@@ -446,14 +447,14 @@ def hosp_comparaison_vagues(departement):
             showarrow=True
         ))
 
-    fig.write_image("images/charts/france/departements_dashboards/{}.jpeg".format(name_fig), scale=1.5, width=1000, height=700)
+    fig.write_image(PATH+"images/charts/france/departements_dashboards/{}.jpeg".format(name_fig), scale=1.5, width=1000, height=700)
 
     print("> " + name_fig)
     
 #hosp_comparaison_vagues("Savoie")
 
 
-# In[10]:
+# In[15]:
 
 
 def rea_journ(departement):
@@ -550,14 +551,14 @@ def rea_journ(departement):
             showarrow=True
         ),)
 
-    fig.write_image("images/charts/france/departements_dashboards/{}.jpeg".format(name_fig), scale=1.5, width=750, height=500)
+    fig.write_image(PATH+"images/charts/france/departements_dashboards/{}.jpeg".format(name_fig), scale=1.5, width=750, height=500)
 
     print("> " + name_fig)
     
 #rea_journ("Isère")
 
 
-# In[11]:
+# In[16]:
 
 
 def dc_journ(departement): 
@@ -667,14 +668,14 @@ def dc_journ(departement):
             showarrow=True
         ),)
 
-    fig.write_image("images/charts/france/departements_dashboards/{}.jpeg".format(name_fig), scale=1.5, width=750, height=500)
+    fig.write_image(PATH+"images/charts/france/departements_dashboards/{}.jpeg".format(name_fig), scale=1.5, width=750, height=500)
 
     print("> " + name_fig)
     
 #dc_journ("Paris")
 
 
-# In[12]:
+# In[17]:
 
 
 
@@ -760,12 +761,12 @@ def saturation_rea_journ(dep):
             showarrow=True
         ),)
 
-    fig.write_image("images/charts/france/departements_dashboards/{}.jpeg".format(name_fig), scale=1.5, width=750, height=500)
+    fig.write_image(PATH+"images/charts/france/departements_dashboards/{}.jpeg".format(name_fig), scale=1.5, width=750, height=500)
 
     print("> " + name_fig)
 
 
-# In[13]:
+# In[18]:
 
 
 import cv2
@@ -778,25 +779,25 @@ for dep in departements:
     hosp_comparaison_vagues(dep)
     saturation_rea_journ(dep)
     
-    im1 = cv2.imread('images/charts/france/departements_dashboards/cas_journ_{}.jpeg'.format(dep))
-    im2 = cv2.imread('images/charts/france/departements_dashboards/hosp_journ_{}.jpeg'.format(dep))
-    im3 = cv2.imread('images/charts/france/departements_dashboards/rea_journ_{}.jpeg'.format(dep))
-    im4 = cv2.imread('images/charts/france/departements_dashboards/dc_journ_{}.jpeg'.format(dep))
+    im1 = cv2.imread(PATH+'images/charts/france/departements_dashboards/cas_journ_{}.jpeg'.format(dep))
+    im2 = cv2.imread(PATH+'images/charts/france/departements_dashboards/hosp_journ_{}.jpeg'.format(dep))
+    im3 = cv2.imread(PATH+'images/charts/france/departements_dashboards/rea_journ_{}.jpeg'.format(dep))
+    im4 = cv2.imread(PATH+'images/charts/france/departements_dashboards/dc_journ_{}.jpeg'.format(dep))
 
     im_haut = cv2.hconcat([im1, im2])
     #cv2.imwrite('images/charts/france/tests_combinaison.jpeg', im_h)
     im_bas = cv2.hconcat([im3, im4])
 
     im_totale = cv2.vconcat([im_haut, im_bas])
-    cv2.imwrite('images/charts/france/departements_dashboards/dashboard_jour_{}.jpeg'.format(dep), im_totale)
+    cv2.imwrite(PATH+'images/charts/france/departements_dashboards/dashboard_jour_{}.jpeg'.format(dep), im_totale)
     
-    os.remove('images/charts/france/departements_dashboards/cas_journ_{}.jpeg'.format(dep))
+    os.remove(PATH+'images/charts/france/departements_dashboards/cas_journ_{}.jpeg'.format(dep))
     #os.remove('images/charts/france/departements_dashboards/hosp_journ_{}.jpeg'.format(dep))
-    os.remove('images/charts/france/departements_dashboards/rea_journ_{}.jpeg'.format(dep))
-    os.remove('images/charts/france/departements_dashboards/dc_journ_{}.jpeg'.format(dep))
+    os.remove(PATH+'images/charts/france/departements_dashboards/rea_journ_{}.jpeg'.format(dep))
+    os.remove(PATH+'images/charts/france/departements_dashboards/dc_journ_{}.jpeg'.format(dep))
 
 
-# In[14]:
+# In[19]:
 
 
 for dep in departements:

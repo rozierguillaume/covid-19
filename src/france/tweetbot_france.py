@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[2]:
 
 
 # Guillaume Rozier - 2020 - MIT License
@@ -19,6 +19,7 @@ import secrets as s
 from datetime import timedelta
 
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
+PATH = "../../"
 
 """
 Secrets :
@@ -80,7 +81,7 @@ def tweet_france():
     date_incid = datetime.strptime(sorted(list(dict.fromkeys(list(df_incid_france['jour'].values))))[-1], '%Y-%m-%d').strftime('%d %B')
     tweet ="Chiffres #Covid19 :\n• {} personnes décédées en milieu hosp. ({}), {} sur 7 j. ({}{})\n• {} admissions à l'hôpital ({}), {} sur 7 j. ({}{})\n• {} cas positifs ({}), {} sur 7 j. ({}{})\n➡️ + d'infos : covidtracker.fr".format(deaths, lastday_df_new.strftime('%d/%m'), deaths_tendance, deaths_sign, deaths-deaths_j7, hosp, lastday_df_new.strftime('%d/%m'), hosp_tendance, hosp_sign, hosp-hosp_j7, tests, lastday_df_incid.strftime('%d/%m'), tests_tendance, tests_sign, tests-tests_j7) # toDo 
     
-    images_path =["images/charts/france/dashboard_jour.jpeg", "images/charts/france/heatmap_incidence.jpeg"]
+    images_path =[PATH+"images/charts/france/dashboard_jour.jpeg", PATH+"images/charts/france/heatmap_incidence.jpeg"]
     media_ids = []
     
     for filename in images_path:

@@ -21,7 +21,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[2]:
+# In[1]:
 
 
 from multiprocessing import Pool
@@ -44,9 +44,10 @@ import numpy as np
 import plotly.figure_factory as ff
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 now = datetime.now()
+PATH = "../../"
 
 
-# In[3]:
+# In[2]:
 
 
 df_metro = data.import_data_metropoles()
@@ -54,7 +55,7 @@ df_metro_65 = df_metro[df_metro["clage_65"] == 65]
 df_metro_0 = df_metro[df_metro["clage_65"] == 0]
 
 
-# In[4]:
+# In[3]:
 
 
 
@@ -92,12 +93,12 @@ for i,metro in enumerate(metropoles_couvre_feu_sorted): #list(dict.fromkeys(list
     
     
 name_fig = "line_metropole_avec_couvre_feu"
-fig.write_image("images/charts/france/{}.jpeg".format(name_fig), scale=2, width=800, height=800)
+fig.write_image(PATH+"images/charts/france/{}.jpeg".format(name_fig), scale=2, width=800, height=800)
 
-plotly.offline.plot(fig, filename = 'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
+plotly.offline.plot(fig, filename = PATH+'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
 
 
-# In[5]:
+# In[4]:
 
 
 
@@ -135,23 +136,23 @@ for i,metro in enumerate([m for m in metropoles if m not in metropoles_couvre_fe
     
     
 name_fig = "line_metropoles_sans_couvre_feu"
-fig.write_image("images/charts/france/{}.jpeg".format(name_fig), scale=2, width=800, height=800)
+fig.write_image(PATH+"images/charts/france/{}.jpeg".format(name_fig), scale=2, width=800, height=800)
 
-plotly.offline.plot(fig, filename = 'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
-
-
-# In[6]:
+plotly.offline.plot(fig, filename = PATH+'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
 
 
-im1 = cv2.imread('images/charts/france/line_metropole_avec_couvre_feu.jpeg')
-im2 = cv2.imread('images/charts/france/line_metropoles_sans_couvre_feu.jpeg')
+# In[5]:
+
+
+im1 = cv2.imread(PATH+'images/charts/france/line_metropole_avec_couvre_feu.jpeg')
+im2 = cv2.imread(PATH+'images/charts/france/line_metropoles_sans_couvre_feu.jpeg')
 
 im3 = cv2.hconcat([im1, im2])
 
-cv2.imwrite('images/charts/france/line_metropoles_comp_couvre_feu.jpeg', im3)
+cv2.imwrite(PATH+'images/charts/france/line_metropoles_comp_couvre_feu.jpeg', im3)
 
 
-# In[7]:
+# In[6]:
 
 
 for (title, df_temp, name) in [("Tous âges", df_metro_0, "0"), ("> 65 ans", df_metro_65, "65")]:
@@ -235,8 +236,8 @@ for (title, df_temp, name) in [("Tous âges", df_metro_0, "0"), ("> 65 ans", df_
         fig.add_annotation(annot)
 
     name_fig = "heatmaps_metropoles_" + name
-    fig.write_image("images/charts/france/{}.jpeg".format(name_fig), scale=2, width=1000, height=1000)
-    fig.write_image("images/charts/france/{}_SD.jpeg".format(name_fig), scale=0.5, width=900, height=900)
+    fig.write_image(PATH+"images/charts/france/{}.jpeg".format(name_fig), scale=2, width=1000, height=1000)
+    fig.write_image(PATH+"images/charts/france/{}_SD.jpeg".format(name_fig), scale=0.5, width=900, height=900)
     #fig.show()
-    plotly.offline.plot(fig, filename = 'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
+    plotly.offline.plot(fig, filename = PATH+'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
 
