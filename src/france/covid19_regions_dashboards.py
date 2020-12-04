@@ -23,7 +23,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[2]:
+# In[1]:
 
 
 import pandas as pd
@@ -34,15 +34,16 @@ from datetime import timedelta
 import plotly
 import math
 import os
+PATH = "../../"
 
 
-# In[3]:
+# In[2]:
 
 
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
 
 
-# In[4]:
+# In[3]:
 
 
 df_regions = df.groupby(["jour", "regionName"]).sum().reset_index()
@@ -54,13 +55,13 @@ last_day_plot = (datetime.strptime(max(dates), '%Y-%m-%d') + timedelta(days=1)).
 df_new_regions = df_new.groupby(["jour", "regionName"]).sum().reset_index()
 
 
+# In[4]:
+
+
+lits_reas = pd.read_csv(PATH+'data/france/lits_rea.csv', sep=",")
+
+
 # In[5]:
-
-
-lits_reas = pd.read_csv('data/france/lits_rea.csv', sep=",")
-
-
-# In[6]:
 
 
 regions_deps = df.groupby(["departmentName", "regionName"]).sum().reset_index().loc[:,["departmentName", "regionName"]]
@@ -69,7 +70,7 @@ lits_reas_regs = lits_reas.groupby(["regionName"]).sum().reset_index()
 df_regions = df_regions.merge(lits_reas_regs, left_on="regionName", right_on="regionName")
 
 
-# In[7]:
+# In[6]:
 
 
 def cas_journ(region):
@@ -179,12 +180,12 @@ def cas_journ(region):
             showarrow=True
         ),)
 
-    fig.write_image("images/charts/france/regions_dashboards/{}.jpeg".format(name_fig), scale=1, width=900, height=600)
+    fig.write_image(PATH+"images/charts/france/regions_dashboards/{}.jpeg".format(name_fig), scale=1, width=900, height=600)
 
     print("> " + name_fig)
 
 
-# In[8]:
+# In[7]:
 
 
 def hosp_journ(region):   
@@ -281,12 +282,12 @@ def hosp_journ(region):
             showarrow=True
         ),)
 
-    fig.write_image("images/charts/france/regions_dashboards/{}.jpeg".format(name_fig), scale=1, width=900, height=600)
+    fig.write_image(PATH+"images/charts/france/regions_dashboards/{}.jpeg".format(name_fig), scale=1, width=900, height=600)
 
     print("> " + name_fig)
 
 
-# In[9]:
+# In[8]:
 
 
 def rea_journ(region):
@@ -382,13 +383,13 @@ def rea_journ(region):
             showarrow=True
         ),)
 
-    fig.write_image("images/charts/france/regions_dashboards/{}.jpeg".format(name_fig), scale=1, width=900, height=600)
+    fig.write_image(PATH+"images/charts/france/regions_dashboards/{}.jpeg".format(name_fig), scale=1, width=900, height=600)
 
     print("> " + name_fig)
 #rea_journ("Auvergne-Rhône-Alpes")
 
 
-# In[10]:
+# In[9]:
 
 
 def dc_journ(region): 
@@ -497,12 +498,12 @@ def dc_journ(region):
             showarrow=True
         ),)
 
-    fig.write_image("images/charts/france/regions_dashboards/{}.jpeg".format(name_fig), scale=1, width=900, height=600)
+    fig.write_image(PATH+"images/charts/france/regions_dashboards/{}.jpeg".format(name_fig), scale=1, width=900, height=600)
 
     print("> " + name_fig)
 
 
-# In[11]:
+# In[10]:
 
 
 
@@ -600,12 +601,12 @@ def saturation_rea_journ(region):
             showarrow=True
         ),)
 
-    fig.write_image("images/charts/france/regions_dashboards/{}.jpeg".format(name_fig), scale=1, width=900, height=600)
+    fig.write_image(PATH+"images/charts/france/regions_dashboards/{}.jpeg".format(name_fig), scale=1, width=900, height=600)
 
     print("> " + name_fig)
 
 
-# In[12]:
+# In[11]:
 
 
 import cv2
@@ -619,21 +620,21 @@ for reg in regions:
     saturation_rea_journ(reg)
     
     
-    im1 = cv2.imread('images/charts/france/regions_dashboards/cas_journ_{}.jpeg'.format(reg))
-    im2 = cv2.imread('images/charts/france/regions_dashboards/hosp_journ_{}.jpeg'.format(reg))
-    im3 = cv2.imread('images/charts/france/regions_dashboards/rea_journ_{}.jpeg'.format(reg))
-    im4 = cv2.imread('images/charts/france/regions_dashboards/dc_journ_{}.jpeg'.format(reg))
+    im1 = cv2.imread(PATH+'images/charts/france/regions_dashboards/cas_journ_{}.jpeg'.format(reg))
+    im2 = cv2.imread(PATH+'images/charts/france/regions_dashboards/hosp_journ_{}.jpeg'.format(reg))
+    im3 = cv2.imread(PATH+'images/charts/france/regions_dashboards/rea_journ_{}.jpeg'.format(reg))
+    im4 = cv2.imread(PATH+'images/charts/france/regions_dashboards/dc_journ_{}.jpeg'.format(reg))
 
     im_haut = cv2.hconcat([im1, im2])
     im_bas = cv2.hconcat([im3, im4])
 
     im_totale = cv2.vconcat([im_haut, im_bas])
-    cv2.imwrite('images/charts/france/regions_dashboards/dashboard_jour_{}.jpeg'.format(reg), im_totale)
+    cv2.imwrite(PATH+'images/charts/france/regions_dashboards/dashboard_jour_{}.jpeg'.format(reg), im_totale)
     
-    os.remove('images/charts/france/regions_dashboards/cas_journ_{}.jpeg'.format(reg))
-    os.remove('images/charts/france/regions_dashboards/hosp_journ_{}.jpeg'.format(reg))
-    os.remove('images/charts/france/regions_dashboards/rea_journ_{}.jpeg'.format(reg))
-    os.remove('images/charts/france/regions_dashboards/dc_journ_{}.jpeg'.format(reg))
+    os.remove(PATH+'images/charts/france/regions_dashboards/cas_journ_{}.jpeg'.format(reg))
+    os.remove(PATH+'images/charts/france/regions_dashboards/hosp_journ_{}.jpeg'.format(reg))
+    os.remove(PATH+'images/charts/france/regions_dashboards/rea_journ_{}.jpeg'.format(reg))
+    os.remove(PATH+'images/charts/france/regions_dashboards/dc_journ_{}.jpeg'.format(reg))
 
 
 # In[13]:

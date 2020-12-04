@@ -17,6 +17,7 @@ import tweepy
 import pandas as pd
 import secrets as s
 from datetime import timedelta
+PATH = "../../"
 
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
@@ -44,7 +45,7 @@ def tweet_france_maps():
     df_incid_lastday = df_incid.loc[df_incid['jour']==df_incid['jour'].max(), :]
     nb_dep = len(df_incid_lastday.loc[df_incid_lastday['incidence_color']=='Alerte', :]) + len(df_incid_lastday.loc[df_incid_lastday['incidence_color']=='Alerte Renforcée', :]) + len(df_incid_lastday.loc[df_incid_lastday['incidence_color']=='Alerte Maximale', :])
     
-    images_path2 =["images/charts/france/dep-map-incid-cat/latest.jpeg"]
+    images_path2 =[PATH+"images/charts/france/dep-map-incid-cat/latest.jpeg"]
     media_ids2 = []
     
     for filename in images_path2:

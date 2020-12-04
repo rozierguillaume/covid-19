@@ -18,6 +18,7 @@ import json
 import numpy as np
 import locale
 
+PATH="../../"
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 now = datetime.now()
 colors = px.colors.qualitative.D3 + plotly.colors.DEFAULT_PLOTLY_COLORS + px.colors.qualitative.Plotly + px.colors.qualitative.Dark24 + px.colors.qualitative.Alphabet
@@ -82,7 +83,7 @@ df_france = df.groupby('jour').sum().reset_index()
 
 regions = list(dict.fromkeys(list(df['regionName'].values))) 
 codes_reg = list(dict.fromkeys(list(df['code'].values))) 
-lits_reas = pd.read_csv('data/france/lits_rea.csv', sep=",")
+lits_reas = pd.read_csv(PATH+'data/france/lits_rea.csv', sep=",")
 
 df_incid_region = df_incid.groupby(["jour", "regionName"]).sum().reset_index()
 df_sursaud_region = df_sursaud.groupby(["date_de_passage", "regionName"]).sum().reset_index()
@@ -91,10 +92,10 @@ df_sursaud_region = df_sursaud.groupby(["date_de_passage", "regionName"]).sum().
 # In[5]:
 
 
-with open('data/france/dep.geojson') as response:
+with open(PATH+'data/france/dep.geojson') as response:
     dep_geojson = json.load(response)
     
-with open('data/france/regions.geojson') as response:
+with open(PATH+'data/france/regions.geojson') as response:
     reg_geojson = json.load(response)
     
 def build_map(data_df, img_folder, date = dates_sursaud[-1], subtitle="", legend_str="", type_data="dep", date_str ="extract_date", dep_str = "departement", color_str = 'indic_synthese', legend_title="legend_title", title="title"):    
@@ -482,7 +483,7 @@ for val in ["hosp_regpop", "rea_regpop", "dc_new_regpop_rolling7"]: #
                         ),)
     
     name_fig = "subplots_" + val 
-    fig.write_image("images/charts/france/{}.jpeg".format(name_fig), scale=1.5, width=1300, height=1600)
+    fig.write_image(PATH+"images/charts/france/{}.jpeg".format(name_fig), scale=1.5, width=1300, height=1600)
 
     fig["layout"]["annotations"] += (
                     dict(
@@ -495,7 +496,7 @@ for val in ["hosp_regpop", "rea_regpop", "dc_new_regpop_rolling7"]: #
                         showarrow = False
                         ),
                         )
-    plotly.offline.plot(fig, filename = 'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
+    plotly.offline.plot(fig, filename = PATH+'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
     print("> " + name_fig)
 
 
@@ -632,7 +633,7 @@ for age in list(dict.fromkeys(list(df_incid_all['cl_age90'].values))) + [61]:
                         ),)
 
     name_fig = "subplots_" + "incid" + "_" + str(age)
-    fig.write_image("images/charts/france/{}.jpeg".format(name_fig), scale=1.5, width=1300, height=1600)
+    fig.write_image(PATH+"images/charts/france/{}.jpeg".format(name_fig), scale=1.5, width=1300, height=1600)
 
     fig["layout"]["annotations"] += (
                     dict(
@@ -645,7 +646,7 @@ for age in list(dict.fromkeys(list(df_incid_all['cl_age90'].values))) + [61]:
                         showarrow = False
                         ),
                         )
-    plotly.offline.plot(fig, filename = 'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
+    plotly.offline.plot(fig, filename = PATH+'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
     print("> " + name_fig)
 
 
@@ -884,7 +885,7 @@ fig["layout"]["annotations"] += annot + (dict(
                     ))
 
 name_fig = "subplots_reffectif" 
-fig.write_image("images/charts/france/{}.jpeg".format(name_fig), scale=1.5, width=1300, height=1600)
+fig.write_image(PATH+"images/charts/france/{}.jpeg".format(name_fig), scale=1.5, width=1300, height=1600)
 
 fig["layout"]["annotations"] += (
                 dict(
@@ -897,7 +898,7 @@ fig["layout"]["annotations"] += (
                     showarrow = False
                     ),
                     )
-plotly.offline.plot(fig, filename = 'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
+plotly.offline.plot(fig, filename = PATH+'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
 print("> " + name_fig)
 
 #fig.show()
@@ -1123,7 +1124,7 @@ for (val, range_y) in [("dc_new_deppop_1M", [0, 30]), ("hosp_deppop_1M", [0, 150
                                     )
 
     name_fig = "subplots_dep_" + val 
-    fig.write_image("images/charts/france/{}.jpeg".format(name_fig), scale=2, width=1600, height=2100)
+    fig.write_image(PATH+"images/charts/france/{}.jpeg".format(name_fig), scale=2, width=1600, height=2100)
 
     fig["layout"]["annotations"] += (
                     dict(
@@ -1136,7 +1137,7 @@ for (val, range_y) in [("dc_new_deppop_1M", [0, 30]), ("hosp_deppop_1M", [0, 150
                         showarrow = False
                         ),
                         )
-    plotly.offline.plot(fig, filename = 'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
+    plotly.offline.plot(fig, filename = PATH+'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
     print("> " + name_fig)
 
 
@@ -1327,7 +1328,7 @@ fig["layout"]["annotations"] += annot + ( dict(
 
 
 name_fig = "subplots_dep_incidence"
-fig.write_image("images/charts/france/{}.jpeg".format(name_fig), scale=2, width=1700, height=2300)
+fig.write_image(PATH+"images/charts/france/{}.jpeg".format(name_fig), scale=2, width=1700, height=2300)
 
 fig["layout"]["annotations"] += (
                 dict(
@@ -1340,7 +1341,7 @@ fig["layout"]["annotations"] += (
                     showarrow = False
                     ),
                     )
-plotly.offline.plot(fig, filename = 'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
+plotly.offline.plot(fig, filename = PATH+'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
 print("> " + name_fig)
 
 
@@ -1810,7 +1811,7 @@ for val in ["hosp_deppop"]: #, "hosp", "rea", "rea_pop"
                                     )
     
     name_fig = "subplots_deconf_indic1"
-    fig.write_image("images/charts/france/{}.jpeg".format(name_fig), scale=1.5, width=1600, height=2300)
+    fig.write_image(PATH+"images/charts/france/{}.jpeg".format(name_fig), scale=1.5, width=1600, height=2300)
 
     fig["layout"]["annotations"] += (
                     dict(
@@ -1823,7 +1824,7 @@ for val in ["hosp_deppop"]: #, "hosp", "rea", "rea_pop"
                         showarrow = False
                         ),
                         )
-    plotly.offline.plot(fig, filename = 'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
+    plotly.offline.plot(fig, filename = PATH+'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
     print("> " + name_fig)
 
 
@@ -2074,7 +2075,7 @@ for val in ["hosp_deppop"]: #, "hosp", "rea", "rea_pop"
                                     ) 
     
     name_fig = "subplots_deconf_indic2"
-    fig.write_image("images/charts/france/{}.jpeg".format(name_fig), scale=1.5, width=1600, height=2300)
+    fig.write_image(PATH+"images/charts/france/{}.jpeg".format(name_fig), scale=1.5, width=1600, height=2300)
 
     fig["layout"]["annotations"] += (
                     dict(
@@ -2087,7 +2088,7 @@ for val in ["hosp_deppop"]: #, "hosp", "rea", "rea_pop"
                         showarrow = False
                         ),
                         )
-    plotly.offline.plot(fig, filename = 'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
+    plotly.offline.plot(fig, filename = PATH+'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
     print("> " + name_fig)
 
 
@@ -2130,25 +2131,25 @@ for code in codes_reg:
     df_groupby.loc[(df_groupby['jour'] == dates[-1]) & (df_groupby['code'] == code), 'synthese_indics'] = "green" 
 
 
-# In[22]:
-
-
-build_map(df_groupby, date = dates[-1], date_str="jour", dep_str="code", type_data="reg", color_str="capa_rea_clr", img_folder="images/charts/france/indic2/{}.png", legend_str = "Rouge : > 80%<br>Orange : 60 à 80%<br>Vert : < 60%", title="Indicateur 2 : tension hospitalière (par région)", subtitle="proportion de lits de réa. occupés par des patients Covid19")
-
-
 # In[23]:
 
 
-build_map(df_sursaud, date = dates[-1], date_str="date_de_passage", dep_str="dep", type_data="dep", color_str="indic2_clr", img_folder="images/charts/france/indic2_deps/{}.png", legend_str = "Rouge : > 80%<br>Orange : 60 à 80%<br>Vert : < 60%", title="Indicateur 2 : tension hospitalière (par département)", subtitle="proportion de lits de réa. occupés par des patients Covid19")
+build_map(df_groupby, date = dates[-1], date_str="jour", dep_str="code", type_data="reg", color_str="capa_rea_clr", img_folder=PATH+"images/charts/france/indic2/{}.png", legend_str = "Rouge : > 80%<br>Orange : 60 à 80%<br>Vert : < 60%", title="Indicateur 2 : tension hospitalière (par région)", subtitle="proportion de lits de réa. occupés par des patients Covid19")
 
 
 # In[24]:
 
 
-build_map(df_groupby, date = dates[-1], date_str="jour", dep_str="code", type_data="reg", color_str="synthese_indics", img_folder="images/charts/france/synthese_indics/{}.png", title="Synthèse des indicateurs de déconfinement", subtitle="synthèse des indicateurs 1 et 2")
+build_map(df_sursaud, date = dates[-1], date_str="date_de_passage", dep_str="dep", type_data="dep", color_str="indic2_clr", img_folder=PATH+"images/charts/france/indic2_deps/{}.png", legend_str = "Rouge : > 80%<br>Orange : 60 à 80%<br>Vert : < 60%", title="Indicateur 2 : tension hospitalière (par département)", subtitle="proportion de lits de réa. occupés par des patients Covid19")
 
 
 # In[25]:
+
+
+build_map(df_groupby, date = dates[-1], date_str="jour", dep_str="code", type_data="reg", color_str="synthese_indics", img_folder=PATH+"images/charts/france/synthese_indics/{}.png", title="Synthèse des indicateurs de déconfinement", subtitle="synthèse des indicateurs 1 et 2")
+
+
+# In[26]:
 
 
 """

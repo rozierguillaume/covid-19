@@ -23,7 +23,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[2]:
+# In[1]:
 
 
 from multiprocessing import Pool
@@ -44,17 +44,19 @@ import france_data_management as data
 import numpy as np
 import plotly.figure_factory as ff
 
+PATH="../../"
+
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 now = datetime.now()
 
 
-# In[3]:
+# In[2]:
 
 
 df, df_confirmed, dates, _, _, _, _, _, df_tests_viros = data.import_data()
 
 
-# In[4]:
+# In[3]:
 
 
 deps_tests = list(dict.fromkeys(list(df_tests_viros['dep'].values))) 
@@ -164,10 +166,10 @@ for (name, data, title, scale_txt, data_example, digits) in [("cas", '', "Taux d
             fig.add_annotation(annot)
 
         name_fig = "heatmaps_deps/heatmap_"+"taux"+"_"+dep
-        fig.write_image("images/charts/france/{}.jpeg".format(name_fig), scale=2, width=900, height=550)
-        fig.write_image("images/charts/france/{}_SD.jpeg".format(name_fig), scale=0.5, width=900, height=550)
+        fig.write_image(PATH+"images/charts/france/{}.jpeg".format(name_fig), scale=2, width=900, height=550)
+        #fig.write_image(PATH+"images/charts/france/{}_SD.jpeg".format(name_fig), scale=0.5, width=900, height=550)
         #fig.show()
-        plotly.offline.plot(fig, filename = 'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
+        plotly.offline.plot(fig, filename = PATH+'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
 
 
 # In[5]:
