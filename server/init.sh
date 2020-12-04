@@ -6,7 +6,7 @@ do
 	echo start_script
 	sudo git fetch --all
 	sudo git reset --hard origin/master && sudo jupyter nbconvert --to python *.ipynb src/france/*.ipynb src/world/*.ipynb
-	sudo python3 script_update_data.py
+	sudo python3 server/script_update_data.py
 
 	sleep 60
 done
