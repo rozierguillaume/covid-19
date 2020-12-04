@@ -6,7 +6,7 @@ French data come frome [INSEE](https://insee.fr/fr/accueil) (Institut National d
 For more information and comments in French, you can follow me on Twitter: [@guillaumerozier](http://twitter.com/guillaumerozier).
 
 # [CovidTracker](http://www.guillaumerozier.fr): Covid19 Dashboard
-**An all new website has been built which contains many and detailed graphs, comments and articles about France and the World! 
+**This dashboard ontains many and detailed graphs, comments and articles about France and the World! 
 Check it out now: [CovidTracker (covidtracker.fr)](http://www.covidtracker.fr)!**
 
 <a href="http://www.guillaumerozier.fr"><p align="center" ><img width="70%" src="images/covidtracker.svg"></p></a>
