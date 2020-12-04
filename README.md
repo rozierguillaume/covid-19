@@ -24,11 +24,12 @@ Here are the main requirements: Python3, Plotly, Orca, Pandas, requests, imageio
 covid-19
 └─── README.md
 |
-└─── covid-19_world_charts.ipynb  ->  the Jupyter notebook that builds world charts
+└───src
+    └───france  ->  Jupyter Notebooks and their corresponding .py files generating france charts
+    |
+    └───world  ->  Jupyter Notebooks and their corresponding .py files generating world charts
 |
-└─── covid-19_france_charts.ipynb  ->  the Jupyter notebook that builds french charts
-|
-└─── covid-19_france_maps.ipynb  ->  the Jupyter notebook that builds french maps
+└───server -> scripts that updates data
 |
 └───data  ->  datasets from CSSE, WHO, INSEE, and more.
 │   │   total_cases_csse.csv  ->  CSV file containing total confirmed cases from CSSE.
