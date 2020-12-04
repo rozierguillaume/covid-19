@@ -9,7 +9,7 @@ For more information and comments in French, you can follow me on Twitter: [@gui
 **An all new website has been built which contains many and detailed graphs, comments and articles about France and the World! 
 Check it out now: [CovidTracker (covidtracker.fr)](http://www.covidtracker.fr)!**
 
-<a href="http://www.guillaumerozier.fr"><p align="center" ><img width="70%" src="images/covidtracker.png"></p></a>
+<a href="http://www.guillaumerozier.fr"><p align="center" ><img width="70%" src="images/covidtracker.svg"></p></a>
 
 # Website sources
 You can find sources of some of the CovidTracker's webpages here: [covidtracker-tools](https://github.com/rozierguillaume/covidtracker-tools)
