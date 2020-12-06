@@ -25,6 +25,12 @@ import time
 import subprocess
 import requests
 import re
+import os
+
+#os.chdir("../")
+BASE_CWD = os.getcwd()
+PATH_WORLD = BASE_CWD + "/src/world/"
+PATH_FRANCE = BASE_CWD + "/src/france/"
 
 ### FUNCTION DEFINITIONS ###
 url_metadata = "https://www.data.gouv.fr/fr/organizations/sante-publique-france/datasets-resources.csv"
@@ -59,53 +65,56 @@ def try_update_france():
     t2 = datetime_spf
     print("diff t1 t2: {}".format(max(t1, t2) - min(t1, t2)) )
     print("(max(t1, t2) - min(t1, t2)).total_seconds()/3600 = {}".format((max(t1, t2) - min(t1, t2)).total_seconds()/3600) )
-    if ( (max(t1, t2) - min(t1, t2)).total_seconds()/3600 <= 2 ): # Si le fichier SPF date d'il y à moins de 2h
+    if true:#( (max(t1, t2) - min(t1, t2)).total_seconds()/3600 <= 2 ): # Si le fichier SPF date d'il y à moins de 2h
         metadata = requests.get(url_metadata)
         content = str(metadata.content)
         
         print("starting France update: {}:{}".format(str(now.hour), str(now.minute)))
         update_repo()
-
+        
+        os.chdir(PATH_FRANCE)
         # Mise à jour des graphiques
-        subprocess.run(["sudo", "python3", "covid19_france_charts.py"])
+        subprocess.run(["sudo", "python3", PATH_FRANCE+"covid19_france_charts.py"])
         push("France")
         print("update France charts: " + str(now.hour) + ":" + str(now.minute))
         
         try:
-            subprocess.run(["sudo", "python3", "tweetbot_france.py"])
+            subprocess.run(["sudo", "python3", PATH_FRANCE+"tweetbot_france.py"])
             print("data tweeted")
         except:
             pass
         
-        subprocess.run(["sudo", "python3", "covid19_france_map_incid.py"])
+        subprocess.run(["sudo", "python3", PATH_FRANCE+"covid19_france_map_incid.py"])
         push("France map incid")
         print("update France local: " + str(now.hour) + ":" + str(now.minute))
         
         try:
-            subprocess.run(["sudo", "python3", "tweetbot_france_maps.py"])
+            subprocess.run(["sudo", "python3", PATH_FRANCE+"tweetbot_france_maps.py"])
             print("map tweeted")
         except:
             pass
         
-        subprocess.run(["sudo", "python3", "covid19_france_metropoles.py"])
+        subprocess.run(["sudo", "python3", PATH_FRANCE+"covid19_france_metropoles.py"])
         push("France metropoles")
         print("update France local: " + str(now.hour) + ":" + str(now.minute))
         
-        subprocess.run(["sudo", "python3", "covid19_france_local_charts.py"])
+        subprocess.run(["sudo", "python3", PATH_FRANCE+"covid19_france_local_charts.py"])
         push("France local subplots")
         print("update France local: " + str(now.hour) + ":" + str(now.minute))
         
-        subprocess.run(["sudo", "python3", "covid19_france_heatmaps.py"])
+        subprocess.run(["sudo", "python3", PATH_FRANCE+"covid19_france_heatmaps.py"])
         push("Dep heatmaps")
         print("update France heatmaps: " + str(now.hour) + ":" + str(now.minute))
         
-        subprocess.run(["sudo", "python3", "covid19_utils.py"])
+        subprocess.run(["sudo", "python3", PATH_FRANCE+"covid19_utils.py"])
         push("Utils")
         print("update France utils: " + str(now.hour) + ":" + str(now.minute))
         
-        subprocess.run(["sudo", "python3", "covid19_france_maps.py"])
+        subprocess.run(["sudo", "python3", PATH_FRANCE+"covid19_france_maps.py"])
         push("France GIF")
         print("update France GIF: " + str(now.hour) + ":" + str(now.minute))
+        
+        os.chdir(BASE_PATH)
         
     return datetime_spf
 
@@ -134,12 +143,12 @@ while True:
         
         # mise à jour des graphiques world
         update_repo()
-        subprocess.run(["sudo", "python3", "covid19_world_charts.py"])
+        subprocess.run(["sudo", "python3", PATH_WORLD+"covid19_world_charts.py"])
         push("World")
         print("update World pushed: " + str(now.hour) + ":" + str(now.minute))
         
         # ... et France (certains en dépendent)
-        subprocess.run(["sudo", "python3", "covid19_france_charts.py"])
+        subprocess.run(["sudo", "python3", PATH_FRANCE+"covid19_france_charts.py"])
         push("France")
         print("update France pushed: " + str(now.hour) + ":" + str(now.minute))
         
@@ -153,11 +162,11 @@ while True:
     print(str(now.hour))
     
     if tweet_world_data and (now.hour == 8):
-        subprocess.run(["sudo", "python3", "tweetbot_world.py"])
+        subprocess.run(["sudo", "python3", PATH_WORLD+"tweetbot_world.py"])
         tweet_world_data = False
         print("world tweet: done")
         
-    if ( (now.hour == 19) & (now.minute >= 15) & (now.minute <= 30)): #(((now.hour == 18) & (now.minute >= 58)) or ((now.hour >= 19) & (now.hour<= 20)))
+    if true:#( (now.hour == 19) & (now.minute >= 15) & (now.minute <= 30)): #(((now.hour == 18) & (now.minute >= 58)) or ((now.hour >= 19) & (now.hour<= 20)))
         print("if condition - now: {}, datetimes_spf: {}".format(now, datetime_spf))
         while ( (((now.hour == 18) & (now.minute >= 59)) or ((now.hour >= 19) & (now.hour<= 20))) & ( (now - datetime_spf).total_seconds()/3600 > 2.5 ) ):
             print("while loop - now: {}, datetimes_spf: {}".format(now, datetime_spf))            # Si l'heure comprise entre 18h59 et 21h59, ET les données PAS à jour depuis plus de 2h30
@@ -180,5 +189,5 @@ while True:
                     print("error update SPF")
             k += 1
             
-    time.sleep(30)
+    time.sleep(120)
 
