@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[7]:
 
 
 import pandas as pd
@@ -9,12 +9,13 @@ from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import plotly
 from datetime import datetime
+PATH = "../../"
 
 
-# In[2]:
+# In[8]:
 
 
-df_mortalite = pd.read_csv('data/france/deces_quotidiens_departement_csv.csv', sep=";", encoding="'windows-1252'")
+df_mortalite = pd.read_csv(PATH+'data/france/deces_quotidiens_departement_csv.csv', sep=";", encoding="'windows-1252'")
 
 df_mortalite_france = df_mortalite[df_mortalite["Zone"] == "France"]
 window = 14
@@ -23,7 +24,7 @@ df_mortalite_france.loc[:,"Total_deces_2019_diff"] = df_mortalite_france["Total_
 df_mortalite_france.loc[:,"Total_deces_2020_diff"] = df_mortalite_france["Total_deces_2020"].diff().rolling(window=window).mean()
 
 
-# In[3]:
+# In[9]:
 
 
 print(df_mortalite_france.dropna()["Total_deces_2018"].values[-1])
@@ -32,7 +33,7 @@ print(df_mortalite_france.dropna()["Total_deces_2020"].values[-1])
 print(df_mortalite_france.dropna())
 
 
-# In[4]:
+# In[11]:
 
 
 #### Construction du graphique
@@ -100,10 +101,10 @@ fig.update_layout(
                 )]
                  )
 fig.update_xaxes(title="", nticks=10)
-fig.update_yaxes(title="")
+fig.update_yaxes(title="", rangemode="tozero")
 
 name_fig = "mortalite"
-fig.write_image("images/charts/france/{}.jpeg".format(name_fig), scale=3, width=900, height=550)
+fig.write_image(PATH+"images/charts/france/{}.jpeg".format(name_fig), scale=3, width=900, height=550)
 
 fig.update_layout(
     annotations = [
@@ -117,6 +118,6 @@ fig.update_layout(
                     showarrow = False
                 )]
                  )
-plotly.offline.plot(fig, filename = 'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
+plotly.offline.plot(fig, filename = PATH+'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
 print("> " + name_fig)
 

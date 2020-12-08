@@ -36,6 +36,7 @@ import locale
 import shutil
 import os
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
+PATH = "../../"
 
 
 # In[3]:
@@ -45,7 +46,7 @@ locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 _, _, _, _, _, _, _, df_incid, _ = data.import_data()
 df_incid = df_incid[df_incid["cl_age90"] == 0]
 
-with open('data/france/dep.geojson') as response:
+with open(PATH+'data/france/dep.geojson') as response:
     depa = json.load(response)
 
 
@@ -150,7 +151,7 @@ def build_gif(file_gif, imgs_folder, dates):
 dates_deconf = list(dict.fromkeys(list(df_incid["jour"].values)))
 
 date = [dates_deconf[-1]] #dates_deconf[-33:]
-build_map(df_incid.sort_values(by=['incidence']), "images/charts/france/dep-map-incid-cat", date_val=date, date_str = "jour", dep_str = "dep", color_str = 'incidence_color', legend_title="", title="Incidence", subtitle="Nombre de cas hebdomadaires pour 100 000 habitants")
+build_map(df_incid.sort_values(by=['incidence']), PATH+"images/charts/france/dep-map-incid-cat", date_val=date, date_str = "jour", dep_str = "dep", color_str = 'incidence_color', legend_title="", title="Incidence", subtitle="Nombre de cas hebdomadaires pour 100 000 habitants")
 
 
 # In[7]:
@@ -181,5 +182,5 @@ to_disp"""
 # In[9]:
 
 
-build_gif("images/charts/france/incid-cat.gif", "images/charts/france/dep-map-incid-cat", dates_deconf[-33:])
+build_gif(PATH+"images/charts/france/incid-cat.gif", PATH+"images/charts/france/dep-map-incid-cat", dates_deconf[-33:])
 

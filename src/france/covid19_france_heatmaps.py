@@ -23,7 +23,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[1]:
+# In[2]:
 
 
 from multiprocessing import Pool
@@ -50,19 +50,19 @@ locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 now = datetime.now()
 
 
-# In[2]:
-
-
-df, df_confirmed, dates, _, _, _, _, _, df_tests_viros = data.import_data()
-
-
 # In[3]:
+
+
+df, df_confirmed, dates, _, _, _, _, df_incid, df_tests_viros = data.import_data()
+
+
+# In[4]:
 
 
 deps_tests = list(dict.fromkeys(list(df_tests_viros['dep'].values))) 
 deps_name = np.array(list(dict.fromkeys(list(df["departmentName"].values)))[:])
 
-df_tests_viros = df_tests_viros[df_tests_viros['cl_age90'] != 0]
+#df_tests_viros = df_tests_viros[df_tests_viros['cl_age90'] != 0]
 
 for (name, data, title, scale_txt, data_example, digits) in [("cas", '', "Taux d'<br>incidence", " cas", " cas", 1)]:
     for idx,dep in enumerate(deps_tests): #deps_tests.drop("975", "976", "977", "978")
@@ -75,7 +75,7 @@ for (name, data, title, scale_txt, data_example, digits) in [("cas", '', "Taux d
         array_positif = []
         array_taux = []
         array_incidence = []
-        for age in list(dict.fromkeys(list(df_tests_viros_dep['cl_age90'].values))): 
+        for age in sorted(list(dict.fromkeys(list(df_tests_viros_dep['cl_age90'].values)))): 
             tranche = df_tests_viros_dep[df_tests_viros_dep["cl_age90"]==age]
             tranche.index = pd.to_datetime(tranche["jour"])
             tranche = tranche[tranche.index.max() - timedelta(days=7*18-1):].resample('7D').sum()
@@ -93,7 +93,7 @@ for (name, data, title, scale_txt, data_example, digits) in [("cas", '', "Taux d
         fig = ff.create_annotated_heatmap(
             z=array_incidence, #df_tests_rolling[data].to_numpy()
             x=dates_heatmap,
-            y=[str(x-9) + " à " + str(x)+" ans" if x!=99 else "+ 90 ans" for x in range(9, 109, 10)],
+            y=[" <b>Tous âges</b>"] + [" " + str(x-9) + " à " + str(x)+" ans" if x!=99 else "+ 90 ans" for x in range(9, 109, 10)],
             showscale=True,
             font_colors=["white", "white"],
             coloraxis="coloraxis",
@@ -105,10 +105,11 @@ for (name, data, title, scale_txt, data_example, digits) in [("cas", '', "Taux d
 
         fig.update_xaxes(side="bottom", tickfont=dict(size=9))
         fig.update_yaxes(tickfont=dict(size=9))
+        fig['layout']['yaxis'].update(side='right')
     
         fig.update_layout(
             title={
-                'text': "{} du Covid19 en fonction de l\'âge".format(title.replace("<br>", " ")),
+                'text': "{} du Covid19 en fonction de l\'âge • <b>Dép. {}</b>".format(title.replace("<br>", " "), dep),
                 'y':0.98,
                 'x':0.5,
                 'xanchor': 'center',
@@ -137,27 +138,17 @@ for (name, data, title, scale_txt, data_example, digits) in [("cas", '', "Taux d
         annotations = annot + [
                         dict(
                             x=0.5,
-                            y=0.5,
-                            xref='paper',
-                            yref='paper',
-                            opacity=0.8,
-                            font=dict(color="white", size=55),
-                            text="Dép. <b>{}</b>".format(dep),
-                            showarrow=False
-                        ),
-                        dict(
-                            x=0.5,
                             y=-0.16,
                             xref='paper',
                             yref='paper',
                             xanchor='center',
                             opacity=0.6,
                             font=dict(color="black", size=12),
-                            text='Lecture : une case correspond au {} pour une tranche d\'âge (à lire à gauche) et à une date donnée (à lire en bas).<br>Du rouge correspond à un {} élevé.  <i>Date : {} - Source : covidtracker.fr - Données : Santé publique France</i>'.format(title.lower().replace("<br>", " "), title.lower().replace("<br>", " "), now.strftime('%d %B')),
+                            text='Lecture : une case correspond au {} pour une tranche d\'âge (à lire à gauche) et à une date donnée (à lire en bas).<br>Du rouge correspond à un {} élevé.  <i>Date : {} - Source : <b>@GuillaumeRozier</b> covidtracker.fr - Données : Santé publique France</i>'.format(title.lower().replace("<br>", " "), title.lower().replace("<br>", " "), now.strftime('%d %B')),
                             showarrow = False
                         ),
                     ]
-        
+        fig.update_layout(coloraxis_colorbar_x=-0.15)
         for i in range(len(fig.layout.annotations)):
             fig.layout.annotations[i].font.size = 12
             fig.layout.annotations[i].text = "<b>"+fig.layout.annotations[i].text+"</b>"
@@ -173,6 +164,112 @@ for (name, data, title, scale_txt, data_example, digits) in [("cas", '', "Taux d
 
 
 # In[5]:
+
+
+df_incid_regions = df_incid.groupby(["jour", "regionName", "cl_age90"]).sum().reset_index()
+regs = list(dict.fromkeys(list(df_incid_regions['regionName'].values))) 
+
+for (name, data, title, scale_txt, data_example, digits) in [("cas", '', "Taux d'<br>incidence", " cas", " cas", 1)]:
+    for idx, reg in enumerate(regs): #deps_tests.drop("975", "976", "977", "978")
+        locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
+        
+        df_incid_reg = df_incid_regions[df_incid_regions["regionName"] == reg]
+        
+        df_tests_rolling = pd.DataFrame()
+        array_positif = []
+        array_taux = []
+        array_incidence = []
+        for age in list(dict.fromkeys(list(df_incid_reg['cl_age90'].values))):
+            print(age)
+            tranche = df_incid_reg[df_incid_reg["cl_age90"]==age]
+            tranche.index = pd.to_datetime(tranche["jour"])
+            tranche = tranche[tranche.index.max() - timedelta(days=7*18-1):].resample('7D').sum()
+            
+            array_positif += [tranche["P"].astype(int)]
+            array_taux += [np.round((tranche["P"].fillna(0)/tranche["T"].fillna(1)).fillna(0)*100, 1)]
+            array_incidence += [np.trunc(tranche["P"].fillna(0) / tranche["pop"] * 7 * 100000).astype(int)]
+            dates_heatmap = list(tranche.index.astype(str).values)
+
+        dates_heatmap_firstday = tranche.index.values
+        dates_heatmap_lastday = tranche.index + timedelta(days=6)
+        dates_heatmap = [str(dates_heatmap_firstday[i])[8:10] + "/" + str(dates_heatmap_firstday[i])[5:7] + "<br>" + str(dates_heatmap_lastday[i])[8:10] + "/" + str(dates_heatmap_lastday[i])[5:7] for i, val in enumerate(dates_heatmap_firstday)]
+
+        fig = ff.create_annotated_heatmap(
+            z=array_incidence, #df_tests_rolling[data].to_numpy()
+            x=dates_heatmap,
+            y=["<b>Tous âges</b>"] + [str(x-9) + " à " + str(x)+" ans" if x!=99 else "+ 90 ans" for x in range(9, 109, 10)],
+            showscale=True,
+            font_colors=["white", "white"],
+            coloraxis="coloraxis",
+            #text=df_tests_rolling[data],
+            annotation_text = array_incidence
+            )
+
+        annot = []
+
+        fig.update_xaxes(side="bottom", tickfont=dict(size=9))
+        fig.update_yaxes(tickfont=dict(size=9))
+    
+        fig.update_layout(
+            title={
+                'text': "{} du Covid19 en fonction de l\'âge • <b>{}</b>".format(title.replace("<br>", " "), reg),
+                'y':0.98,
+                'x':0.5,
+                'xanchor': 'center',
+                'yanchor': 'top'},
+                titlefont = dict(
+                size=20),
+            coloraxis=dict(
+                cmin=0, cmax=800,
+                colorscale = [[0, "green"], [0.08, "#ffcc66"], [0.25, "#f50000"], [0.5, "#b30000"], [1, "#3d0000"]], #[[0, "green"], [0.2, "#ffcc66"], [0.8, "#f50000"], [1, "#b30000"]],
+                #color_continuous_scale=["green", "red"],
+                colorbar=dict(
+                    #title="{}<br>du Covid19<br> &#8205;".format(title),
+                    thicknessmode="pixels", thickness=12,
+                    lenmode="pixels", len=300,
+                    yanchor="middle", y=0.5,
+                    tickfont=dict(size=9),
+                    ticks="outside", ticksuffix="{}".format(scale_txt),
+                    )
+            ),
+        margin=dict(
+                        b=80,
+                        t=40,
+                        pad=0
+                    ))
+        
+        annotations = annot + [
+                        dict(
+                            x=0.5,
+                            y=-0.16,
+                            xref='paper',
+                            yref='paper',
+                            xanchor='center',
+                            opacity=0.6,
+                            font=dict(color="black", size=12),
+                            text='Lecture : une case correspond au {} pour une tranche d\'âge (à lire à gauche) et à une date donnée (à lire en bas).<br>Du rouge correspond à un {} élevé.  <i>Date : {} - Source : <b>@guillaumerozier</b> covidtracker.fr - Données : Santé publique France</i>'.format(title.lower().replace("<br>", " "), title.lower().replace("<br>", " "), now.strftime('%d %B')),
+                            showarrow = False
+                        ),
+                    ]
+        
+        fig['layout']['yaxis'].update(side='right')
+        fig.update_layout(coloraxis_colorbar_x=-0.15)
+        
+        for i in range(len(fig.layout.annotations)):
+            fig.layout.annotations[i].font.size = 12
+            fig.layout.annotations[i].text = "<b>"+fig.layout.annotations[i].text+"</b>"
+        
+        for annot in annotations:
+            fig.add_annotation(annot)
+
+        name_fig = "heatmaps_regs/heatmap_"+"taux"+"_"+reg
+        fig.write_image(PATH+"images/charts/france/{}.jpeg".format(name_fig), scale=2, width=900, height=550)
+        #fig.write_image(PATH+"images/charts/france/{}_SD.jpeg".format(name_fig), scale=0.5, width=900, height=550)
+        #fig.show()
+        #plotly.offline.plot(fig, filename = PATH+'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
+
+
+# In[6]:
 
 
 """OLD
@@ -300,7 +397,7 @@ for (name, data, title, scale_txt, data_example, digits) in [("taux", 'P_taux', 
         plotly.offline.plot(fig, filename = 'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)"""
 
 
-# In[6]:
+# In[7]:
 
 
 """string= ""
@@ -309,7 +406,7 @@ for dep in deps_tests:
 print(string)"""
 
 
-# In[7]:
+# In[8]:
 
 
 """for (name, data, title, scale_txt, data_example, digits) in [("taux_reg", 'P_taux', "Taux de<br>positivité", "%", "%", 1)]:

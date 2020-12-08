@@ -17,7 +17,7 @@ This file contains a script that automatically update data. In the morning it up
 """
 
 
-# In[2]:
+# In[1]:
 
 
 import datetime as dt
@@ -38,15 +38,18 @@ metadata = requests.get(url_metadata)
 content = str(metadata.content)
 
 def update_repo():
+    os.chdir(BASE_CWD)
     subprocess.run(["sudo", "git", "fetch", "--all"])
     subprocess.run(["sudo", "git", "reset", "--hard", "origin/master"])
-    subprocess.run(["sudo", "jupyter", "nbconvert", "--to", "script", "*.ipynb"])
+    subprocess.run(["sudo", "jupyter", "nbconvert", "--to", "script", "server/*.ipynb", "src/france/*.ipynb", "src/world/*.ipynb"])
     
 def push(type_data):
+    os.chdir(BASE_CWD)
     subprocess.run(["sudo", "git", "add", "images/", "data/"])
     subprocess.run(["sudo", "git", "commit", "-m", "[auto] data update: {}".format(type_data)])
     subprocess.run(["git", "push"])
     print("pushed")
+    os.chdir(PATH_FRANCE)
     
 def get_datetime_spf():
     metadata = requests.get(url_metadata)
@@ -65,7 +68,7 @@ def try_update_france():
     t2 = datetime_spf
     print("diff t1 t2: {}".format(max(t1, t2) - min(t1, t2)) )
     print("(max(t1, t2) - min(t1, t2)).total_seconds()/3600 = {}".format((max(t1, t2) - min(t1, t2)).total_seconds()/3600) )
-    if true:#( (max(t1, t2) - min(t1, t2)).total_seconds()/3600 <= 2 ): # Si le fichier SPF date d'il y à moins de 2h
+    if ( (max(t1, t2) - min(t1, t2)).total_seconds()/3600 <= 2 ): # Si le fichier SPF date d'il y à moins de 2h
         metadata = requests.get(url_metadata)
         content = str(metadata.content)
         
@@ -114,7 +117,7 @@ def try_update_france():
         push("France GIF")
         print("update France GIF: " + str(now.hour) + ":" + str(now.minute))
         
-        os.chdir(BASE_PATH)
+        os.chdir(BASE_CWD)
         
     return datetime_spf
 
@@ -166,7 +169,7 @@ while True:
         tweet_world_data = False
         print("world tweet: done")
         
-    if true:#( (now.hour == 19) & (now.minute >= 15) & (now.minute <= 30)): #(((now.hour == 18) & (now.minute >= 58)) or ((now.hour >= 19) & (now.hour<= 20)))
+    if ( (now.hour == 19) & (now.minute >= 15) & (now.minute <= 30)): #(((now.hour == 18) & (now.minute >= 58)) or ((now.hour >= 19) & (now.hour<= 20)))
         print("if condition - now: {}, datetimes_spf: {}".format(now, datetime_spf))
         while ( (((now.hour == 18) & (now.minute >= 59)) or ((now.hour >= 19) & (now.hour<= 20))) & ( (now - datetime_spf).total_seconds()/3600 > 2.5 ) ):
             print("while loop - now: {}, datetimes_spf: {}".format(now, datetime_spf))            # Si l'heure comprise entre 18h59 et 21h59, ET les données PAS à jour depuis plus de 2h30
@@ -190,4 +193,10 @@ while True:
             k += 1
             
     time.sleep(120)
+
+
+# In[5]:
+
+
+(dt.datetime.now() - get_datetime_spf()).total_seconds()/3600
 
