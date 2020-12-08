@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='ASCII' standalone='yes'?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="30cm" viewBox="0 0 30cm 30cm" height="30cm">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="45cm" viewBox="0 0 45cm 35cm" height="35cm">
   <g>
-    <g class="main-svg" transform="translate(0, 0) scale(0.6) ">
+    <g class="main-svg" transform="translate(0, 0) scale(1) ">
       <rect x="0" y="0" width="900" height="600" style="fill: rgb(255, 255, 255); fill-opacity: 1;"/>
       <defs id="defs-cfc73a">
         <g class="clips">
@@ -963,7 +963,7 @@
         </g>
       </g>
     </g>
-    <g class="main-svg" transform="translate(560, 0) scale(0.6) ">
+    <g class="main-svg" transform="translate(900, 0) scale(1) ">
       <rect x="0" y="0" width="900" height="600" style="fill: rgb(255, 255, 255); fill-opacity: 1;"/>
       <defs id="defs-d0f08d">
         <g class="clips">
@@ -2045,7 +2045,7 @@
         </g>
       </g>
     </g>
-    <g class="main-svg" transform="translate(0, 400) scale(0.6) ">
+    <g class="main-svg" transform="translate(0, 600) scale(1) ">
       <rect x="0" y="0" width="900" height="600" style="fill: rgb(255, 255, 255); fill-opacity: 1;"/>
       <defs id="defs-299203">
         <g class="clips">
@@ -3136,7 +3136,7 @@
         </g>
       </g>
     </g>
-    <g class="main-svg" transform="translate(560, 400) scale(0.6) ">
+    <g class="main-svg" transform="translate(900, 600) scale(1) ">
       <rect x="0" y="0" width="900" height="600" style="fill: rgb(255, 255, 255); fill-opacity: 1;"/>
       <defs id="defs-a3084a">
         <g class="clips">
