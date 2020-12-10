@@ -51,6 +51,8 @@ colors = px.colors.qualitative.D3 + plotly.colors.DEFAULT_PLOTLY_COLORS + px.col
 #If you want to uplaod charts to your Plotly account (and switch "upload" to True just below):
 #chart_studio.tools.set_credentials_file(username='', api_key='')
 
+PATH = "../../"
+
 today = datetime.now().strftime("%Y-%m-%d %H:%M")
 "build : " + today
 
@@ -140,13 +142,13 @@ def download_data():
     #with open('data/total_deaths_who.csv', 'wb') as f:
         #f.write(r_deaths.content)
 
-    with open('data/total_cases_csse.csv', 'wb') as f:
+    with open(PATH+'data/total_cases_csse.csv', 'wb') as f:
             f.write(r_confirmed_csse.content)
 
-    with open('data/total_deaths_csse.csv', 'wb') as f:
+    with open(PATH+'data/total_deaths_csse.csv', 'wb') as f:
         f.write(r_deaths_csse.content)
     
-    with open('data/france_data.csv', 'wb') as f:
+    with open(PATH+'data/france_data.csv', 'wb') as f:
         f.write(r_france_data.content)
 
     print("> data downloaded")
@@ -160,17 +162,17 @@ def download_data():
 
 def import_files(): 
     # CSSE data
-    df_confirmed_csse = pd.read_csv('data/total_cases_csse.csv')
-    df_deaths_csse = pd.read_csv('data/total_deaths_csse.csv')
+    df_confirmed_csse = pd.read_csv(PATH+'data/total_cases_csse.csv')
+    df_deaths_csse = pd.read_csv(PATH+'data/total_deaths_csse.csv')
 
     # WHO data
     #df_confirmed_who = pd.read_csv('data/total_cases_who.csv')
     #df_deaths_who = pd.read_csv('data/total_deaths_who.csv')
 
     # Perso data
-    df_confirmed_perso = pd.read_csv('data/total_cases_perso.csv')
-    df_deaths_perso = pd.read_csv('data/total_deaths_perso.csv')
-    df_france_data = pd.read_csv('data/france_data.csv')
+    df_confirmed_perso = pd.read_csv(PATH+'data/total_cases_perso.csv')
+    df_deaths_perso = pd.read_csv(PATH+'data/total_deaths_perso.csv')
+    df_france_data = pd.read_csv(PATH+'data/france_data.csv')
 
     print("> data imported")
     return df_confirmed_csse, df_deaths_csse, df_confirmed_perso, df_deaths_perso, df_france_data
@@ -261,7 +263,7 @@ def final_data_prep(data_confirmed, data_confirmed_rolling, data_deaths, data_de
 def offset_compute_export(data_confirmed, data_deaths):
     # Importing informations on countries
 
-    with open('data/info_countries.json', 'r') as f:
+    with open(PATH+'data/info_countries.json', 'r') as f:
         countries = json.load(f)
 
     # Computing offset
@@ -272,7 +274,7 @@ def offset_compute_export(data_confirmed, data_deaths):
         countries[c]['color'] = i
         i += 1
     # Exporting informations on countries
-    with open('data/info_countries.json', 'w') as fp:
+    with open(PATH+'data/info_countries.json', 'w') as fp:
         json.dump(countries, fp)
 
     print("> pop data imported")
@@ -283,14 +285,14 @@ def offset_compute_export(data_confirmed, data_deaths):
 
 
 def final_df_exports(data_confirmed, data_deaths):
-    data_confirmed.to_csv('data/data_confirmed.csv')
-    data_deaths.to_csv('data/data_deaths.csv')
+    data_confirmed.to_csv(PATH+'data/data_confirmed.csv')
+    data_deaths.to_csv(PATH+'data/data_deaths.csv')
     print("> dfs exported")
     
 def data_import():
-    with open('data/info_countries.json', 'r') as f:
+    with open(PATH+'data/info_countries.json', 'r') as f:
         countries = json.load(f)
-    return pd.read_csv('data/data_confirmed.csv'), pd.read_csv('data/data_deaths.csv'), countries
+    return pd.read_csv(PATH+'data/data_confirmed.csv'), pd.read_csv(PATH+'data/data_deaths.csv'), countries
 
 
 # In[14]:
@@ -533,9 +535,9 @@ def chart(data, data_rolling, countries, by_million_inh = False, align_curves = 
         path_log = ""
         if log:
             path_log = "log_yaxis/"
-        fig.write_image("images/charts/{}{}.jpeg".format(path_log, name_fig), scale=2, width=1100, height=700)
+        fig.write_image(PATH+"images/charts/{}{}.jpeg".format(path_log, name_fig), scale=2, width=1100, height=700)
         #fig.write_image("images/charts_sd/{}{}.png".format(path_log, name_fig), scale=0.5)
-        plotly.offline.plot(fig, filename = 'images/html_exports/{}{}.html'.format(path_log, name_fig), auto_open=False)
+        plotly.offline.plot(fig, filename = PATH+'images/html_exports/{}{}.html'.format(path_log, name_fig), auto_open=False)
         print("> graph exported\n")
     return fig
 
@@ -691,7 +693,7 @@ for (data, name_var, same_scale) in [(data_deaths_t, "deaths", True), (data_deat
         same_scale_str = ""
 
     name_fig = "subplots_" + name_suffix + same_scale_str
-    fig.write_image("images/charts/{}.jpeg".format(name_fig), scale=1.5, width=3000, height=1650)
+    fig.write_image(PATH+"images/charts/{}.jpeg".format(name_fig), scale=1.5, width=3000, height=1650)
 
     fig["layout"]["annotations"] += (
                     dict(
@@ -704,7 +706,7 @@ for (data, name_var, same_scale) in [(data_deaths_t, "deaths", True), (data_deat
                         showarrow = False
                         ),
                         )
-    plotly.offline.plot(fig, filename = 'images/html_exports/{}.html'.format(name_fig), auto_open=False)
+    plotly.offline.plot(fig, filename = PATH+'images/html_exports/{}.html'.format(name_fig), auto_open=False)
     print("> " + name_fig)
 
 
@@ -966,7 +968,7 @@ for (dataf, name_fig, title) in [(data_deaths_t, "deaths_world", 'deaths'), (dat
                 )
     ) 
 
-    fig.write_image("images/charts/{}.jpeg".format(name_fig), scale=2, width=1100, height=700)
+    fig.write_image(PATH+"images/charts/{}.jpeg".format(name_fig), scale=2, width=1100, height=700)
 
     fig["layout"]["annotations"] += (
                     dict(
@@ -979,54 +981,14 @@ for (dataf, name_fig, title) in [(data_deaths_t, "deaths_world", 'deaths'), (dat
                         showarrow = False
                         ),
                         )
-    plotly.offline.plot(fig, filename = 'images/html_exports/{}.html'.format(name_fig), auto_open=False)
+    plotly.offline.plot(fig, filename = PATH+'images/html_exports/{}.html'.format(name_fig), auto_open=False)
     print("> " + name_fig)
 
 
     #fig.show()
 
 
-# # EXPERIMENTATIONS (SEIR model)
-# Currently not working.
-
 # In[21]:
-
-
-# Define parameters
-t_max = 100
-dt = .1
-t = np.linspace(0, t_max, int(t_max/dt) + 1)
-N = 10000
-init_vals = 1 - 1/N, 1/N, 0, 0
-alpha = 0.2
-beta = 1.75
-gamma = 0.5
-rho = 0.5
-params = alpha, beta, gamma, rho
-# Run simulation
-
-
-# In[22]:
-
-
-def seir_model_with_soc_dist(init_vals, params, t):
-    S_0, E_0, I_0, R_0 = init_vals
-    S, E, I, R = [S_0], [E_0], [I_0], [R_0]
-    alpha, beta, gamma, rho = params
-    dt = t[1] - t[0]
-    for _ in t[1:]:
-        next_S = S[-1] - (rho*beta*S[-1]*I[-1])*dt
-        next_E = E[-1] + (rho*beta*S[-1]*I[-1] - alpha*E[-1])*dt
-        next_I = I[-1] + (alpha*E[-1] - gamma*I[-1])*dt
-        next_R = R[-1] + (gamma*I[-1])*dt
-        S.append(next_S)
-        E.append(next_E)
-        I.append(next_I)
-        R.append(next_R)
-    return np.stack([S, E, I, R]).T
-
-
-# In[23]:
 
 
 #results = seir_model_with_soc_dist(init_vals, params, t)

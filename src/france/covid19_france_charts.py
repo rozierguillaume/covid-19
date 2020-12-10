@@ -69,12 +69,6 @@ except:
     pass
 
 
-# In[90]:
-
-
-df_incid_france["P"][len(df_incid_france)-8:]
-
-
 # In[ ]:
 
 
@@ -108,13 +102,26 @@ while not success:
 
 # ## Data transformations
 
-# In[5]:
+# In[7]:
 
 
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
 
 
-# In[6]:
+# In[40]:
+
+
+df_incid_fra_clage = data.import_data_tests_sexe()
+df_incid_fra = df_incid_fra_clage[df_incid_fra_clage["cl_age90"]==0]
+
+
+# In[41]:
+
+
+df_incid_fra
+
+
+# In[8]:
 
 
 df_new_france = df_new.groupby(["jour"]).sum().reset_index()
@@ -153,7 +160,7 @@ regions = list(dict.fromkeys(list(df['regionName'].values)))
 departements_noms = list(dict.fromkeys(list(df['departmentName'].values))) 
 
 
-# In[7]:
+# In[9]:
 
 
 #Calcul sorties de réa
@@ -2060,26 +2067,26 @@ if show_charts:
     fig.show()
 
 
-# In[24]:
+# In[42]:
 
 
 
-range_x, name_fig, range_y = ["2020-03-29", last_day_plot], "cas_journ", [0, df_incid_france["P"].max()]
+range_x, name_fig, range_y = ["2020-03-29", last_day_plot], "cas_journ", [0, df_incid_fra["P"].max()]
 title = "<b>Cas positifs</b> au Covid19"
 
 #fig = go.Figure()
 for i in ("", "log"):
     if i=="log":
         title += " [log.]"
-        range_y=[0, math.log(df_incid_france["P"].max())/2]
+        range_y=[0, math.log(df_incid_fra["P"].max())/2]
         
     fig = make_subplots(rows=1, cols=1, shared_yaxes=True, subplot_titles=[""], vertical_spacing = 0.08, horizontal_spacing = 0.1, specs=[[{"secondary_y": True}]])
 
-    df_incid_france_cas_rolling = df_incid[df_incid["dep"] != "973"].groupby(["jour"]).sum().reset_index()["P"].rolling(window=7, center=True).mean()#df_incid_france["P"].rolling(window=7, center=True).mean()
-    df_incid_france_tests_rolling = df_incid_france["T"].rolling(window=7, center=True).mean()
+    df_incid_france_cas_rolling = df_incid_fra["P"].rolling(window=7, center=True).mean()#df_incid_france["P"].rolling(window=7, center=True).mean()
+    df_incid_france_tests_rolling = df_incid_fra["T"].rolling(window=7, center=True).mean()
 
     fig.add_trace(go.Scatter(
-        x = df_incid_france["jour"],
+        x = df_incid_fra["jour"],
         y = df_incid_france_cas_rolling,
         name = "Cas positifs (moyenne 7 j.)",
         marker_color='rgb(8, 115, 191)',
@@ -2091,7 +2098,7 @@ for i in ("", "log"):
     ), secondary_y=True)
     
     fig.add_trace(go.Bar(
-        x = df_incid_france["jour"],
+        x = df_incid_fra["jour"],
         y = df_incid_france_tests_rolling,
         name = "Tests réalisés",
         marker_color='rgba(0, 0, 0, 0.2)',
@@ -2133,9 +2140,9 @@ for i in ("", "log"):
     try:
 
         model = make_pipeline(PolynomialFeatures(2), Ridge())
-        model.fit(df_incid_france["jour"][-10:-4].index.values.reshape(-1, 1), df_incid_france_cas_rolling[-10:-4].fillna(method="bfill"))
+        model.fit(df_incid_fra["jour"][-10:-4].index.values.reshape(-1, 1), df_incid_france_cas_rolling[-10:-4].fillna(method="bfill"))
 
-        index_max = df_incid_france["jour"].index.max()
+        index_max = df_incid_fra["jour"].index.max()
         x_pred = np.array([x for x in range(index_max-4, index_max+3)]).reshape(-1, 1)
 
         date_deb = (datetime.strptime(max(df_incid_france["jour"]), '%Y-%m-%d') - timedelta(days=4))
@@ -2181,19 +2188,6 @@ for i in ("", "log"):
         showlegend=False
     ), secondary_y=True)
     
-    
-
-    """fig.add_trace(go.Scatter(
-        x = df_incid_france["jour"],
-        y = df_incid_france["P"],
-        name = "Cas positifs",
-        mode="markers",
-        marker_color='rgb(8, 115, 191)',
-        line_width=3,
-        opacity=0.4,
-        showlegend=True
-    ), secondary_y=True)"""
-
     ###
     if i=="log":
         fig.update_yaxes(zerolinecolor='Grey', range=range_y, tickfont=dict(size=18), type="log", secondary_y=True)
@@ -3000,7 +2994,7 @@ for (range_x, name_fig, title, x_title) in [(["2020-03-12", "2020-05-12"], "dc_j
         index_max = df_france["jour"].index.max()
         x_pred = np.array([x for x in range(index_max, index_max+11)]).reshape(-1, 1)
 
-        date_deb = (datetime.strptime(max(df_incid_france["jour"]), '%Y-%m-%d') - timedelta(days=0))
+        date_deb = (datetime.strptime(max(df_incid_fra["jour"]), '%Y-%m-%d') - timedelta(days=0))
         x_pred_dates = [(date_deb + timedelta(days=x)).strftime("%Y-%m-%d") for x in range(3, len(x_pred)+3)]
 
         y_plot = model.predict(x_pred)
@@ -6928,7 +6922,7 @@ if show_charts:
     fig.show()
 
 
-# In[74]:
+# In[43]:
 
 
 fig = go.Figure()

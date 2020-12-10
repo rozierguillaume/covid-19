@@ -146,14 +146,18 @@ while True:
         
         # mise à jour des graphiques world
         update_repo()
+        
+        os.chdir(PATH_WORLD)
         subprocess.run(["sudo", "python3", PATH_WORLD+"covid19_world_charts.py"])
+        os.chdir(BASE_CWD)
+        
         push("World")
         print("update World pushed: " + str(now.hour) + ":" + str(now.minute))
         
         # ... et France (certains en dépendent)
-        subprocess.run(["sudo", "python3", PATH_FRANCE+"covid19_france_charts.py"])
-        push("France")
-        print("update France pushed: " + str(now.hour) + ":" + str(now.minute))
+        #subprocess.run(["sudo", "python3", PATH_FRANCE+"covid19_france_charts.py"])
+        #push("France")
+        #print("update France pushed: " + str(now.hour) + ":" + str(now.minute))
         
         try:
             tweet_world_data = True
@@ -169,9 +173,9 @@ while True:
         tweet_world_data = False
         print("world tweet: done")
         
-    if ( (now.hour == 19) & (now.minute >= 15) & (now.minute <= 30)): #(((now.hour == 18) & (now.minute >= 58)) or ((now.hour >= 19) & (now.hour<= 20)))
+    if ( (now.hour == 19) & (now.minute >= 21) & (now.minute <= 30)): #(((now.hour == 18) & (now.minute >= 58)) or ((now.hour >= 19) & (now.hour<= 20)))
         print("if condition - now: {}, datetimes_spf: {}".format(now, datetime_spf))
-        while ( (((now.hour == 18) & (now.minute >= 59)) or ((now.hour >= 19) & (now.hour<= 20))) & ( (now - datetime_spf).total_seconds()/3600 > 2.5 ) ):
+        while ( (((now.hour == 18) & (now.minute >= 59)) or ((now.hour >= 19) & (now.minute >= 16) & (now.hour<= 20))) & ( (now - datetime_spf).total_seconds()/3600 > 2.5 ) ):
             print("while loop - now: {}, datetimes_spf: {}".format(now, datetime_spf))            # Si l'heure comprise entre 18h59 et 21h59, ET les données PAS à jour depuis plus de 2h30
             now = dt.datetime.now()
             

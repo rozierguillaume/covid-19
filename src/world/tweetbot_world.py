@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[5]:
+# In[3]:
 
 
 # Guillaume Rozier - 2020 - MIT License
@@ -9,7 +9,6 @@
 
 # importing the module 
 
-import france_data_management as data
 import math
 from datetime import datetime
 import locale
@@ -20,6 +19,8 @@ import secrets as s
 from datetime import timedelta
 
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
+
+PATH = "../../"
 
 """
 Secrets :
@@ -37,11 +38,11 @@ api = tweepy.API(auth)
 
 def tweet_world():
     # Import data
-    df_confirmed_csse = pd.read_csv('data/total_cases_csse.csv')
-    df_deaths_csse = pd.read_csv('data/total_deaths_csse.csv')
+    df_confirmed_csse = pd.read_csv(PATH+'data/total_cases_csse.csv')
+    df_deaths_csse = pd.read_csv(PATH+'data/total_deaths_csse.csv')
     
-    df_confirmed = pd.read_csv('data/data_confirmed.csv')
-    df_deaths = pd.read_csv('data/data_deaths.csv')
+    df_confirmed = pd.read_csv(PATH+'data/data_confirmed.csv')
+    df_deaths = pd.read_csv(PATH+'data/data_deaths.csv')
     
     # Compute diff to get daily data
     df_confirmed_diff = df_confirmed.copy()
@@ -76,7 +77,7 @@ def tweet_world():
     tweet ="Données du #Covid19 dans le monde au {} :\n+ {} cas en 24h, soit {} au total\n+ {} décès en 24h, soit {} au total\n➡️ Plus d'infos : covidtracker.fr/covidtracker-world\n".format(date_str, new_cases_string, sum_cases_string, new_deaths_string, sum_deaths_string) # toDo 
     #image_path ="images/charts/cases_world.jpeg"
     
-    images_path =["images/charts/cases_world.jpeg", "images/charts/deaths_world.jpeg"]
+    images_path =[PATH+"images/charts/cases_world.jpeg", PATH+"images/charts/deaths_world.jpeg"]
     media_ids = []
     
     for filename in images_path:
@@ -92,10 +93,10 @@ def tweet_world():
 date_str, new_cases_string, sum_cases_string, new_deaths_string, sum_deaths_string  = tweet_world()
 
 
-# In[6]:
+# In[4]:
 
 
-PATH = "data/stats/"
+PATH_stats = PATH+"data/stats/"
 
 def traitement_val(valeur, plus_sign=False):
     if int(valeur)<0:
@@ -120,6 +121,6 @@ for val, name in [(new_cases_string, "new_cases"), (sum_cases_string, "sum_cases
     data_json[name] = dict_json
     
     
-with open(PATH + 'stats.json', 'w') as outfile:
+with open(PATH_stats + 'stats.json', 'w') as outfile:
     json.dump(data_json, outfile)
 

@@ -43,7 +43,7 @@ def download_data():
     url_tests = df_metadata[df_metadata['url'].str.contains("/donnees-tests-covid19-labo-quotidien")]["url"].values[0]
     url_metropoles = df_metadata[df_metadata['url'].str.contains("/sg-metro-opendata")]["url"].max()
     url_incidence = df_metadata[df_metadata['url'].str.contains("/sp-pe-tb-quot")]["url"].values[0]
-    url_incidence_france = df_metadata[df_metadata['url'].str.contains("/sp-pe-tb-quot-fra")]["url"].values[0]
+    
     url_tests_viro = df_metadata[df_metadata['url'].str.contains("/sp-pos-quot-dep")]["url"].values[0]
     
     url_sursaud = df_metadata[df_metadata['url'].str.contains("sursaud.*quot.*dep")]["url"].values[0]
@@ -59,7 +59,7 @@ def download_data():
     data_deconf = requests.get(url_deconf)
     data_sursaud = requests.get(url_sursaud)
     data_incidence = requests.get(url_incidence)
-    data_incidence_france = requests.get(url_incidence_france)
+    
     data_tests_viro = requests.get(url_tests_viro)
     data_clage = requests.get(url_data_clage)
     data_sexe = requests.get(url_data_sexe)
@@ -85,9 +85,6 @@ def download_data():
         
     with open(PATH + 'data/france/taux-incidence-dep-quot.csv', 'wb') as f:
         f.write(data_incidence.content)
-        
-    with open(PATH + 'data/france/taux-incidence-dep-quot-fra.csv', 'wb') as f:
-        f.write(data_incidence_france.content)
         
     with open(PATH + 'data/france/tests_viro-dep-quot.csv', 'wb') as f:
         f.write(data_tests_viro.content)
@@ -212,9 +209,6 @@ def import_data():
     
     return df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viro
 
-def import_df_incid_fra():
-    df_incid_fra = pd.read_csv(PATH + 'data/france/taux-incidence-dep-quot-fra.csv', sep=";")
-    return df_incid_fra
     
 def import_data_metropoles():
     df_metro = pd.read_csv(PATH + 'data/france/donnes-incidence-metropoles.csv', sep=";")
