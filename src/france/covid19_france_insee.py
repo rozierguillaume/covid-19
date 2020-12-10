@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[7]:
+# In[2]:
 
 
 import pandas as pd
@@ -12,7 +12,7 @@ from datetime import datetime
 PATH = "../../"
 
 
-# In[8]:
+# In[3]:
 
 
 df_mortalite = pd.read_csv(PATH+'data/france/deces_quotidiens_departement_csv.csv', sep=";", encoding="'windows-1252'")
@@ -27,10 +27,16 @@ df_mortalite_france.loc[:,"Total_deces_2020_diff"] = df_mortalite_france["Total_
 # In[9]:
 
 
-print(df_mortalite_france.dropna()["Total_deces_2018"].values[-1])
+df_mortalite
+
+
+# In[8]:
+
+
+"""print(df_mortalite_france.dropna()["Total_deces_2018"].values[-1])
 print(df_mortalite_france.dropna()["Total_deces_2019"].values[-1])
 print(df_mortalite_france.dropna()["Total_deces_2020"].values[-1])
-print(df_mortalite_france.dropna())
+print(df_mortalite_france.dropna())"""
 
 
 # In[11]:

@@ -4,7 +4,7 @@
 # # COVID-19 French Maps
 # Guillaume Rozier, 2020
 
-# In[5]:
+# In[9]:
 
 
 """
@@ -24,7 +24,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[6]:
+# In[10]:
 
 
 import france_data_management as data
@@ -44,7 +44,7 @@ PATH = "../../"
 
 # ## Data import
 
-# In[7]:
+# In[11]:
 
 
 # Import data from Santé publique France
@@ -52,7 +52,7 @@ df, df_confirmed, dates, _, _, df_deconf, df_sursaud, df_incid, _ = data.import_
 df_incid = df_incid[df_incid["cl_age90"] == 0]
 
 
-# In[8]:
+# In[12]:
 
 
 #df_incid["incidence"] = df_incid["P"]/df_incid["pop"]*100
@@ -62,7 +62,7 @@ for dep in pd.unique(df_incid["dep"].values):
 df_incid.loc[:,"incidence_color"] = ['Rouge (>50)' if x >= 50 else 'Orange (25-50)' if x >= 25 else 'Vert (<25)' for x in df_incid['incidence']]
 
 
-# In[9]:
+# In[13]:
 
 
 """# Download and import data from INSEE
@@ -84,7 +84,7 @@ df_insee['jour'] = df_insee['jour'].dt.strftime('%Y-%m-%d')
 dates_insee = list(dict.fromkeys(list(df_insee.dropna()['jour'].values))) """
 
 
-# In[10]:
+# In[14]:
 
 
 """df_insee_france = df_insee.groupby('jour').sum().reset_index()
@@ -96,15 +96,14 @@ df_insee_france["surmortalite20"] = (df_insee_france["dc20"] - df_insee_france["
 # 
 # ## Function definition
 
-# In[11]:
+# In[15]:
 
 
 with open(PATH+'data/france/dep.geojson') as response:
     depa = json.load(response)
 
 
-# In[12]:
-
+# In[33]:
 
 
 def map_gif(dates, imgs_folder, df, type_ppl, legend_title, min_scale, max_scale, colorscale, subtitle):
@@ -243,7 +242,7 @@ def map_gif(dates, imgs_folder, df, type_ppl, legend_title, min_scale, max_scale
             projection_rotation=dict(lon=12, lat=30, roll=8),
             #lataxis_range=[-50,20], lonaxis_range=[0, 200]
         )
-        fig.write_image((imgs_folder+"/{}.jpeg").format(date), scale=1, width=900, height=700)
+        fig.write_image((imgs_folder+"/{}.jpeg").format(date), scale=2, width=900, height=700)
         
         if date==max(dates):
             fig.write_image((imgs_folder+"/latest.jpeg"), scale=2, width=900, height=700)
@@ -263,13 +262,13 @@ def build_gif(file_gif, imgs_folder, dates):
                     writer.append_data(image)
 
 
-# In[13]:
+# In[17]:
 
 
 #build_map(df_deconf, img_folder="images/charts/france/deconf_synthese/{}.png", title="Départements déconfinés le 11/05")
 
 
-# In[14]:
+# In[18]:
 
 
 def build_map_indic1(data_df, img_folder, legend_title="legend_title", title="title"):
@@ -351,7 +350,7 @@ def build_map_indic1(data_df, img_folder, legend_title="legend_title", title="ti
 # 
 # ## Function calls
 
-# In[15]:
+# In[19]:
 
 
 def dep_map():
@@ -362,7 +361,7 @@ def dep_map():
     build_gif(file_gif = PATH+"images/charts/france/dep-map.gif", imgs_folder = PATH+"images/charts/france/dep-map-img", dates=dates[-30:])
 
 
-# In[16]:
+# In[20]:
 
 
 def dep_map_dc_cum():
@@ -373,7 +372,7 @@ def dep_map_dc_cum():
     build_gif(file_gif = PATH+"images/charts/france/dep-map-dc-cum.gif", imgs_folder = PATH+"images/charts/france/dep-map-img-dc-cum", dates=dates[-30:])
 
 
-# In[17]:
+# In[21]:
 
 
 def dep_map_dc_journ():
@@ -384,7 +383,7 @@ def dep_map_dc_journ():
     build_gif(file_gif = PATH+"images/charts/france/dep-map-dc-journ.gif", imgs_folder = PATH+"images/charts/france/dep-map-img-dc-journ", dates=dates[-30:])
 
 
-# In[18]:
+# In[45]:
 
 
 def dep_map_incidence():
@@ -394,7 +393,7 @@ def dep_map_incidence():
     dates_incid.sort()
     
     sub = '<b>Incidence</b> : nombre de cas hebdomadaires <br>pour 100 000 habitants'
-    map_gif(dates_incid[-30:], imgs_folder, df = df_incid, type_ppl = "incidence", legend_title="cas sur 7j/100k hab", min_scale = 0, max_scale=-1,                                     colorscale = "Reds", subtitle=sub)
+    map_gif(dates_incid[-40:], imgs_folder, df = df_incid, type_ppl = "incidence", legend_title="cas sur 7j/100k hab", min_scale = 0, max_scale=800,                                     colorscale = [[0, "green"], [0.08, "#ffcc66"], [0.25, "#f50000"], [0.5, "#b30000"], [1, "#3d0000"]], subtitle=sub)
     build_gif(file_gif = PATH+"images/charts/france/dep-map-incid.gif", imgs_folder = PATH+"images/charts/france/dep-map-incid", dates=dates_incid[-30:])
 
 

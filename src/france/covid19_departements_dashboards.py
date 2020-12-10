@@ -74,7 +74,7 @@ lits_reas = pd.read_csv(PATH+'data/france/lits_rea.csv', sep=",")
 df_departements_lits = df_departements.merge(lits_reas, left_on="departmentName", right_on="nom_dpt")
 
 
-# In[43]:
+# In[7]:
 
 
 def cas_journ(departement):
@@ -189,7 +189,7 @@ def cas_journ(departement):
     print("> " + name_fig)
 
 
-# In[88]:
+# In[8]:
 
 
 def incid_dep(departement):
@@ -328,7 +328,7 @@ def incid_dep(departement):
     
 
 
-# In[44]:
+# In[9]:
 
 
 def hosp_journ(departement):   
@@ -479,7 +479,7 @@ def hosp_journ(departement):
     print("> " + name_fig)
 
 
-# In[45]:
+# In[10]:
 
 
 def hosp_comparaison_vagues(departement):   
@@ -641,7 +641,7 @@ def hosp_comparaison_vagues(departement):
 #hosp_comparaison_vagues("Savoie")
 
 
-# In[46]:
+# In[11]:
 
 
 def rea_journ(departement):
@@ -787,7 +787,7 @@ def rea_journ(departement):
 #rea_journ("Isère")
 
 
-# In[47]:
+# In[12]:
 
 
 def dc_journ(departement): 
@@ -904,7 +904,7 @@ def dc_journ(departement):
 #dc_journ("Paris")
 
 
-# In[48]:
+# In[13]:
 
 
 
@@ -995,7 +995,7 @@ def saturation_rea_journ(dep):
     print("> " + name_fig)
 
 
-# In[89]:
+# In[14]:
 
 
 import cv2
@@ -1043,14 +1043,14 @@ with open(PATH + 'images/charts/france/covidep/stats.json', 'w') as outfile:
     json.dump(stats, outfile)
 
 
-# In[50]:
+# In[15]:
 
 
 for dep in departements:
     saturation_rea_journ(dep)
 
 
-# In[63]:
+# In[16]:
 
 
 n_tot=4
@@ -1203,7 +1203,7 @@ for i in range(0, n_tot):
     fig.write_image(PATH+"images/charts/france/evolution_deps/{}_{}.jpeg".format("evolution_deps", i), scale=3, width=1000, height=900)
 
 
-# In[52]:
+# In[17]:
 
 
 """#import glob
@@ -1240,7 +1240,7 @@ for (folder, n, fps) in [("evolution_deps", n_tot, 3)]:
         print("error conversion h265")"""
 
 
-# In[53]:
+# In[18]:
 
 
 """for idx,dep in enumerate(departements):
@@ -1256,7 +1256,7 @@ for (folder, n, fps) in [("evolution_deps", n_tot, 3)]:
 """
 
 
-# In[54]:
+# In[19]:
 
 
 """#print("<!-- wp:buttons --><div class=\"wp-block-buttons\">\n")

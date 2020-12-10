@@ -53,21 +53,33 @@ PATH = "../../"
 df_metro = data.import_data_metropoles()
 df_metro_65 = df_metro[df_metro["clage_65"] == 65]
 df_metro_0 = df_metro[df_metro["clage_65"] == 0]
+nb_last_days=40
 
 
-# In[4]:
+# In[8]:
 
-
-
-fig=go.Figure()
 
 metropoles = df_metro_0[df_metro_0["semaine_glissante"]==df_metro_0["semaine_glissante"].max()].sort_values(by=["ti"], ascending=False)["Metropole"].values
 metropoles_couvre_feu = ["Paris", "Saint Etienne", "Grenoble", "Montpellier", "Rouen", "Toulouse", "Lille", "Lyon", "Marseille"]
 metropoles_couvre_feu_sorted = [m for m in metropoles if m in metropoles_couvre_feu]
 
+
+# In[ ]:
+
+
+
+
+
+# In[13]:
+
+
+
+fig=go.Figure()
+
 for i,metro in enumerate(metropoles_couvre_feu_sorted): #list(dict.fromkeys(list(df_metro['Metropole'].values))
     
     y=df_metro_0[df_metro_0["Metropole"]==metro]
+    y=y[len(y)-nb_last_days:]
     
     fig.add_trace(go.Scatter(
             x = [d[-10:] for d in y["semaine_glissante"].values],
@@ -82,7 +94,7 @@ for i,metro in enumerate(metropoles_couvre_feu_sorted): #list(dict.fromkeys(list
     fig.update_layout(
         
         title={
-            'text': "<b>Taux d'incidence du Covid19 dans les métropoles [avec couvre-feu]<br></b>{}, nombre de cas sur 7 j. pour 100k. hab.".format("covidtracker.fr"),
+            'text': "<b>Taux d'incidence du Covid19 dans les métropoles [avec couvre-feu le 17/10]<br></b>{}, nombre de cas sur 7 j. pour 100k. hab.".format("covidtracker.fr"),
             'y':0.95,
             'x':0.5,
             'xanchor': 'center',
@@ -98,8 +110,7 @@ fig.write_image(PATH+"images/charts/france/{}.jpeg".format(name_fig), scale=2, w
 plotly.offline.plot(fig, filename = PATH+'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
 
 
-# In[5]:
-
+# In[12]:
 
 
 
@@ -110,7 +121,8 @@ metropoles = df_metro_0[df_metro_0["semaine_glissante"]==df_metro_0["semaine_gli
 for i,metro in enumerate([m for m in metropoles if m not in metropoles_couvre_feu]): #list(dict.fromkeys(list(df_metro['Metropole'].values))
     
     y=df_metro_0[df_metro_0["Metropole"]==metro]
-    
+    y=y[len(y)-nb_last_days:]
+                 
     fig.add_trace(go.Scatter(
             x = [d[-10:] for d in y["semaine_glissante"].values],
             y = y["ti"],
@@ -125,7 +137,7 @@ for i,metro in enumerate([m for m in metropoles if m not in metropoles_couvre_fe
     fig.update_layout(
         
         title={
-            'text': "<b>Taux d'incidence du Covid19 dans les métropoles <b>[sans couvre-feu]</b><br></b>{}, nombre de cas sur 7 j. pour 100k. hab.".format("covidtracker.fr"),
+            'text': "<b>Taux d'incidence du Covid19 dans les métropoles <b>[sans couvre-feu le 17/10]</b><br></b>{}, nombre de cas sur 7 j. pour 100k. hab.".format("covidtracker.fr"),
             'y':0.95,
             'x':0.5,
             'xanchor': 'center',
@@ -141,7 +153,7 @@ fig.write_image(PATH+"images/charts/france/{}.jpeg".format(name_fig), scale=2, w
 plotly.offline.plot(fig, filename = PATH+'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
 
 
-# In[6]:
+# In[14]:
 
 
 im1 = cv2.imread(PATH+'images/charts/france/line_metropole_avec_couvre_feu.jpeg')
@@ -152,9 +164,10 @@ im3 = cv2.hconcat([im1, im2])
 cv2.imwrite(PATH+'images/charts/france/line_metropoles_comp_couvre_feu.jpeg', im3)
 
 
-# In[7]:
+# In[25]:
 
 
+nb_last_days=25
 for (title, df_temp, name) in [("Tous âges", df_metro_0, "0"), ("> 65 ans", df_metro_65, "65")]:
     metros = list(dict.fromkeys(list(df_temp['Metropole'].values)))
     metros_ordered = df_temp[df_temp['semaine_glissante'] == df_temp['semaine_glissante'].max()].sort_values(by=["ti"], ascending=True)["Metropole"].values
@@ -163,12 +176,14 @@ for (title, df_temp, name) in [("Tous âges", df_metro_0, "0"), ("> 65 ans", df_
     array_incidence=[]
     
     for idx, metro in enumerate(metros_ordered): #deps_tests.drop("975", "976", "977", "978")
-        array_incidence += [df_temp[df_temp["Metropole"] == metro]['ti'].values.astype(int)]
+        values = df_temp[df_temp["Metropole"] == metro]['ti'].values.astype(int)
+        values = values[len(values)-nb_last_days:]
+        array_incidence += [values]
         #dates_heatmap=df_metro[df_metro["Metropole"] == metro]["semaine_glissante"].values.astype(str)
         
     fig = ff.create_annotated_heatmap(
         z=array_incidence, #df_tests_rolling[data].to_numpy()
-        x=[("<b>" + a[-2:] + "/" + a[-5:-3] + "</b>") for a in dates_heatmap], #date[:10] for date in dates_heatmap
+        x=[("<b>" + a[-2:] + "/" + a[-5:-3] + "</b>") for a in dates_heatmap[-nb_last_days:]], #date[:10] for date in dates_heatmap
         y=[str(22-idx) + ". <b>" + metro[:9] +"</b>" for idx, metro in enumerate(metros_ordered)],
         showscale=True,
         font_colors=["white", "white"],
@@ -229,8 +244,8 @@ for (title, df_temp, name) in [("Tous âges", df_metro_0, "0"), ("> 65 ans", df_
                 ]
 
     for i in range(len(fig.layout.annotations)):
-        fig.layout.annotations[i].font.size = 11
-        #fig.layout.annotations[i].text = "<b>"+fig.layout.annotations[i].text+"</b>"
+        fig.layout.annotations[i].font.size = 10
+        fig.layout.annotations[i].text = "<b>"+fig.layout.annotations[i].text+"</b>"
 
     for annot in annotations:
         fig.add_annotation(annot)

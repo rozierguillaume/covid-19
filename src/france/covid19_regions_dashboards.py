@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[15]:
+# In[1]:
 
 
 """
@@ -23,7 +23,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[16]:
+# In[2]:
 
 
 import pandas as pd
@@ -37,13 +37,13 @@ import os
 PATH = "../../"
 
 
-# In[17]:
+# In[3]:
 
 
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
 
 
-# In[18]:
+# In[4]:
 
 
 df_regions = df.groupby(["jour", "regionName"]).sum().reset_index()
@@ -55,13 +55,13 @@ last_day_plot = (datetime.strptime(max(dates), '%Y-%m-%d') + timedelta(days=1)).
 df_new_regions = df_new.groupby(["jour", "regionName"]).sum().reset_index()
 
 
-# In[19]:
+# In[5]:
 
 
 lits_reas = pd.read_csv(PATH+'data/france/lits_rea.csv', sep=",")
 
 
-# In[20]:
+# In[6]:
 
 
 regions_deps = df.groupby(["departmentName", "regionName"]).sum().reset_index().loc[:,["departmentName", "regionName"]]
@@ -732,7 +732,7 @@ for reg in regions:
     os.remove(PATH+'images/charts/france/regions_dashboards/dc_journ_{}.jpeg'.format(reg))
 
 
-# In[37]:
+# In[13]:
 
 
 n_tot=4
@@ -885,7 +885,7 @@ for i in range(0, n_tot):
     fig.write_image(PATH+"images/charts/france/evolution_regs/{}_{}.jpeg".format("evolution_regs", i), scale=3, width=1000, height=900)
 
 
-# In[13]:
+# In[14]:
 
 
 """for reg in regions:
@@ -900,7 +900,7 @@ for i in range(0, n_tot):
 """
 
 
-# In[14]:
+# In[15]:
 
 
 """print("<!-- wp:buttons --><div class=\"wp-block-buttons\">\n")
