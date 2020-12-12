@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[2]:
+# In[1]:
 
 
 import pandas as pd
@@ -12,25 +12,19 @@ from datetime import datetime
 PATH = "../../"
 
 
-# In[3]:
+# In[14]:
 
 
 df_mortalite = pd.read_csv(PATH+'data/france/deces_quotidiens_departement_csv.csv', sep=";", encoding="'windows-1252'")
 
 df_mortalite_france = df_mortalite[df_mortalite["Zone"] == "France"]
-window = 14
-df_mortalite_france.loc[:,"Total_deces_2018_diff"] = df_mortalite_france["Total_deces_2018"].diff().rolling(window=window).mean()
-df_mortalite_france.loc[:,"Total_deces_2019_diff"] = df_mortalite_france["Total_deces_2019"].diff().rolling(window=window).mean()
-df_mortalite_france.loc[:,"Total_deces_2020_diff"] = df_mortalite_france["Total_deces_2020"].diff().rolling(window=window).mean()
+window = 7
+df_mortalite_france.loc[:,"Total_deces_2018_diff"] = df_mortalite_france["Total_deces_2018"].diff().rolling(window=window, center=True).mean()
+df_mortalite_france.loc[:,"Total_deces_2019_diff"] = df_mortalite_france["Total_deces_2019"].diff().rolling(window=window, center=True).mean()
+df_mortalite_france.loc[:,"Total_deces_2020_diff"] = df_mortalite_france["Total_deces_2020"].diff().rolling(window=window, center=True).mean()
 
 
-# In[9]:
-
-
-df_mortalite
-
-
-# In[8]:
+# In[15]:
 
 
 """print(df_mortalite_france.dropna()["Total_deces_2018"].values[-1])
@@ -39,7 +33,7 @@ print(df_mortalite_france.dropna()["Total_deces_2020"].values[-1])
 print(df_mortalite_france.dropna())"""
 
 
-# In[11]:
+# In[16]:
 
 
 #### Construction du graphique
@@ -68,7 +62,7 @@ fig.add_trace(go.Scatter(x = df_mortalite_france["Date_evenement"], y = df_morta
                     showlegend=True
                        ))
 
-# Mise en valeur de la dernière valeur du R_effectif
+# Mise en valeur de la dernière valeur de décès
 mortalite_now = df_mortalite_france.dropna()["Total_deces_2020_diff"].values[-1]
 fig.add_trace(go.Scatter(x = [df_mortalite_france.dropna()["Date_evenement"].values[-1]], y = [mortalite_now],
                     mode='markers',

@@ -139,8 +139,11 @@ def import_data():
     
     df_incid = df_incid.merge(df_regions, left_on='dep', right_on='departmentCode')
     
-    df_incid = df_incid.merge(df_tests_viro[df_tests_viro["cl_age90"] == 0].drop("pop", axis=1).drop("P", axis=1).drop("cl_age90", axis=1), left_on=['jour', 'dep'], right_on=['jour', 'dep'])
-    #.drop("pop", axis=1)
+    if "pop" in df_tests_viro.columns:
+        df_incid = df_incid.merge(df_tests_viro[df_tests_viro["cl_age90"] == 0].drop("pop", axis=1).drop("P", axis=1).drop("cl_age90", axis=1), left_on=['jour', 'dep'], right_on=['jour', 'dep'])
+    else:
+        df_incid = df_incid.merge(df_tests_viro[df_tests_viro["cl_age90"] == 0].drop("P", axis=1).drop("cl_age90", axis=1), left_on=['jour', 'dep'], right_on=['jour', 'dep'])
+    
     df_new = df_new.merge(df_regions, left_on='dep', right_on='departmentCode')
     df_new = df_new.merge(df_reg_pop, left_on='regionName', right_on='regionName')
     df_new = df_new.merge(df_dep_pop, left_on='dep', right_on='dep')

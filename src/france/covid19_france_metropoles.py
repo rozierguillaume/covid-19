@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[26]:
 
 
 """
@@ -21,7 +21,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[2]:
+# In[27]:
 
 
 from multiprocessing import Pool
@@ -47,7 +47,7 @@ now = datetime.now()
 PATH = "../../"
 
 
-# In[3]:
+# In[28]:
 
 
 df_metro = data.import_data_metropoles()
@@ -56,7 +56,7 @@ df_metro_0 = df_metro[df_metro["clage_65"] == 0]
 nb_last_days=40
 
 
-# In[8]:
+# In[29]:
 
 
 metropoles = df_metro_0[df_metro_0["semaine_glissante"]==df_metro_0["semaine_glissante"].max()].sort_values(by=["ti"], ascending=False)["Metropole"].values
@@ -70,7 +70,7 @@ metropoles_couvre_feu_sorted = [m for m in metropoles if m in metropoles_couvre_
 
 
 
-# In[13]:
+# In[30]:
 
 
 
@@ -110,7 +110,7 @@ fig.write_image(PATH+"images/charts/france/{}.jpeg".format(name_fig), scale=2, w
 plotly.offline.plot(fig, filename = PATH+'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
 
 
-# In[12]:
+# In[31]:
 
 
 
@@ -153,7 +153,7 @@ fig.write_image(PATH+"images/charts/france/{}.jpeg".format(name_fig), scale=2, w
 plotly.offline.plot(fig, filename = PATH+'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
 
 
-# In[14]:
+# In[32]:
 
 
 im1 = cv2.imread(PATH+'images/charts/france/line_metropole_avec_couvre_feu.jpeg')
@@ -164,7 +164,7 @@ im3 = cv2.hconcat([im1, im2])
 cv2.imwrite(PATH+'images/charts/france/line_metropoles_comp_couvre_feu.jpeg', im3)
 
 
-# In[25]:
+# In[33]:
 
 
 nb_last_days=25

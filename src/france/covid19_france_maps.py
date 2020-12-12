@@ -4,7 +4,7 @@
 # # COVID-19 French Maps
 # Guillaume Rozier, 2020
 
-# In[9]:
+# In[1]:
 
 
 """
@@ -24,7 +24,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[10]:
+# In[59]:
 
 
 import france_data_management as data
@@ -40,11 +40,12 @@ import shutil
 import os
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 PATH = "../../"
+import subprocess
 
 
 # ## Data import
 
-# In[11]:
+# In[3]:
 
 
 # Import data from Santé publique France
@@ -52,7 +53,7 @@ df, df_confirmed, dates, _, _, df_deconf, df_sursaud, df_incid, _ = data.import_
 df_incid = df_incid[df_incid["cl_age90"] == 0]
 
 
-# In[12]:
+# In[4]:
 
 
 #df_incid["incidence"] = df_incid["P"]/df_incid["pop"]*100
@@ -96,27 +97,34 @@ df_insee_france["surmortalite20"] = (df_insee_france["dc20"] - df_insee_france["
 # 
 # ## Function definition
 
-# In[15]:
+# In[5]:
 
 
 with open(PATH+'data/france/dep.geojson') as response:
     depa = json.load(response)
 
 
-# In[33]:
+# In[133]:
 
 
-def map_gif(dates, imgs_folder, df, type_ppl, legend_title, min_scale, max_scale, colorscale, subtitle):
+def map_gif(dates, imgs_folder, df, type_ppl, legend_title, min_scale, max_scale, colorscale, subtitle, clean_before=True, clean_after=False):
     try:
-        shutil.rmtree(imgs_folder)
+        if(clean_before):
+            shutil.rmtree(imgs_folder)
+            os.mkdir(imgs_folder)
     except:
         print("folder not removed")
-    os.mkdir(imgs_folder)
+    
     i=1
     
     df = df[df['jour'].isin(dates)]
+    files = os.listdir(imgs_folder)
     
     for date in tqdm(dates):
+        if "{}.jpeg".format(date) in files:
+            print("map already generated", (imgs_folder+"/{}.jpeg").format(date))
+            continue
+        
         if max_scale == -1:
             max_scale = df[type_ppl].max()
         df_map = pd.melt(df, id_vars=['jour','dep'], value_vars=[type_ppl])
@@ -180,7 +188,7 @@ def map_gif(dates, imgs_folder, df, type_ppl, legend_title, min_scale, max_scale
                     y=0.03,
                     xref = 'paper',
                     yref = 'paper',
-                    text = progressbar,
+                    text = "", #progressbar,
                     xanchor = 'center',
                     showarrow = False,
                     font=dict(
@@ -247,28 +255,40 @@ def map_gif(dates, imgs_folder, df, type_ppl, legend_title, min_scale, max_scale
         if date==max(dates):
             fig.write_image((imgs_folder+"/latest.jpeg"), scale=2, width=900, height=700)
             
+    if clean_after:
+        for file in files:
+            if file[:-5] < min(dates):
+                os.remove(imgs_folder+"/"+file)
+        
     return max_scale
 
 def build_gif(file_gif, imgs_folder, dates):
+    print(sorted(dates))
     i=0
     with imageio.get_writer(file_gif, mode='I', duration=0.3) as writer: 
-        for date in tqdm(dates):
-            print((imgs_folder+"/{}.jpeg").format(date))
+        for idx,date in enumerate(dates):
             image = imageio.imread((imgs_folder+"/{}.jpeg").format(date))
+            print("appending", date)
             writer.append_data(image)
             i+=1
-            if i==len(dates):
-                for k in range(8):
-                    writer.append_data(image)
+            
+            if idx==len(dates)-1:
+                for _ in range(10):
+                    image_last = imageio.imread((imgs_folder+"/{}.jpeg").format(date))
+                    writer.append_data(image_last)
+                    print("appending (last)", date)
+                    
+    subprocess.run(["gifsicle", "-i", file_gif, "--optimize=1", "--scale=0.6", "--colors=180", "-o", file_gif[:-4]+"_opti.gif"])
+    os.remove(file_gif)
 
 
-# In[17]:
+# In[7]:
 
 
 #build_map(df_deconf, img_folder="images/charts/france/deconf_synthese/{}.png", title="Départements déconfinés le 11/05")
 
 
-# In[18]:
+# In[8]:
 
 
 def build_map_indic1(data_df, img_folder, legend_title="legend_title", title="title"):
@@ -350,18 +370,19 @@ def build_map_indic1(data_df, img_folder, legend_title="legend_title", title="ti
 # 
 # ## Function calls
 
-# In[19]:
+# In[134]:
 
 
 def dep_map():
     # GIF carte nb réanimations par habitant
     imgs_folder = PATH+"images/charts/france/dep-map-img"
     sub = 'Nombre de <b>personnes en réanimation</b> <br>par habitant de chaque département.'
-    map_gif(dates[-30:], imgs_folder, df = df, type_ppl = "rea_deppop", legend_title="réan./100k hab", min_scale = 0, max_scale=-1, colorscale ="Reds", subtitle=sub)
+    map_gif(dates[-30:], imgs_folder, df = df, type_ppl = "rea_deppop", legend_title="réan./100k hab", min_scale = 0, max_scale=23,             colorscale = [[0, "green"], [0.04, "#ffcc66"], [0.6, "#f50000"], [0.8, "#b30000"], [1, "#3d0000"]], subtitle=sub, clean_before=False, clean_after=False)
     build_gif(file_gif = PATH+"images/charts/france/dep-map.gif", imgs_folder = PATH+"images/charts/france/dep-map-img", dates=dates[-30:])
+#dep_map()
 
 
-# In[20]:
+# In[10]:
 
 
 def dep_map_dc_cum():
@@ -372,7 +393,7 @@ def dep_map_dc_cum():
     build_gif(file_gif = PATH+"images/charts/france/dep-map-dc-cum.gif", imgs_folder = PATH+"images/charts/france/dep-map-img-dc-cum", dates=dates[-30:])
 
 
-# In[21]:
+# In[11]:
 
 
 def dep_map_dc_journ():
@@ -383,21 +404,22 @@ def dep_map_dc_journ():
     build_gif(file_gif = PATH+"images/charts/france/dep-map-dc-journ.gif", imgs_folder = PATH+"images/charts/france/dep-map-img-dc-journ", dates=dates[-30:])
 
 
-# In[45]:
+# In[135]:
 
 
 def dep_map_incidence():
     # GIF carte décès quotidiens 
     imgs_folder = PATH+"images/charts/france/dep-map-incid"
-    dates_incid = list(dict.fromkeys(list(df_incid.dropna()['jour'].values)))
-    dates_incid.sort()
+    dates_incid = sorted(list(dict.fromkeys(list(df_incid.dropna()['jour'].values))))
     
     sub = '<b>Incidence</b> : nombre de cas hebdomadaires <br>pour 100 000 habitants'
-    map_gif(dates_incid[-40:], imgs_folder, df = df_incid, type_ppl = "incidence", legend_title="cas sur 7j/100k hab", min_scale = 0, max_scale=800,                                     colorscale = [[0, "green"], [0.08, "#ffcc66"], [0.25, "#f50000"], [0.5, "#b30000"], [1, "#3d0000"]], subtitle=sub)
-    build_gif(file_gif = PATH+"images/charts/france/dep-map-incid.gif", imgs_folder = PATH+"images/charts/france/dep-map-incid", dates=dates_incid[-30:])
+    map_gif(dates_incid[-50:], imgs_folder, df = df_incid, type_ppl = "incidence", legend_title="cas sur 7j/100k hab", min_scale = 0, max_scale=800,                                     colorscale = [[0, "green"], [0.08, "#ffcc66"], [0.25, "#f50000"], [0.5, "#b30000"], [1, "#3d0000"]], subtitle=sub, clean_before=False, clean_after=True)
+    build_gif(file_gif = PATH+"images/charts/france/dep-map-incid.gif", imgs_folder = PATH+"images/charts/france/dep-map-incid", dates=dates_incid[-50:])
+
+#dep_map_incidence()
 
 
-# In[19]:
+# In[76]:
 
 
 dep_map_incidence()

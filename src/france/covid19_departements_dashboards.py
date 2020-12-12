@@ -1050,10 +1050,10 @@ for dep in departements:
     saturation_rea_journ(dep)
 
 
-# In[16]:
+# In[20]:
 
 
-n_tot=4
+n_tot=1
 import locale
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
@@ -1203,10 +1203,10 @@ for i in range(0, n_tot):
     fig.write_image(PATH+"images/charts/france/evolution_deps/{}_{}.jpeg".format("evolution_deps", i), scale=3, width=1000, height=900)
 
 
-# In[17]:
+# In[21]:
 
 
-"""#import glob
+#import glob
 import cv2
 for (folder, n, fps) in [("evolution_deps", n_tot, 3)]:
     img_array = []
@@ -1237,7 +1237,7 @@ for (folder, n, fps) in [("evolution_deps", n_tot, 3)]:
         subprocess.run(["ffmpeg", "-y", "-i", PATH + "images/charts/france/{}/evolution_deps.mp4".format(folder), PATH + "images/charts/france/{}/evolution_deps_opti.mp4".format(folder)])
         subprocess.run(["rm", PATH + "images/charts/france/{}/evolution_deps.mp4".format(folder)])   
     except:
-        print("error conversion h265")"""
+        print("error conversion h265")
 
 
 # In[18]:
