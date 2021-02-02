@@ -31,11 +31,16 @@ import plotly.graph_objects as go
 import france_data_management as data
 from datetime import datetime
 from datetime import timedelta
+from plotly.subplots import make_subplots
 import plotly
 import math
 import os
 import json
 PATH = "../../"
+PATH_STATS = "../../data/france/stats/"
+
+import locale
+locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
 
 # In[3]:
@@ -47,12 +52,6 @@ df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_t
 # In[4]:
 
 
-#df = df.groupby(["dep", "jour"]).first().reset_index()
-
-
-# In[5]:
-
-
 df_departements = df.groupby(["jour", "departmentName"]).sum().reset_index()
 df_incid_departements = df_incid[df_incid["cl_age90"]==0].groupby(["jour", "departmentName", "dep"]).sum().reset_index()
 
@@ -62,11 +61,12 @@ departements = list(dict.fromkeys(list(df_departements['departmentName'].values)
 
 dates_incid = list(dict.fromkeys(list(df_incid['jour'].values))) 
 last_day_plot = (datetime.strptime(max(dates), '%Y-%m-%d') + timedelta(days=1)).strftime("%Y-%m-%d")
+last_day_plot_plus2 = (datetime.strptime(max(dates), '%Y-%m-%d') + timedelta(days=3)).strftime("%Y-%m-%d")
 
 departements_nb = list(dict.fromkeys(list(df_tests_viros['dep'].values))) 
 
 
-# In[6]:
+# In[5]:
 
 
 lits_reas = pd.read_csv(PATH+'data/france/lits_rea.csv', sep=",")
@@ -74,18 +74,20 @@ lits_reas = pd.read_csv(PATH+'data/france/lits_rea.csv', sep=",")
 df_departements_lits = df_departements.merge(lits_reas, left_on="departmentName", right_on="nom_dpt")
 
 
-# In[7]:
+# In[6]:
 
 
 def cas_journ(departement):
-        
+
     df_incid_dep = df_incid_departements[df_incid_departements["departmentName"] == departement]
     df_incid_dep_rolling = df_incid_dep["P"].rolling(window=7, center=True).mean()
+    df_incid_tests_dep_rolling = df_incid_dep["T"].rolling(window=7, center=True).mean()
     
     range_x, name_fig, range_y = ["2020-03-29", last_day_plot], "cas_journ_"+departement, [0, df_incid_dep["P"].max()]
     title = "<b>Cas positifs</b> au Covid19 - <b>" + departement + "</b>"
 
     fig = go.Figure()
+    fig = make_subplots(rows=1, cols=1, shared_yaxes=True, subplot_titles=[""], vertical_spacing = 0.08, horizontal_spacing = 0.1, specs=[[{"secondary_y": True}]])
 
     fig.add_trace(go.Scatter(
         x = df_incid_dep["jour"],
@@ -97,7 +99,17 @@ def cas_journ(departement):
         fill='tozeroy',
         fillcolor="rgba(8, 115, 191, 0.3)",
         showlegend=False
-    ))
+    ), secondary_y=True)
+    
+    fig.add_trace(go.Bar(
+        x = df_incid_dep["jour"],
+        y = df_incid_tests_dep_rolling,
+        name = "Tests réalisés",
+        marker_color='rgba(0, 0, 0, 0.2)',
+        opacity=0.8,
+        showlegend=False,
+    ), secondary_y=False)
+    
     fig.add_trace(go.Scatter(
         x = [dates_incid[-4]],
         y = [df_incid_dep_rolling.values[-4]],
@@ -107,9 +119,9 @@ def cas_journ(departement):
         marker_size=15,
         opacity=1,
         showlegend=False
-    ))
+    ), secondary_y=True)
 
-    fig.add_trace(go.Scatter(
+    """fig.add_trace(go.Scatter(
         x = df_incid_dep["jour"],
         y = df_incid_dep["P"],
         name = "",
@@ -118,11 +130,12 @@ def cas_journ(departement):
         line_width=3,
         opacity=0.4,
         showlegend=False
-    ))
+    ), secondary_y=True)"""
 
     ###
 
-    fig.update_yaxes(zerolinecolor='Grey', range=range_y, tickfont=dict(size=18))
+    fig.update_yaxes(zerolinecolor='Grey', range=range_y, tickfont=dict(size=18), secondary_y=True)
+    fig.update_yaxes(zerolinecolor='Grey', tickfont=dict(size=18), secondary_y=False)
     fig.update_xaxes(nticks=10, ticks='inside', tickangle=0, tickfont=dict(size=18))
 
     # Here we modify the tickangle of the xaxis, resulting in rotated labels.
@@ -163,10 +176,10 @@ def cas_journ(departement):
     fig['layout']['annotations'] += (dict(
             x = dates_incid[-4], y = df_incid_dep_rolling.values[-4], # annotation point
             xref='x1', 
-            yref='y1',
+            yref='y2',
             text=" <b>{} {}".format('%d' % df_incid_dep_rolling.values[-4], "cas quotidiens<br></b>en moyenne du {} au {}.".format(datetime.strptime(dates_incid[-7], '%Y-%m-%d').strftime('%d'), datetime.strptime(dates_incid[-1], '%Y-%m-%d').strftime('%d %b'))),
             xshift=-2,
-            yshift=10,
+            yshift=0,
             xanchor="center",
             align='center',
             font=dict(
@@ -182,14 +195,541 @@ def cas_journ(departement):
             arrowwidth=1,
             arrowhead=0,
             showarrow=True
-        ),)
+        ),dict(
+            x = dates_incid[-4], y = df_incid_tests_dep_rolling.values[-4], # annotation point
+            xref='x1', 
+            yref='y1',
+            text=" <b>{} {}".format('%d' % df_incid_tests_dep_rolling.values[-4], "tests réalisés<br></b>en moyenne du {} au {}.".format(datetime.strptime(dates_incid[-7], '%Y-%m-%d').strftime('%d'), datetime.strptime(dates_incid[-1], '%Y-%m-%d').strftime('%d %b'))),
+            xshift=0,
+            yshift=0,
+            xanchor="center",
+            align='center',
+            font=dict(
+                color="rgba(0, 0, 0, 0.5)",
+                size=15
+                ),
+            bgcolor="rgba(255, 255, 255, 0.6)",
+            opacity=1,
+            ax=-250,
+            ay=-70,
+            arrowcolor="rgba(0, 0, 0, 0.5)",
+            arrowsize=1.5,
+            arrowwidth=1,
+            arrowhead=0,
+            showarrow=True
+        ))
 
     fig.write_image(PATH+"images/charts/france/departements_dashboards/{}.jpeg".format(name_fig), scale=1.5, width=750, height=500)
 
     print("> " + name_fig)
 
+#cas_journ("Savoie")
+
+
+# In[7]:
+
+
+import numpy as np
+def cas_journ_departements_couvre_feu(departements):
+    fig = go.Figure()
+    
+    normalisation = True
+    
+    range_x, name_fig, range_y, n = ["2020-10-29", last_day_plot], "impact_couvre_feu", [0, df_incid_departements["P"].max()*0.7], 30
+    title = "<b>Taux d'incidence</b>"
+    
+    deps_couvre_feu_2_janvier = ["Hautes-Alpes", "Alpes-Maritimes", "Ardennes", "Doubs", "Jura", "Marne", "Haute-Marne", "Meurthe-et-Moselle", "Meuse", "Haute-Saône", "Vosges", "Territoire de Belfort", "Moselle", "Nièvre",                                  "Saône-et-Loire"]
+    deps_couvre_feu_8_janvier = ["Bas-Rhin", "Haut-Rhin", "Côte-d'or", "Cher", "Allier", "Bouches-du-Rhône", "Vaucluse", "Alpes-de-Haute-Provence"]
+    #deps_couvre_feu_8_janvier = []
+    
+    df_incid_dep_couvre_feu = [0]*n
+    df_incid_dep_couvre_feu_8 = [0]*n
+    df_incid_dep_autres = [0]*n
+    
+    df_incid_dep_couvre_feu_ecart = [0]*n
+    df_incid_dep_couvre_feu_ecart_8 = [0]*n
+    df_incid_dep_autres_ecart = [0]*n
+    
+    n_deps_couvre_feu = 0
+    n_deps_couvre_feu_8 = 0
+    n_autres_deps = 0
+    
+    pop_deps_couvre_feu = 0
+    pop_deps_couvre_feu_8 = 0
+    pop_autres_deps = 0
+    
+    for departement in departements:
+        df_incid_dep = df_incid_departements[df_incid_departements["departmentName"] == departement]
+        
+        n_days= (datetime.strptime(max(df_incid_dep["jour"]), '%Y-%m-%d') - datetime.strptime("2021-01-02", '%Y-%m-%d')).days
+        
+        df_incid_dep_rolling = df_incid_dep["P"].rolling(window=7, center=True).sum()*100000#/df_incid_dep["T"].rolling(window=7, center=False).mean() * 100
+        values = df_incid_dep_rolling.values[-n:]
+        
+        if departement in deps_couvre_feu_2_janvier:
+            df_incid_dep_couvre_feu += values
+            n_deps_couvre_feu += 1
+            pop_deps_couvre_feu += df_incid_dep["pop"].values[0]
+            
+        elif departement in deps_couvre_feu_8_janvier:
+            df_incid_dep_couvre_feu_8 += values
+            n_deps_couvre_feu_8 += 1
+            pop_deps_couvre_feu_8 += df_incid_dep["pop"].values[0]
+            
+        else:
+            df_incid_dep_autres += values
+            n_autres_deps += 1
+            pop_autres_deps += df_incid_dep["pop"].values[0]
+            
+            
+
+    df_incid_dep_couvre_feu_mean = np.array(df_incid_dep_couvre_feu)/pop_deps_couvre_feu
+    df_incid_dep_couvre_feu_8_mean = np.array(df_incid_dep_couvre_feu_8)/pop_deps_couvre_feu_8
+    df_incid_dep_autres_mean = np.array(df_incid_dep_autres)/pop_autres_deps
+    
+    suffix = ""
+    if normalisation:
+        suffix = " %"
+        df_incid_dep_couvre_feu_8_mean=df_incid_dep_couvre_feu_8_mean/df_incid_dep_couvre_feu_8_mean[-n_days-1]*100-100
+        df_incid_dep_couvre_feu_mean=df_incid_dep_couvre_feu_mean/df_incid_dep_couvre_feu_mean[-n_days-1]*100-100
+        df_incid_dep_autres_mean=df_incid_dep_autres_mean/df_incid_dep_autres_mean[-n_days-1]*100-100
+    
+    #df_incid_dep_autres_mean/=df_incid_dep_autres_mean[-n_days-1]
+    
+    fig.add_trace(go.Scatter(
+        x = df_incid_dep["jour"].values[-n:],
+        y = df_incid_dep_couvre_feu_mean,
+        name = "Départements en couvre-feu renforcé (02/01)",
+        marker_color='rgb(8, 115, 191)',
+        line_width=5,
+        opacity=0.8,
+        showlegend=True
+    ))
+    
+    if len(deps_couvre_feu_8_janvier)>0:
+        fig.add_trace(go.Scatter(
+            x = df_incid_dep["jour"].values[-n:],
+            y = df_incid_dep_couvre_feu_8_mean,
+            name = "Départements en couvre-feu renforcé (08/01)",
+            marker_color='orange',
+            line_width=5,
+            opacity=0.8,
+            showlegend=True
+        ))
+    
+    fig.add_trace(go.Scatter(
+        x = df_incid_dep["jour"].values[-n:],
+        y = df_incid_dep_autres_mean,
+        name = "Départements en couvre-feu classique",
+        marker_color='black',
+        line_width=5,
+        opacity=0.8,
+        showlegend=True
+    ))
+
+    ###
+    
+    max_value = max(max(df_incid_dep_autres_mean), max(df_incid_dep_couvre_feu_8_mean), max(df_incid_dep_couvre_feu_mean))
+    min_value = min(0, min(df_incid_dep_autres_mean), min(df_incid_dep_couvre_feu_8_mean), min(df_incid_dep_couvre_feu_mean))
+
+    fig.add_shape(type="line",
+        x0="2021-01-12", y0=min_value*1.5, x1="2021-01-12", y1=max_value*1.5,
+        line=dict(color="rgba(8, 115, 191, 1)",width=2, dash="dot")
+        )
+    
+    fig.add_shape(type="line",
+        x0="2021-01-02", y0=min_value*1.5, x1="2021-01-02", y1=max_value*1.5,
+        line=dict(color="rgba(8, 115, 191, 1)",width=2, dash="dot")
+        )
+    
+    ### Orange
+    annots = []
+    if len(deps_couvre_feu_8_janvier)> 0:
+        fig.add_shape(type="line",
+            x0="2021-01-08", y0=min_value*1.5, x1="2021-01-08", y1=max_value*1.5,
+            line=dict(color="orange",width=2, dash="dot")
+            )
+
+        fig.add_shape(type="line",
+            x0="2021-01-18", y0=min_value*1.5, x1="2021-01-18", y1=max_value*1.5,
+            line=dict(color="orange",width=2, dash="dot")
+            )
+        annots = [dict(
+                        x=df_incid_dep["jour"].values[-3],
+                        y=df_incid_dep_autres_mean[-4],
+                        xref='x1',
+                        yref='y1',
+                        ax=150,
+                        ay=200,
+                        font=dict(size=12, color="black"),
+                        arrowcolor='black',
+                        text= ["+"+str(round(value, 1))+" %" if value>0 else str(round(value, 1)) + " %" for value in [df_incid_dep_autres_mean[-4]]][0], #str(round(df_incid_dep_couvre_feu_8_mean[-4], 1))+" %",                    
+                        showarrow = False
+                    ),
+                  dict(
+                        x=df_incid_dep["jour"].values[-3],
+                        y=df_incid_dep_couvre_feu_8_mean[-4],
+                        xref='x1',
+                        yref='y1',
+                        ax=150,
+                        ay=200,
+                        font=dict(size=12, color="orange"),
+                        arrowcolor='orange',
+                        text= ["+"+str(round(value, 1))+" %" if value>0 else str(round(value, 1))+" %" for value in [df_incid_dep_couvre_feu_8_mean[-4]]][0], #str(round(df_incid_dep_couvre_feu_8_mean[-4], 1))+" %",                    
+                        showarrow = False
+                    ),
+                  dict(
+                        x=df_incid_dep["jour"].values[-3],
+                        y=df_incid_dep_couvre_feu_mean[-4],
+                        xref='x1',
+                        yref='y1',
+                        ax=150,
+                        ay=200,
+                        font=dict(size=12, color='rgb(8, 115, 191)'),
+                        arrowcolor='rgb(8, 115, 191)',
+                        text= ["+"+str(round(value, 1))+" %" if value>0 else str(round(value, 1))+" %" for value in [df_incid_dep_couvre_feu_mean[-4]]][0], #str(round(df_incid_dep_couvre_feu_8_mean[-4], 1))+" %",                    
+                        showarrow = False
+                    ),
+                  dict(
+                        x="2021-01-08",
+                        y=max_value*0.95,
+                        xref='x1',
+                        yref='y1',
+                        font=dict(size=9, color="orange"),
+                        arrowcolor="orange",
+                        text="Couvre feu 08/01",                    
+                        showarrow = True
+                    ),
+                    dict(
+                        x="2021-01-18",
+                        y=max_value*0.95,
+                        xref='x1',
+                        yref='y1',
+                        font=dict(size=9, color="orange"),
+                        text='J+10',                    
+                        arrowcolor="orange",
+                        showarrow = True
+                    ),]
+    
+    fig.update_yaxes(zerolinecolor='Grey', range=[min_value*1.5, max_value*1.5], tickfont=dict(size=18), ticksuffix=suffix)
+    fig.update_xaxes( ticks='inside', tickangle=0, tickfont=dict(size=18))
+    
+    fig.update_layout(legend=dict(
+        yanchor="top",
+        y=0.2,
+        xanchor="left",
+        x=0.1
+    ))
+
+    # Here we modify the tickangle of the xaxis, resulting in rotated labels.
+    fig.update_layout(
+        margin=dict(
+                l=50,
+                r=10,
+                b=50,
+                t=70,
+                pad=0
+            ),
+        
+        barmode='group',
+        title={
+                    'text': title,
+                    'y':0.95,
+                    'x':0.5,
+                    'xanchor': 'center',
+                    'yanchor': 'top'},
+                    titlefont = dict(
+                    size=20),
+        xaxis=dict(
+                title='',
+                tickformat='%d/%m'),
+
+        annotations = annots + [
+                dict(
+                        x=0.45,
+                        y=1.07,
+                        xref='paper',
+                        yref='paper',
+                        xanchor="center",
+                        font=dict(size=14),
+                        text='{}</b>'.format("Nb de cas/semaine/100k hab. Moyennes pondérées à la population de chaque dép."),                    
+                        showarrow = False
+                    ),
+                    dict(
+                        x=0,
+                        y=1.0,
+                        xref='paper',
+                        yref='paper',
+                        font=dict(size=14),
+                        text='{}. Auteur : <b>@GuillaumeRozier - covidtracker.fr.</b>'.format(datetime.strptime(max(dates), '%Y-%m-%d').strftime('%d %b'), "Nb de cas/semaine/100k hab."),                    
+                        showarrow = False
+                    ),
+                    dict(
+                        x="2021-01-02",
+                        y=max_value*0.95,
+                        xref='x1',
+                        yref='y1',
+                        font=dict(size=9, color="rgba(8, 115, 191, 1)"),
+                        arrowcolor="rgba(8, 115, 191, 1)",
+                        text='Couvre feu 02/01'.format(datetime.strptime(max(dates), '%Y-%m-%d').strftime('%d %b'), "Nb de cas/semaine/100k hab."),                    
+                        showarrow = True
+                    ),
+                    dict(
+                        x="2021-01-12",
+                        y=max_value*0.95,
+                        xref='x1',
+                        yref='y1',
+                        font=dict(size=9, color="rgb(8, 115, 191)"),
+                        text='J+10',                    
+                        arrowcolor="rgba(8, 115, 191, 1)",
+                        showarrow = True
+                    ),
+                    ]
+                     )
+
+    fig.write_image(PATH+"images/charts/france/{}.jpeg".format(name_fig), scale=1.5, width=750, height=500)
+    plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
+    
+    print("> " + name_fig)
+
+cas_journ_departements_couvre_feu(departements)
+
 
 # In[8]:
+
+
+"""import numpy as np
+def cas_journ_departements_couvre_feu_hosp(departements):
+    fig = go.Figure()
+    
+    normalisation = True
+    
+    range_x, name_fig, range_y, n = ["2020-10-29", last_day_plot], "impact_couvre_feu", [0, df_incid_departements["P"].max()*0.7], 20
+    title = "<b>Taux d'incidence</b>"
+    
+    deps_couvre_feu_2_janvier = ["Hautes-Alpes", "Alpes-Maritimes", "Ardennes", "Doubs", "Jura", "Marne", "Haute-Marne", "Meurthe-et-Moselle", "Meuse", "Haute-Saône", "Vosges", "Territoire de Belfort", "Moselle", "Nièvre", \
+                                 "Saône-et-Loire"]
+    deps_couvre_feu_8_janvier = ["Bas-Rhin", "Haut-Rhin", "Côte-d'or", "Cher", "Allier", "Bouches-du-Rhône", "Vaucluse", "Alpes-de-Haute-Provence"]
+    deps_couvre_feu_8_janvier = []
+    
+    df_incid_dep_couvre_feu = [0]*n
+    df_incid_dep_couvre_feu_8 = [0]*n
+    df_incid_dep_autres = [0]*n
+    
+    df_incid_dep_couvre_feu_ecart = [0]*n
+    df_incid_dep_couvre_feu_ecart_8 = [0]*n
+    df_incid_dep_autres_ecart = [0]*n
+    
+    n_deps_couvre_feu = 0
+    n_deps_couvre_feu_8 = 0
+    n_autres_deps = 0
+    
+    pop_deps_couvre_feu = 0
+    pop_deps_couvre_feu_8 = 0
+    pop_autres_deps = 0
+    
+    for departement in departements:
+        #df_dep = df_departements[df_departements["departmentName"] == departement]
+        df_new_dep = df_new_departements[df_new_departements["departmentName"] == departement]
+        print(max(df_new_dep["jour"]))
+        n_days= (datetime.strptime(max(df_new_dep["jour"]), '%Y-%m-%d') - datetime.strptime("2021-01-05", '%Y-%m-%d')).days
+        
+        df_incid_dep_rolling = df_new_dep["incid_hosp"].rolling(window=7, center=True).mean() #/df_incid_dep["T"].rolling(window=7, center=False).mean() * 100
+        values = df_incid_dep_rolling.values[-n:]
+        
+        if departement in deps_couvre_feu_2_janvier:
+            df_incid_dep_couvre_feu += values
+            n_deps_couvre_feu += 1
+            pop_deps_couvre_feu += df_incid_dep["pop"].values[0]
+            
+        elif departement in deps_couvre_feu_8_janvier:
+            df_incid_dep_couvre_feu_8 += values
+            n_deps_couvre_feu_8 += 1
+            pop_deps_couvre_feu_8 += df_incid_dep["pop"].values[0]
+            
+        else:
+            df_incid_dep_autres += values
+            n_autres_deps += 1
+            pop_autres_deps += df_incid_dep["pop"].values[0]
+            
+            
+
+    df_incid_dep_couvre_feu_mean = np.array(df_incid_dep_couvre_feu)/pop_deps_couvre_feu
+    df_incid_dep_couvre_feu_8_mean = np.array(df_incid_dep_couvre_feu_8)/pop_deps_couvre_feu_8
+    df_incid_dep_autres_mean = np.array(df_incid_dep_autres)/pop_autres_deps
+    
+    suffix = ""
+    if normalisation:
+        suffix = " %"
+        df_incid_dep_couvre_feu_8_mean=df_incid_dep_couvre_feu_8_mean/df_incid_dep_couvre_feu_8_mean[-n_days-1]*100-100
+        df_incid_dep_couvre_feu_mean=df_incid_dep_couvre_feu_mean/df_incid_dep_couvre_feu_mean[-n_days-1]*100-100
+        df_incid_dep_autres_mean=df_incid_dep_autres_mean/df_incid_dep_autres_mean[-n_days-1]*100-100
+    
+    #df_incid_dep_autres_mean/=df_incid_dep_autres_mean[-n_days-1]
+    
+    fig.add_trace(go.Scatter(
+        x = df_incid_dep["jour"].values[-n:],
+        y = df_incid_dep_couvre_feu_mean,
+        name = "Départements en couvre-feu renforcé (02/01)",
+        marker_color='rgb(8, 115, 191)',
+        line_width=5,
+        opacity=0.8,
+        showlegend=True
+    ))
+    
+    if len(deps_couvre_feu_8_janvier)>0:
+        fig.add_trace(go.Scatter(
+            x = df_incid_dep["jour"].values[-n:],
+            y = df_incid_dep_couvre_feu_8_mean,
+            name = "Départements en couvre-feu renforcé (08/01)",
+            marker_color='orange',
+            line_width=5,
+            opacity=0.8,
+            showlegend=True
+        ))
+    
+    fig.add_trace(go.Scatter(
+        x = df_incid_dep["jour"].values[-n:],
+        y = df_incid_dep_autres_mean,
+        name = "Départements en couvre-feu classique",
+        marker_color='black',
+        line_width=5,
+        opacity=0.8,
+        showlegend=True
+    ))
+
+    ###
+    
+    max_value = max(max(df_incid_dep_autres_mean), max(df_incid_dep_couvre_feu_8_mean), max(df_incid_dep_couvre_feu_mean))
+    min_value = min(0, min(df_incid_dep_autres_mean), min(df_incid_dep_couvre_feu_8_mean), min(df_incid_dep_couvre_feu_mean))
+
+    fig.add_shape(type="line",
+        x0="2021-01-12", y0=min_value*1.5, x1="2021-01-12", y1=max_value*1.5,
+        line=dict(color="rgba(8, 115, 191, 1)",width=2, dash="dot")
+        )
+    
+    fig.add_shape(type="line",
+        x0="2021-01-02", y0=min_value*1.5, x1="2021-01-02", y1=max_value*1.5,
+        line=dict(color="rgba(8, 115, 191, 1)",width=2, dash="dot")
+        )
+    
+    ### Orange
+    annots = []
+    if len(deps_couvre_feu_8_janvier)> 0:
+        fig.add_shape(type="line",
+            x0="2021-01-08", y0=min_value*1.5, x1="2021-01-08", y1=max_value*1.5,
+            line=dict(color="orange",width=2, dash="dot")
+            )
+
+        fig.add_shape(type="line",
+            x0="2021-01-18", y0=min_value*1.5, x1="2021-01-18", y1=max_value*1.5,
+            line=dict(color="orange",width=2, dash="dot")
+            )
+        annots = [dict(
+                        x="2021-01-08",
+                        y=max_value*0.95,
+                        xref='x1',
+                        yref='y1',
+                        font=dict(size=9, color="orange"),
+                        arrowcolor="orange",
+                        text="Couvre feu 08/01",                    
+                        showarrow = True
+                    ),
+                    dict(
+                        x="2021-01-18",
+                        y=max_value*0.95,
+                        xref='x1',
+                        yref='y1',
+                        font=dict(size=9, color="orange"),
+                        text='J+10',                    
+                        arrowcolor="orange",
+                        showarrow = True
+                    ),]
+    
+    fig.update_yaxes(zerolinecolor='Grey', range=[min_value*1.5, max_value*1.5], tickfont=dict(size=18), ticksuffix=suffix)
+    fig.update_xaxes( ticks='inside', tickangle=0, tickfont=dict(size=18))
+    
+    fig.update_layout(legend=dict(
+        yanchor="top",
+        y=0.2,
+        xanchor="left",
+        x=0.1
+    ))
+
+    # Here we modify the tickangle of the xaxis, resulting in rotated labels.
+    fig.update_layout(
+        margin=dict(
+                l=50,
+                r=10,
+                b=50,
+                t=70,
+                pad=0
+            ),
+        
+        barmode='group',
+        title={
+                    'text': title,
+                    'y':0.95,
+                    'x':0.5,
+                    'xanchor': 'center',
+                    'yanchor': 'top'},
+                    titlefont = dict(
+                    size=20),
+        xaxis=dict(
+                title='',
+                tickformat='%d/%m'),
+
+        annotations = annots + [
+                dict(
+                        x=0.45,
+                        y=1.07,
+                        xref='paper',
+                        yref='paper',
+                        xanchor="center",
+                        font=dict(size=14),
+                        text='{}</b>'.format("Nb de cas/semaine/100k hab. Moyennes pondérées à la population de chaque dép."),                    
+                        showarrow = False
+                    ),
+                    dict(
+                        x=0,
+                        y=1.0,
+                        xref='paper',
+                        yref='paper',
+                        font=dict(size=14),
+                        text='{}. Auteur : <b>@GuillaumeRozier - covidtracker.fr.</b>'.format(datetime.strptime(max(dates), '%Y-%m-%d').strftime('%d %b'), "Nb de cas/semaine/100k hab."),                    
+                        showarrow = False
+                    ),
+                    dict(
+                        x="2021-01-02",
+                        y=max_value*0.95,
+                        xref='x1',
+                        yref='y1',
+                        font=dict(size=9, color="rgba(8, 115, 191, 1)"),
+                        arrowcolor="rgba(8, 115, 191, 1)",
+                        text='Couvre feu 02/01'.format(datetime.strptime(max(dates), '%Y-%m-%d').strftime('%d %b'), "Nb de cas/semaine/100k hab."),                    
+                        showarrow = True
+                    ),
+                    dict(
+                        x="2021-01-12",
+                        y=max_value*0.95,
+                        xref='x1',
+                        yref='y1',
+                        font=dict(size=9, color="rgb(8, 115, 191)"),
+                        text='J+10',                    
+                        arrowcolor="rgba(8, 115, 191, 1)",
+                        showarrow = True
+                    ),
+                    ]
+                     )
+
+    fig.write_image(PATH+"images/charts/france/{}_hosp.jpeg".format(name_fig), scale=1.5, width=750, height=500)
+
+    print("> " + name_fig)
+
+cas_journ_departements_couvre_feu_hosp(departements)"""
+
+
+# In[9]:
 
 
 def incid_dep(departement):
@@ -310,7 +850,7 @@ def incid_dep(departement):
         if (incid_j0 - incid_j7) < 0:
             class_dep = "higher_low"
         else:
-            class_dep = "higher_high"   
+            class_dep = "higher_high"
     else:
         if (incid_j0 - incid_j7) < 0:
             class_dep = "lower_low"
@@ -325,10 +865,9 @@ def incid_dep(departement):
     
     return class_dep
 #incid_dep("Savoie")
-    
 
 
-# In[9]:
+# In[10]:
 
 
 def hosp_journ(departement):   
@@ -479,7 +1018,7 @@ def hosp_journ(departement):
     print("> " + name_fig)
 
 
-# In[10]:
+# In[11]:
 
 
 def hosp_comparaison_vagues(departement):   
@@ -641,7 +1180,298 @@ def hosp_comparaison_vagues(departement):
 #hosp_comparaison_vagues("Savoie")
 
 
-# In[11]:
+# In[12]:
+
+
+def hosp_journ_elias(dep):
+    df_new_dep = df_new[df_new["departmentName"]==dep]
+
+    range_x, name_fig, range_y = ["2020-03-29", last_day_plot], "hosp_journ_flux_"+dep, [0, df_new_dep["incid_hosp"].max()*0.9]
+    title = "<b>Entrées et sorties de l'hôpital</b> pour Covid19 • <b>" + dep + "</b>"
+    
+    for i in [""]:
+        if i=="log":
+            title+= " [log.]"
+
+        fig = go.Figure()
+        
+        entrees_rolling = df_new[df_new["departmentName"]==dep]["incid_hosp"].rolling(window=7).mean().values
+        
+        fig.add_trace(go.Scatter(
+            x = dates,
+            y =entrees_rolling,
+            name = "",
+            marker_color='red',
+            line_width=6,
+            opacity=1,
+            fill='tozeroy',
+            fillcolor="rgba(235, 64, 52,0.5)",
+            showlegend=False
+        ))
+        
+        rad_rolling = df_new_dep["incid_rad"].rolling(window=7).mean()
+        dc_rolling = df_new_dep["incid_dc"].rolling(window=7).mean()
+        sorties_rolling = (rad_rolling + dc_rolling).values
+        
+        fig.add_trace(go.Scatter(
+            x = dates,
+            y = sorties_rolling,
+            name = "",
+            marker_color='green',
+            line_width=0,
+            opacity=1,
+            fill='tozeroy',
+            fillcolor="rgba(12, 161, 2, 0.5)",
+            showlegend=False
+        ))
+
+        fig.add_trace(go.Scatter(
+            x = dates,
+            y = [entrees_rolling[i] if entrees_rolling[i]<sorties_rolling[i] else sorties_rolling[i] for i in range(len(entrees_rolling))],
+            name = "",
+            marker_color='yellow',
+            line_width=0,
+            opacity=1,
+            fill='tozeroy',
+            fillcolor="rgba(255, 255, 255, 1)",
+            showlegend=False
+        ))
+
+        
+        fig.add_trace(go.Scatter(
+            x = dates,
+            y = sorties_rolling,
+            name = "",
+            marker_color='green',
+            line_width=6,
+            opacity=1,
+            showlegend=False
+        ))
+
+        fig.add_trace(go.Scatter(
+            x = dates,
+            y =entrees_rolling,
+            name = "",
+            marker_color='red',
+            line_width=6,
+            opacity=1,
+            showlegend=False
+        ))
+
+        fig.add_shape(type="line",
+        x0="2020-03-17", y0=0, x1="2020-03-17", y1=300000,
+        line=dict(color="Red",width=0.5, dash="dot")
+        )
+
+        fig.add_shape(type="line",
+        x0="2020-05-11", y0=0, x1="2020-05-11", y1=300000,
+        line=dict(color="Green",width=0.5, dash="dot")
+        )
+
+        fig.add_shape(type="line",
+        x0="2020-10-30", y0=0, x1="2020-10-30", y1=300000,
+        line=dict(color="Red",width=0.5, dash="dot")
+        )
+
+        fig.add_shape(type="line",
+        x0="2020-11-28", y0=0, x1="2020-11-28", y1=300000,
+        line=dict(color="Orange",width=0.5, dash="dot")
+        )
+
+        fig.add_shape(type="line",
+        x0="2020-12-15", y0=0, x1="2020-12-15", y1=300000,
+        line=dict(color="green",width=0.5, dash="dot")
+        )
+
+        fig.add_trace(go.Scatter(
+            x = [dates[-1]],
+            y = [sorties_rolling[-1]],
+            name = "",
+            mode="markers",
+            marker_color='green',
+            marker_size=13,
+            opacity=1,
+            showlegend=False
+        ))
+
+        fig.add_trace(go.Scatter(
+            x = [dates[-1]],
+            y = [entrees_rolling[-1]],
+            name = "",
+            mode="markers",
+            marker_color='red',
+            marker_size=13,
+            opacity=1,
+            showlegend=False
+        ))
+
+        ###
+        fig.update_xaxes(nticks=10, ticks='inside', tickangle=0, tickfont=dict(size=18), ) #range=["2020-03-17", last_day_plot_dashboard]
+        fig.update_yaxes(zerolinecolor='Grey', tickfont=dict(size=18), range=range_y)
+        
+        # Here we modify the tickangle of the xaxis, resulting in rotated labels.
+        fig.update_layout(
+            paper_bgcolor='rgba(255,255,255,1)',
+            plot_bgcolor='rgba(255,255,255,1)',
+            margin=dict(
+                    l=50,
+                    r=150,
+                    b=50,
+                    t=70,
+                    pad=0
+                ),
+            legend_orientation="h",
+            barmode='group',
+            title={
+                        'text': title,
+                        'y':0.95,
+                        'x':0.5,
+                        'xanchor': 'center',
+                        'yanchor': 'top'},
+                        titlefont = dict(
+                        size=30),
+            xaxis=dict(
+                    title='',
+                    tickformat='%d/%m'),
+
+            annotations = [
+                        dict(
+                            x=0.5,
+                            y=1.01,
+                            font=dict(size=14),
+                            xref='paper',
+                            yref='paper',
+                            text="Moyenne mobile 7 jours. Données Santé publique France. Auteurs @eorphelin @guillaumerozier - <b>covidtracker.fr</b>.", #'Date : {}. Source : Santé publique France. Auteur : guillaumerozier.fr.'.format(datetime.strptime(max(dates), '%Y-%m-%d').strftime('%d %B %Y')),                    
+                            showarrow = False
+                        ),
+
+                        ]
+                    )
+
+        if entrees_rolling[-1]<sorties_rolling[-1]:
+            y_e = -20
+            y_s = -100
+        else:
+            y_e = -100
+            y_s = -20
+            
+        fig['layout']['annotations'] += (
+            dict(
+            x = "2020-05-20", y = (entrees_rolling[62]+sorties_rolling[62])/2, # annotation point
+            xref='x1', 
+            yref='y1',
+            text="L'aire représente le solde.<br>Si elle est <span style='color:green'>verte</span>, il y a plus de sorties que d'entrées,<br>le nombre de lits occupés diminue.",
+            xshift=0,
+            yshift=0,
+            xanchor="center",
+            align='center',
+            font=dict(
+                color="black",
+                size=10
+                ),
+            bgcolor="rgba(255, 255, 255, 0)",
+            opacity=0.8,
+            ax=80,
+            ay=-100,
+            arrowcolor="black",
+            arrowsize=1.5,
+            arrowwidth=1,
+            arrowhead=6,
+            showarrow=True
+        ),
+            dict(
+                x = dates[-1], y = (entrees_rolling[-1]), # annotation point
+                xref='x1', 
+                yref='y1',
+                text=" <b>{} {}".format(round(entrees_rolling[-1], 1), "entrées à l'hôpital</b><br>en moyenne le {}.".format(datetime.strptime(dates[-1], '%Y-%m-%d').strftime('%d %b'))),
+                xshift=-2,
+                yshift=0,
+                xanchor="center",
+                align='center',
+                font=dict(
+                    color="red",
+                    size=12
+                    ),
+                bgcolor="rgba(255, 255, 255, 0)",
+                opacity=0.8,
+                ax=100,
+                ay=y_e,
+                arrowcolor="red",
+                arrowsize=1.5,
+                arrowwidth=1,
+                arrowhead=0,
+                showarrow=True
+            ),
+            dict(
+                x = dates[-1], y = (sorties_rolling[-1]), # annotation point
+                xref='x1', 
+                yref='y1',
+                text=" <b>{} {}".format(round(sorties_rolling[-1], 1), "sorties de l'hôpital</b><br>en moyenne le {}.<br>dont {} décès et<br>{} retours à domicile".format(datetime.strptime(dates[-1], '%Y-%m-%d').strftime('%d %b'), round(dc_rolling.values[-1], 1), round(rad_rolling.values[-1], 1))),
+                xshift=-2,
+                yshift=0,
+                xanchor="center",
+                align='center',
+                font=dict(
+                    color="green",
+                    size=12
+                    ),
+                bgcolor="rgba(255, 255, 255, 0)",
+                opacity=0.8,
+                ax=100,
+                ay=y_s,
+                arrowcolor="green",
+                arrowsize=1.5,
+                arrowwidth=1,
+                arrowhead=0,
+                showarrow=True
+            ), 
+                dict(
+                x = "2020-10-30", y = 40000, # annotation point
+                xref='x1', 
+                yref='y1',
+                text="Confinement",
+                xanchor="left",
+                yanchor="top",
+                align='center',
+                font=dict(
+                    color="red",
+                    size=8
+                    ),
+                showarrow=False
+            ),
+              dict(
+                x = "2020-05-11", y = 40000, # annotation point
+                xref='x1', 
+                yref='y1',
+                text="Déconfinement",
+                xanchor="left",
+                yanchor="top",
+                align='center',
+                font=dict(
+                    color="green",
+                    size=8
+                    ),
+                showarrow=False
+            ),
+               dict(
+                x=0.5,
+                y=-0.1,
+                font=dict(size=10),
+                xref='paper',
+                yref='paper',
+                text="",#'Date : {}. Source : Santé publique France. Auteur : guillaumerozier.fr.'.format(datetime.strptime(max(dates), '%Y-%m-%d').strftime('%d %B %Y')),                    showarrow = False
+                showarrow=False
+                        ))
+
+        fig.write_image(PATH + "images/charts/france/departements_dashboards/{}.jpeg".format(name_fig+i), scale=1.5, width=1100, height=600)
+
+        #plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/departements_dashboards/{}.html'.format(name_fig+i), auto_open=False)
+        print("> " + name_fig)
+            
+#hosp_journ_elias("Savoie")
+
+
+# In[13]:
 
 
 def rea_journ(departement):
@@ -787,7 +1617,7 @@ def rea_journ(departement):
 #rea_journ("Isère")
 
 
-# In[12]:
+# In[14]:
 
 
 def dc_journ(departement): 
@@ -904,7 +1734,7 @@ def dc_journ(departement):
 #dc_journ("Paris")
 
 
-# In[13]:
+# In[15]:
 
 
 
@@ -971,7 +1801,7 @@ def saturation_rea_journ(dep):
             x = dates[-1], y = df_saturation.values[-1], # annotation point
             xref='x1', 
             yref='y1',
-            text=" <b>{} {}".format('%d' % df_saturation.values[-1], " %</b> des lits de réa. occupés par<br>des patients Covid19 le {}.".format(datetime.strptime(dates[-1], '%Y-%m-%d').strftime('%d %b'))),
+            text=" <b>{} {}".format('%d' % round(df_saturation.values[-1]), " %</b> des lits de réa. occupés par<br>des patients Covid19 le {}.".format(datetime.strptime(dates[-1], '%Y-%m-%d').strftime('%d %b'))),
             xshift=-2,
             yshift=10,
             xanchor="center",
@@ -993,14 +1823,15 @@ def saturation_rea_journ(dep):
     fig.write_image(PATH+"images/charts/france/departements_dashboards/{}.jpeg".format(name_fig), scale=1.5, width=750, height=500)
 
     print("> " + name_fig)
+    return df_saturation.values[-1]
 
 
-# In[14]:
+# In[16]:
 
 
 import cv2
 import shutil
-
+        
 shutil.rmtree(PATH+"images/charts/france/covidep")
 os.mkdir(PATH+"images/charts/france/covidep")
 os.mkdir(PATH+"images/charts/france/covidep/lower_low")
@@ -1011,16 +1842,14 @@ stats = {"higher_low": [], "higher_high": [], "lower_low": [], "lower_high": [],
 
 for dep in departements:
     #GOTO
-             
+    hosp_journ_elias(dep)
     class_dep = incid_dep(dep)
     stats[class_dep] += [dep]
-    
     cas_journ(dep)
     hosp_journ(dep)
     rea_journ(dep)
     dc_journ(dep)
     hosp_comparaison_vagues(dep)
-    saturation_rea_journ(dep)
     
     im1 = cv2.imread(PATH+'images/charts/france/departements_dashboards/cas_journ_{}.jpeg'.format(dep))
     im2 = cv2.imread(PATH+'images/charts/france/departements_dashboards/hosp_journ_{}.jpeg'.format(dep))
@@ -1034,23 +1863,31 @@ for dep in departements:
     im_totale = cv2.vconcat([im_haut, im_bas])
     cv2.imwrite(PATH+'images/charts/france/departements_dashboards/dashboard_jour_{}.jpeg'.format(dep), im_totale)
     
-    os.remove(PATH+'images/charts/france/departements_dashboards/cas_journ_{}.jpeg'.format(dep))
+    #os.remove(PATH+'images/charts/france/departements_dashboards/cas_journ_{}.jpeg'.format(dep))
     #os.remove('images/charts/france/departements_dashboards/hosp_journ_{}.jpeg'.format(dep))
-    os.remove(PATH+'images/charts/france/departements_dashboards/rea_journ_{}.jpeg'.format(dep))
-    os.remove(PATH+'images/charts/france/departements_dashboards/dc_journ_{}.jpeg'.format(dep))
-    
+    #os.remove(PATH+'images/charts/france/departements_dashboards/rea_journ_{}.jpeg'.format(dep))
+    #os.remove(PATH+'images/charts/france/departements_dashboards/dc_journ_{}.jpeg'.format(dep))
+
 with open(PATH + 'images/charts/france/covidep/stats.json', 'w') as outfile:
     json.dump(stats, outfile)
+    
 
 
-# In[15]:
+# In[17]:
 
 
+with open(PATH_STATS + 'incidence_departements.json', 'r') as f:
+    incidence_departements = json.load(f)
+    
 for dep in departements:
-    saturation_rea_journ(dep)
+    saturation_rea = saturation_rea_journ(dep)
+    incidence_departements["donnees_departements"][dep]["saturation_rea"] = saturation_rea
+
+with open(PATH_STATS + 'incidence_departements.json', 'w') as outfile:
+    json.dump(incidence_departements, outfile)
 
 
-# In[20]:
+# In[18]:
 
 
 n_tot=1
@@ -1061,7 +1898,6 @@ for i in range(0, n_tot):
     evol_tests_deps, evol_hosp_deps = [], []
 
     fig = go.Figure()
-
     fig.add_shape(type="rect",
             x0=-1000, y0=0, x1=0, y1=1000,
             line=dict(color="orange",width=0.5, dash="dot"), fillcolor="orange", opacity=0.2,
@@ -1084,8 +1920,50 @@ for i in range(0, n_tot):
             line=dict(color="red",width=0.5, dash="dot"), fillcolor="green", opacity=0.2,
             layer="below"
         )
+    
+    ### Reds
+    """for (color, x_sign, y_sign, translation_x, translation_y) in [("red", "+", "+", 0, 0), ("orange", "+", "+", -200, 0), ("orange", "+", "+", 0, -200), ("green", "-", "-", 0, 0)]:
+        for j in range(4):
+            x0=j*50+translation_x
+            y0=0+translation_y
+            x1=50+j*50+translation_x
+            y1=50+j*50+translation_y
+            
+            if y_sign == "-":
+                y0 = -y0
+                y1 = -y1
+                
+            if x_sign == "-":
+                x0 = -x0
+                x1 = -x1
 
-    deps_vert, deps_orange, deps_rouge = "", "", ""
+            fig.add_shape(type="rect",
+                    x0=x0, y0=y0, x1=x1, y1=y1,
+                    line=dict(color="red",width=0.5, dash="dot"), fillcolor=color, opacity=0.07+0.07*j,
+                    layer="below" 
+                )
+            
+            x0=0+translation_x
+            y0=0+j*50+translation_y
+            x1=0+j*50+translation_x
+            y1=50+j*50+translation_y
+            
+            if y_sign == "-":
+                y0 = -y0
+                y1 = -y1
+                
+            if x_sign == "-":
+                x0 = -x0
+                x1 = -x1
+                
+            fig.add_shape(type="rect",
+                    x0=x0, y0=y0, x1=x1, y1=y1,
+                    line=dict(color="red",width=0.5, dash="dot"), fillcolor=color, opacity=0.07+0.07*j,
+                    layer="below"
+                )"""
+    
+
+    deps_vert, deps_orange, deps_rouge = [], [], []
     nb_vert, nb_orange, nb_rouge = 0, 0, 0
     for dep in departements:
         df_incid_dep = df_incid_departements[df_incid_departements["departmentName"]==dep]
@@ -1099,26 +1977,29 @@ for i in range(0, n_tot):
 
         if (evol_tests_dep < 0) & (evol_hosp_dep<0):
             color = "green"
-            deps_vert += df_incid_dep["dep"].values[0] + ", "
+            deps_vert += [df_incid_dep["dep"].values[0]]
             nb_vert += 1
 
         elif (evol_tests_dep > 0) & (evol_hosp_dep > 0):
             color = "red"
-            deps_rouge += df_incid_dep["dep"].values[0] + ", "
+            deps_rouge += [df_incid_dep["dep"].values[0]]
             nb_rouge += 1
 
         else:
             color = "orange"
-            deps_orange += df_incid_dep["dep"].values[0] + ", "
+            deps_orange += [df_incid_dep["dep"].values[0]]
             nb_orange += 1
 
         fig.add_trace(go.Scatter(
             x = [evol_tests_dep],
             y = [evol_hosp_dep],
             name = dep,
-            text=[df_incid_dep["dep"].values[0]],
-            marker_color=color,
-            marker_size=20,
+            text=["<b>"+df_incid_dep["dep"].values[0]+"</b>"],
+            textfont=dict(size=10),
+            marker=dict(size=15,
+                        color = color,
+                        line=dict(width=0.3,
+                            color='DarkSlateGrey')),
             line_width=8,
             opacity=0.8,
             fill='tozeroy',
@@ -1128,11 +2009,39 @@ for i in range(0, n_tot):
             showlegend=False,
             textposition="middle center"
         ))
+    
+    def make_string_deps(deps_list):
+        deps_list = sorted(deps_list)
+        list_string = [""]
+        
+        for idx,dep in enumerate(deps_list):
+            list_string[-1] += dep
 
-    liste_deps_str = "{} en <b>vert</b> : {}<br><br>{} en <b>orange</b> : {}<br><br>{} en <b>rouge</b> : {}".format(nb_vert, deps_vert, nb_orange, deps_orange, nb_rouge, deps_rouge)
-
+            if (idx==len(deps_list)-1) or (len(list_string[-1])/150 >= 1):
+                list_string += [""]
+            else:
+                list_string[-1] += ", "
+                
+        return_string=""    
+        for idx,liste in enumerate(list_string):
+            return_string += liste
+            if idx < len(list_string)-1:
+                return_string += "<br>"
+                
+        if len(return_string)==0:
+            return_string = "aucun"
+            
+        return return_string
+    
+    #liste_deps_str = "{} en <b>vert</b> : {}<br><br>{} en <b>orange</b> : {}<br><br>{} en <b>rouge</b> : {}".format(nb_vert, make_string_deps(deps_vert), nb_orange, make_string_deps(deps_orange), nb_rouge, make_string_deps(deps_rouge))
+    liste_deps_str_vert = "<span style='color: green;'>Vert ({})</span> : {}<br>".format(nb_vert, make_string_deps(deps_vert))
+    liste_deps_str_orange = "<span style='color: orange;'>Orange ({})</span> : {}<br>".format(nb_orange, make_string_deps(deps_orange))
+    liste_deps_str_rouge = "<span style='color: red;'>Rouge ({})</span> : {}<br>".format(nb_rouge, make_string_deps(deps_rouge))
+    
+    liste_deps_str = liste_deps_str_vert + liste_deps_str_orange + liste_deps_str_rouge
+    
     fig['layout']['annotations'] += (dict(
-            x = 50, y = 50, # annotation point
+            x = 80, y = 80, # annotation point
             xref='x1', yref='y1',
             text="Les cas augmentent.<br>Les admissions à l'hôpital augmentent.",
             xanchor="center",align='center',
@@ -1141,7 +2050,7 @@ for i in range(0, n_tot):
                 ),
             showarrow=False
         ),dict(
-            x = -50, y = -50, # annotation point
+            x = -80, y = -80, # annotation point
             xref='x1', yref='y1',
             text="Les cas baissent.<br>Les admissions à l'hôpital baissent.",
             xanchor="center",align='center',
@@ -1150,7 +2059,7 @@ for i in range(0, n_tot):
                 ),
             showarrow=False
         ),dict(
-            x = -50, y = 50, # annotation point
+            x = -80, y = 80, # annotation point
             xref='x1', yref='y1',
             text="Les cas baissent.<br>Les admissions à l'hôpital augmentent.",
             xanchor="center",align='center',
@@ -1159,7 +2068,7 @@ for i in range(0, n_tot):
                 ),
             showarrow=False
         ),dict(
-            x = 50, y = -50, # annotation point
+            x = 80, y = -80, # annotation point
             xref='x1', yref='y1',
             text="Les cas augmentent.<br>Les admissions à l'hôpital baissent.",
             xanchor="center",align='center',
@@ -1182,7 +2091,7 @@ for i in range(0, n_tot):
                 yref='paper',
                 font=dict(size=14),
                 align="left",
-                text=liste_deps_str[:160]+"<br>"+liste_deps_str[161:], showarrow = False
+                text=liste_deps_str, showarrow = False
           ),)
 
     fig.update_xaxes(title="Évolution hebdomadaire des cas positifs", range=[-200, 200], ticksuffix="%")
@@ -1200,19 +2109,25 @@ for i in range(0, n_tot):
             b=200
         ),
         )
-    fig.write_image(PATH+"images/charts/france/evolution_deps/{}_{}.jpeg".format("evolution_deps", i), scale=3, width=1000, height=900)
+    fig.write_image(PATH+"images/charts/france/evolution_deps/{}_{}.jpeg".format("evolution_deps", dates_incid[-(i+1)]), scale=3, width=1000, height=900)
+    
+    if i==0:
+            fig.write_image(PATH+"images/charts/france/evolution_deps/{}_{}.jpeg".format("evolution_deps", 0), scale=3, width=1000, height=900)
+            plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/evolution_deps/evolution_deps_0.html', auto_open=False)
 
 
-# In[21]:
+# In[19]:
 
 
 #import glob
+n_tot = 40
+
 import cv2
 for (folder, n, fps) in [("evolution_deps", n_tot, 3)]:
     img_array = []
     for i in range(n-1, 0-1, -1):
         print(i)
-        img = cv2.imread((PATH + "images/charts/france/{}/evolution_deps_{}.jpeg").format(folder, i))
+        img = cv2.imread((PATH + "images/charts/france/{}/evolution_deps_{}.jpeg").format(folder, dates_incid[-(i+1)]))
         height, width, layers = img.shape
         size = (width,height)
         img_array.append(img)
@@ -1240,7 +2155,7 @@ for (folder, n, fps) in [("evolution_deps", n_tot, 3)]:
         print("error conversion h265")
 
 
-# In[18]:
+# In[20]:
 
 
 """for idx,dep in enumerate(departements):
@@ -1256,7 +2171,7 @@ for (folder, n, fps) in [("evolution_deps", n_tot, 3)]:
 """
 
 
-# In[19]:
+# In[21]:
 
 
 """#print("<!-- wp:buttons --><div class=\"wp-block-buttons\">\n")
