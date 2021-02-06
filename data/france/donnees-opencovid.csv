@@ -38224,7 +38224,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-01,departement,DEP-973,Guyane,,,,,67,,6,30,1,1,1969,,Santé publique France Data,,,sante-publique-france-data
 2021-01-01,departement,DEP-974,La Réunion,,,,,52,,4,38,1,0,720,,Santé publique France Data,,,sante-publique-france-data
 2021-01-01,departement,DEP-976,Mayotte,,,,,41,,1,12,0,0,543,,Santé publique France Data,,,sante-publique-france-data
-2021-01-01,pays,FRA,France,2639773,,145914,,44985,19780,2618,24296,677,99,194901,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-01,pays,FRA,France,,,,,44959,,2609,24263,677,99,194870,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-01,region,REG-01,Guadeloupe,,,,,167,,4,48,0,0,768,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-01,region,REG-02,Martinique,,,,,43,,5,17,0,0,367,,OpenCOVID19-fr,,,opencovid19-fr
@@ -38345,7 +38344,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-02,departement,DEP-973,Guyane,,,,,67,,6,30,2,0,1971,,Santé publique France Data,,,sante-publique-france-data
 2021-01-02,departement,DEP-974,La Réunion,,,,,52,,4,38,0,0,720,,Santé publique France Data,,,sante-publique-france-data
 2021-01-02,departement,DEP-976,Mayotte,,,,,42,,1,8,2,1,548,,Santé publique France Data,,,sante-publique-france-data
-2021-01-02,pays,FRA,France,2643239,,145914,,45141,19780,2641,24491,645,101,195174,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-02,pays,FRA,France,,,,,45115,,2632,24458,646,101,195143,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-02,region,REG-01,Guadeloupe,,,,,167,,4,49,1,1,768,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-02,region,REG-02,Martinique,,,,,43,,5,17,0,0,367,,OpenCOVID19-fr,,,opencovid19-fr
@@ -38466,7 +38464,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-03,departement,DEP-973,Guyane,,,,,67,,6,31,7,1,1977,,Santé publique France Data,,,sante-publique-france-data
 2021-01-03,departement,DEP-974,La Réunion,,,,,52,,4,39,2,0,721,,Santé publique France Data,,,sante-publique-france-data
 2021-01-03,departement,DEP-976,Mayotte,,,,,42,,1,7,2,0,551,,Santé publique France Data,,,sante-publique-france-data
-2021-01-03,pays,FRA,France,2655728,,145914,,45257,19780,2674,24813,656,101,195386,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-03,pays,FRA,France,,,,,45231,,2665,24780,657,101,195355,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-03,region,REG-01,Guadeloupe,,,,,167,,4,49,0,0,768,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-03,region,REG-02,Martinique,,,,,43,,5,17,0,0,367,,OpenCOVID19-fr,,,opencovid19-fr
@@ -38587,7 +38584,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-04,departement,DEP-973,Guyane,,,,,68,,5,26,5,0,1985,,Santé publique France Data,,,sante-publique-france-data
 2021-01-04,departement,DEP-974,La Réunion,,,,,52,,4,40,2,0,720,,Santé publique France Data,,,sante-publique-france-data
 2021-01-04,departement,DEP-976,Mayotte,,,,,42,,1,6,0,0,551,,Santé publique France Data,,,sante-publique-france-data
-2021-01-04,pays,FRA,France,2659750,,145914,,45635,19780,2666,24995,1258,245,196037,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-04,pays,FRA,France,,,,,45609,,2657,24962,1262,246,196006,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-04,region,REG-01,Guadeloupe,,,,,167,,4,49,0,0,768,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-04,region,REG-02,Martinique,,,,,43,,5,17,0,0,367,,OpenCOVID19-fr,,,opencovid19-fr
@@ -38708,7 +38704,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-05,departement,DEP-973,Guyane,,,,,68,,5,27,7,0,1989,,Santé publique France Data,,,sante-publique-france-data
 2021-01-05,departement,DEP-974,La Réunion,,,,,52,,3,41,3,1,722,,Santé publique France Data,,,sante-publique-france-data
 2021-01-05,departement,DEP-976,Mayotte,,,,,42,,1,6,4,0,555,,Santé publique France Data,,,sante-publique-france-data
-2021-01-05,pays,FRA,France,2680239,,149671,,45980,20302,2625,24904,1737,244,197503,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-05,pays,FRA,France,,,,,45954,,2616,24871,1747,245,197472,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-05,region,REG-01,Guadeloupe,,,,,167,,4,50,1,0,768,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-05,region,REG-02,Martinique,,,,,43,,5,17,2,1,369,,OpenCOVID19-fr,,,opencovid19-fr
@@ -38829,7 +38824,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-06,departement,DEP-973,Guyane,,,,,69,,4,27,4,0,1994,,Santé publique France Data,,,sante-publique-france-data
 2021-01-06,departement,DEP-974,La Réunion,,,,,52,,3,43,2,0,722,,Santé publique France Data,,,sante-publique-france-data
 2021-01-06,departement,DEP-976,Mayotte,,,,,42,,1,6,1,0,556,,Santé publique France Data,,,sante-publique-france-data
-2021-01-06,pays,FRA,France,2705618,,149671,,46263,20302,2616,24741,1433,234,198756,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-06,pays,FRA,France,,,,,46237,,2607,24708,1438,234,198725,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-06,region,REG-01,Guadeloupe,,,,,167,,6,51,1,1,769,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-06,region,REG-02,Martinique,,,,,43,,4,16,0,0,369,,OpenCOVID19-fr,,,opencovid19-fr
@@ -38950,7 +38944,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-07,departement,DEP-973,Guyane,,,,,69,,4,29,8,0,1999,,Santé publique France Data,,,sante-publique-france-data
 2021-01-07,departement,DEP-974,La Réunion,,,,,52,,3,45,4,0,722,,Santé publique France Data,,,sante-publique-france-data
 2021-01-07,departement,DEP-976,Mayotte,,,,,42,,0,5,1,0,557,,Santé publique France Data,,,sante-publique-france-data
-2021-01-07,pays,FRA,France,2727321,,149671,,46539,20302,2582,24521,1438,180,200079,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-07,pays,FRA,France,,,,,46513,,2573,24488,1441,181,200048,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-07,region,REG-01,Guadeloupe,,,,,168,,5,50,1,0,770,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-07,region,REG-02,Martinique,,,,,43,,4,16,0,0,369,,OpenCOVID19-fr,,,opencovid19-fr
@@ -39071,7 +39064,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-08,departement,DEP-973,Guyane,,,,,69,,4,29,5,0,2004,,Santé publique France Data,,,sante-publique-france-data
 2021-01-08,departement,DEP-974,La Réunion,,,,,53,,2,47,4,1,723,,Santé publique France Data,,,sante-publique-france-data
 2021-01-08,departement,DEP-976,Mayotte,,,,,42,,0,6,1,0,558,,Santé publique France Data,,,sante-publique-france-data
-2021-01-08,pays,FRA,France,2747135,,152693,,46815,20616,2615,24410,1439,245,201286,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-08,pays,FRA,France,,,,,46789,,2606,24377,1445,245,201255,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-08,region,REG-01,Guadeloupe,,,,,168,,5,50,0,0,770,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-08,region,REG-02,Martinique,,,,,43,,4,17,1,0,369,,OpenCOVID19-fr,,,opencovid19-fr
@@ -39192,7 +39184,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-09,departement,DEP-973,Guyane,,,,,70,,4,29,5,1,2007,,Santé publique France Data,,,sante-publique-france-data
 2021-01-09,departement,DEP-974,La Réunion,,,,,53,,2,49,3,0,724,,Santé publique France Data,,,sante-publique-france-data
 2021-01-09,departement,DEP-976,Mayotte,,,,,42,,0,6,1,0,559,,Santé publique France Data,,,sante-publique-france-data
-2021-01-09,pays,FRA,France,2767312,,152693,,46983,20616,2609,24273,941,143,202165,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-09,pays,FRA,France,,,,,46957,,2600,24240,944,143,202134,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-09,region,REG-01,Guadeloupe,,,,,168,,4,49,0,0,771,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-09,region,REG-02,Martinique,,,,,43,,4,13,1,0,374,,OpenCOVID19-fr,,,opencovid19-fr
@@ -39313,7 +39304,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-10,departement,DEP-973,Guyane,,,,,70,,4,30,1,0,2007,,Santé publique France Data,,,sante-publique-france-data
 2021-01-10,departement,DEP-974,La Réunion,,,,,53,,3,48,0,1,725,,Santé publique France Data,,,sante-publique-france-data
 2021-01-10,departement,DEP-976,Mayotte,,,,,42,,0,6,0,0,559,,Santé publique France Data,,,sante-publique-france-data
-2021-01-10,pays,FRA,France,2783256,,152693,,47134,20616,2629,24559,728,117,202429,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-10,pays,FRA,France,,,,,47108,,2620,24526,729,118,202398,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-10,region,REG-01,Guadeloupe,,,,,168,,4,49,0,0,771,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-10,region,REG-02,Martinique,,,,,43,,4,13,0,0,374,,OpenCOVID19-fr,,,opencovid19-fr
@@ -39434,7 +39424,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-11,departement,DEP-973,Guyane,,,,,70,,5,35,6,1,2008,,Santé publique France Data,,,sante-publique-france-data
 2021-01-11,departement,DEP-974,La Réunion,,,,,53,,3,50,2,1,725,,Santé publique France Data,,,sante-publique-france-data
 2021-01-11,departement,DEP-976,Mayotte,,,,,42,,0,5,1,0,561,,Santé publique France Data,,,sante-publique-france-data
-2021-01-11,pays,FRA,France,2786838,,152693,,47444,20616,2676,24846,1285,208,203072,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-11,pays,FRA,France,,,,,47418,,2666,24812,1289,208,203041,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-11,region,REG-01,Guadeloupe,,,,,168,,4,49,0,0,771,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-11,region,REG-02,Martinique,,,,,43,,4,13,0,0,374,,OpenCOVID19-fr,,,opencovid19-fr
@@ -39555,7 +39544,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-12,departement,DEP-973,Guyane,,,,,70,,4,33,9,0,2017,,Santé publique France Data,,,sante-publique-france-data
 2021-01-12,departement,DEP-974,La Réunion,,,,,53,,5,49,4,2,729,,Santé publique France Data,,,sante-publique-france-data
 2021-01-12,departement,DEP-976,Mayotte,,,,,43,,0,5,1,0,561,,Santé publique France Data,,,sante-publique-france-data
-2021-01-12,pays,FRA,France,2806590,,156006,,47799,21003,2688,24737,1653,257,204390,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-12,pays,FRA,France,,,,,47773,,2678,24703,1660,258,204359,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-12,region,REG-01,Guadeloupe,,,,,168,,4,52,3,0,771,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-12,region,REG-02,Martinique,,,,,44,,2,12,1,0,375,,OpenCOVID19-fr,,,opencovid19-fr
@@ -39676,7 +39664,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-13,departement,DEP-973,Guyane,,,,,70,,4,35,5,0,2022,,Santé publique France Data,,,sante-publique-france-data
 2021-01-13,departement,DEP-974,La Réunion,,,,,54,,6,51,3,2,729,,Santé publique France Data,,,sante-publique-france-data
 2021-01-13,departement,DEP-976,Mayotte,,,,,44,,1,5,1,1,561,,Santé publique France Data,,,sante-publique-france-data
-2021-01-13,pays,FRA,France,2830442,,156006,,48028,21003,2711,24769,1581,208,205672,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-13,pays,FRA,France,,,,,48002,,2701,24735,1588,208,205641,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-13,region,REG-01,Guadeloupe,,,,,168,,4,53,3,0,773,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-13,region,REG-02,Martinique,,,,,44,,2,12,0,0,375,,OpenCOVID19-fr,,,opencovid19-fr
@@ -39797,7 +39784,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-14,departement,DEP-973,Guyane,,,,,70,,5,39,9,1,2027,,Santé publique France Data,,,sante-publique-france-data
 2021-01-14,departement,DEP-974,La Réunion,,,,,54,,7,53,3,1,730,,Santé publique France Data,,,sante-publique-france-data
 2021-01-14,departement,DEP-976,Mayotte,,,,,44,,3,7,2,2,561,,Santé publique France Data,,,sante-publique-france-data
-2021-01-14,pays,FRA,France,2851670,,156006,,48310,21003,2726,25017,1685,206,206802,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-14,pays,FRA,France,,,,,48284,,2716,24983,1691,206,206771,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-14,region,REG-01,Guadeloupe,,,,,168,,4,54,1,0,773,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-14,region,REG-02,Martinique,,,,,44,,2,13,2,0,376,,OpenCOVID19-fr,,,opencovid19-fr
@@ -39918,7 +39904,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-15,departement,DEP-973,Guyane,,,,,70,,6,38,9,1,2036,,Santé publique France Data,,,sante-publique-france-data
 2021-01-15,departement,DEP-974,La Réunion,,,,,54,,7,53,1,1,731,,Santé publique France Data,,,sante-publique-france-data
 2021-01-15,departement,DEP-976,Mayotte,,,,,44,,5,9,3,2,562,,Santé publique France Data,,,sante-publique-france-data
-2021-01-15,pays,FRA,France,2872941,,159791,,48590,21359,2740,25043,1630,249,208071,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-15,pays,FRA,France,,,,,48564,,2730,25009,1634,249,208040,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-15,region,REG-01,Guadeloupe,,,,,168,,5,53,2,1,776,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-15,region,REG-02,Martinique,,,,,44,,2,14,1,0,376,,OpenCOVID19-fr,,,opencovid19-fr
@@ -40039,7 +40024,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-16,departement,DEP-973,Guyane,,,,,71,,5,38,3,0,2038,,Santé publique France Data,,,sante-publique-france-data
 2021-01-16,departement,DEP-974,La Réunion,,,,,54,,6,53,4,2,735,,Santé publique France Data,,,sante-publique-france-data
 2021-01-16,departement,DEP-976,Mayotte,,,,,44,,3,8,1,1,564,,Santé publique France Data,,,sante-publique-france-data
-2021-01-16,pays,FRA,France,2894347,,159791,,48783,21359,2741,25019,1197,188,209056,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-16,pays,FRA,France,,,,,48757,,2731,24985,1199,188,209025,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-16,region,REG-01,Guadeloupe,,,,,169,,4,52,0,0,776,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-16,region,REG-02,Martinique,,,,,44,,2,14,0,0,376,,OpenCOVID19-fr,,,opencovid19-fr
@@ -40160,7 +40144,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-17,departement,DEP-973,Guyane,,,,,71,,7,36,5,3,2045,,Santé publique France Data,,,sante-publique-france-data
 2021-01-17,departement,DEP-974,La Réunion,,,,,54,,6,55,2,0,735,,Santé publique France Data,,,sante-publique-france-data
 2021-01-17,departement,DEP-976,Mayotte,,,,,44,,3,9,2,0,564,,Santé publique France Data,,,sante-publique-france-data
-2021-01-17,pays,FRA,France,2910989,,159791,,48924,21359,2776,25269,697,136,209343,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-17,pays,FRA,France,,,,,48898,,2766,25235,698,136,209312,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-17,region,REG-01,Guadeloupe,,,,,169,,6,54,2,2,776,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-17,region,REG-02,Martinique,,,,,44,,2,14,0,0,376,,OpenCOVID19-fr,,,opencovid19-fr
@@ -40281,7 +40264,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-18,departement,DEP-973,Guyane,,,,,72,,7,38,7,1,2047,,Santé publique France Data,,,sante-publique-france-data
 2021-01-18,departement,DEP-974,La Réunion,,,,,54,,6,46,2,1,743,,Santé publique France Data,,,sante-publique-france-data
 2021-01-18,departement,DEP-976,Mayotte,,,,,44,,2,10,1,0,564,,Santé publique France Data,,,sante-publique-france-data
-2021-01-18,pays,FRA,France,2914725,,159791,,49327,21359,2813,25619,1659,254,210200,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-18,pays,FRA,France,,,,,49301,,2803,25584,1666,254,210169,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-18,region,REG-01,Guadeloupe,,,,,169,,5,54,0,0,776,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-18,region,REG-02,Martinique,,,,,44,,2,13,0,0,377,,OpenCOVID19-fr,,,opencovid19-fr
@@ -40402,7 +40384,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-19,departement,DEP-973,Guyane,,,,,72,,9,47,18,3,2055,,Santé publique France Data,,,sante-publique-france-data
 2021-01-19,departement,DEP-974,La Réunion,,,,,54,,7,50,6,1,745,,Santé publique France Data,,,sante-publique-france-data
 2021-01-19,departement,DEP-976,Mayotte,,,,,44,,2,10,0,0,564,,Santé publique France Data,,,sante-publique-france-data
-2021-01-19,pays,FRA,France,2938333,,162430,,49696,21646,2839,25567,1988,313,211816,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-19,pays,FRA,France,,,,,49670,,2829,25532,1995,315,211785,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-19,region,REG-01,Guadeloupe,,,,,169,,5,54,0,0,776,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-19,region,REG-02,Martinique,,,,,44,,3,14,1,1,377,,OpenCOVID19-fr,,,opencovid19-fr
@@ -40523,7 +40504,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-20,departement,DEP-973,Guyane,,,,,72,,9,48,4,1,2059,,Santé publique France Data,,,sante-publique-france-data
 2021-01-20,departement,DEP-974,La Réunion,,,,,54,,7,49,2,0,748,,Santé publique France Data,,,sante-publique-france-data
 2021-01-20,departement,DEP-976,Mayotte,,,,,44,,3,11,3,2,567,,Santé publique France Data,,,sante-publique-france-data
-2021-01-20,pays,FRA,France,2965117,,162430,,50006,21646,2852,25686,1907,292,213242,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-20,pays,FRA,France,,,,,49980,,2842,25650,1911,292,213211,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-20,region,REG-01,Guadeloupe,,,,,169,,5,48,0,0,782,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-20,region,REG-02,Martinique,,,,,44,,3,14,0,0,377,,OpenCOVID19-fr,,,opencovid19-fr
@@ -40644,7 +40624,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-21,departement,DEP-973,Guyane,,,,,72,,12,47,8,3,2068,,Santé publique France Data,,,sante-publique-france-data
 2021-01-21,departement,DEP-974,La Réunion,,,,,54,,6,47,2,0,752,,Santé publique France Data,,,sante-publique-france-data
 2021-01-21,departement,DEP-976,Mayotte,,,,,44,,4,13,4,1,568,,Santé publique France Data,,,sante-publique-france-data
-2021-01-21,pays,FRA,France,2987965,,162430,,50352,21646,2876,25735,1755,252,214538,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-21,pays,FRA,France,,,,,50326,,2866,25699,1759,253,214507,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-21,region,REG-01,Guadeloupe,,,,,169,,5,46,1,1,784,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-21,region,REG-02,Martinique,,,,,44,,2,13,1,0,379,,OpenCOVID19-fr,,,opencovid19-fr
@@ -40765,7 +40744,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-22,departement,DEP-973,Guyane,,,,,72,,11,45,4,0,2073,,Santé publique France Data,,,sante-publique-france-data
 2021-01-22,departement,DEP-974,La Réunion,,,,,54,,8,45,1,2,755,,Santé publique France Data,,,sante-publique-france-data
 2021-01-22,departement,DEP-976,Mayotte,,,,,44,,5,17,4,1,569,,Santé publique France Data,,,sante-publique-france-data
-2021-01-22,pays,FRA,France,3011257,,166457,,50671,21976,2912,25908,1857,269,215822,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-22,pays,FRA,France,,,,,50645,,2902,25872,1861,270,215791,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-22,region,REG-01,Guadeloupe,,,,,169,,5,45,0,0,785,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-22,region,REG-02,Martinique,,,,,44,,2,13,0,0,379,,OpenCOVID19-fr,,,opencovid19-fr
@@ -40886,7 +40864,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-23,departement,DEP-973,Guyane,,,,,72,,10,42,5,0,2082,,Santé publique France Data,,,sante-publique-france-data
 2021-01-23,departement,DEP-974,La Réunion,,,,,54,,7,42,0,0,758,,Santé publique France Data,,,sante-publique-france-data
 2021-01-23,departement,DEP-976,Mayotte,,,,,45,,6,18,2,1,569,,Santé publique France Data,,,sante-publique-france-data
-2021-01-23,pays,FRA,France,3035181,,166457,,50901,21976,2896,25900,1169,172,216725,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-23,pays,FRA,France,,,,,50875,,2886,25864,1174,172,216694,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-23,region,REG-01,Guadeloupe,,,,,169,,4,47,2,0,785,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-23,region,REG-02,Martinique,,,,,45,,2,12,0,0,379,,OpenCOVID19-fr,,,opencovid19-fr
@@ -41007,7 +40984,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-24,departement,DEP-973,Guyane,,,,,72,,9,45,9,0,2087,,Santé publique France Data,,,sante-publique-france-data
 2021-01-24,departement,DEP-974,La Réunion,,,,,54,,7,42,1,0,759,,Santé publique France Data,,,sante-publique-france-data
 2021-01-24,departement,DEP-976,Mayotte,,,,,45,,5,23,6,0,570,,Santé publique France Data,,,sante-publique-france-data
-2021-01-24,pays,FRA,France,3053617,,166457,,51073,21976,2965,26393,918,175,216965,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-24,pays,FRA,France,,,,,51047,,2955,26357,918,175,216934,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-24,region,REG-01,Guadeloupe,,,,,169,,5,48,1,1,785,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-24,region,REG-02,Martinique,,,,,45,,2,12,0,0,379,,OpenCOVID19-fr,,,opencovid19-fr
@@ -41128,7 +41104,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-25,departement,DEP-973,Guyane,,,,,72,,11,53,8,2,2088,,Santé publique France Data,,,sante-publique-france-data
 2021-01-25,departement,DEP-974,La Réunion,,,,,54,,6,27,3,1,776,,Santé publique France Data,,,sante-publique-france-data
 2021-01-25,departement,DEP-976,Mayotte,,,,,45,,5,23,4,0,573,,Santé publique France Data,,,sante-publique-france-data
-2021-01-25,pays,FRA,France,3057857,,166457,,51518,21976,3041,26924,1768,298,217708,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-25,pays,FRA,France,,,,,51492,,3031,26888,1773,299,217677,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-25,region,REG-01,Guadeloupe,,,,,169,,5,48,0,0,785,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-25,region,REG-02,Martinique,,,,,45,,2,12,0,0,379,,OpenCOVID19-fr,,,opencovid19-fr
@@ -41249,7 +41224,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-26,departement,DEP-973,Guyane,,,,,72,,14,49,9,5,2100,,Santé publique France Data,,,sante-publique-france-data
 2021-01-26,departement,DEP-974,La Réunion,,,,,54,,5,25,1,0,779,,Santé publique France Data,,,sante-publique-france-data
 2021-01-26,departement,DEP-976,Mayotte,,,,,46,,4,31,15,3,579,,Santé publique France Data,,,sante-publique-france-data
-2021-01-26,pays,FRA,France,3079943,,169291,,51868,22238,3081,27041,2002,343,219152,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-26,pays,FRA,France,,,,,51842,,3071,27005,2006,343,219121,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-26,region,REG-01,Guadeloupe,,,,,169,,5,51,4,0,786,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-26,region,REG-02,Martinique,,,,,45,,2,13,2,0,380,,OpenCOVID19-fr,,,opencovid19-fr
@@ -41370,7 +41344,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-27,departement,DEP-973,Guyane,,,,,72,,15,51,11,3,2107,,Santé publique France Data,,,sante-publique-france-data
 2021-01-27,departement,DEP-974,La Réunion,,,,,54,,5,25,4,0,783,,Santé publique France Data,,,sante-publique-france-data
 2021-01-27,departement,DEP-976,Mayotte,,,,,47,,4,39,15,1,585,,Santé publique France Data,,,sante-publique-france-data
-2021-01-27,pays,FRA,France,3106859,,169291,,52218,22238,3107,27169,1931,318,220570,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-27,pays,FRA,France,,,,,52192,,3097,27131,1933,318,220539,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-27,region,REG-01,Guadeloupe,,,,,170,,4,52,3,1,787,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-27,region,REG-02,Martinique,,,,,45,,2,14,1,0,380,,OpenCOVID19-fr,,,opencovid19-fr
@@ -41491,7 +41464,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-28,departement,DEP-973,Guyane,,,,,72,,15,50,4,1,2113,,Santé publique France Data,,,sante-publique-france-data
 2021-01-28,departement,DEP-974,La Réunion,,,,,54,,5,22,1,0,787,,Santé publique France Data,,,sante-publique-france-data
 2021-01-28,departement,DEP-976,Mayotte,,,,,47,,4,44,9,0,589,,Santé publique France Data,,,sante-publique-france-data
-2021-01-28,pays,FRA,France,3130629,,169291,,52562,22238,3111,27166,1719,270,221903,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-28,pays,FRA,France,,,,,52536,,3101,27128,1726,272,221872,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-28,region,REG-01,Guadeloupe,,,,,170,,4,52,5,0,792,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-28,region,REG-02,Martinique,,,,,45,,3,14,2,1,382,,OpenCOVID19-fr,,,opencovid19-fr
@@ -41612,7 +41584,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-29,departement,DEP-973,Guyane,,,,,72,,13,45,7,0,2125,,Santé publique France Data,,,sante-publique-france-data
 2021-01-29,departement,DEP-974,La Réunion,,,,,55,,3,19,2,0,791,,Santé publique France Data,,,sante-publique-france-data
 2021-01-29,departement,DEP-976,Mayotte,,,,,47,,4,54,13,0,592,,Santé publique France Data,,,sante-publique-france-data
-2021-01-29,pays,FRA,France,3153487,,173312,,52917,22703,3130,27308,1820,271,223174,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-29,pays,FRA,France,,,,,52891,,3120,27270,1823,271,223143,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-29,region,REG-01,Guadeloupe,,,,,170,,4,51,0,0,793,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-29,region,REG-02,Martinique,,,,,45,,3,14,1,0,383,,OpenCOVID19-fr,,,opencovid19-fr
@@ -41733,7 +41704,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-30,departement,DEP-973,Guyane,,,,,72,,12,46,0,0,2125,,Santé publique France Data,,,sante-publique-france-data
 2021-01-30,departement,DEP-974,La Réunion,,,,,55,,2,21,2,0,791,,Santé publique France Data,,,sante-publique-france-data
 2021-01-30,departement,DEP-976,Mayotte,,,,,47,,4,54,0,0,592,,Santé publique France Data,,,sante-publique-france-data
-2021-01-30,pays,FRA,France,3177879,,173312,,53159,22703,3113,27282,1174,192,224120,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-30,pays,FRA,France,,,,,53133,,3103,27242,1176,192,224089,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-30,region,REG-01,Guadeloupe,,,,,170,,5,52,3,1,795,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-30,region,REG-02,Martinique,,,,,45,,3,15,1,0,383,,OpenCOVID19-fr,,,opencovid19-fr
@@ -41854,7 +41824,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-01-31,departement,DEP-973,Guyane,,,,,73,,14,46,6,2,2130,,Santé publique France Data,,,sante-publique-france-data
 2021-01-31,departement,DEP-974,La Réunion,,,,,55,,2,21,0,0,791,,Santé publique France Data,,,sante-publique-france-data
 2021-01-31,departement,DEP-976,Mayotte,,,,,47,,6,60,14,2,599,,Santé publique France Data,,,sante-publique-france-data
-2021-01-31,pays,FRA,France,3197114,,173312,,53354,22703,3158,27613,816,148,224406,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-01-31,pays,FRA,France,,,,,53328,,3148,27573,816,148,224375,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-31,region,REG-01,Guadeloupe,,,,,170,,6,52,0,1,795,,OpenCOVID19-fr,,,opencovid19-fr
 2021-01-31,region,REG-02,Martinique,,,,,45,,3,15,0,0,383,,OpenCOVID19-fr,,,opencovid19-fr
@@ -41975,7 +41944,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-02-01,departement,DEP-973,Guyane,,,,,73,,14,46,4,0,2133,,Santé publique France Data,,,sante-publique-france-data
 2021-02-01,departement,DEP-974,La Réunion,,,,,55,,3,24,5,1,793,,Santé publique France Data,,,sante-publique-france-data
 2021-02-01,departement,DEP-976,Mayotte,,,,,47,,9,62,11,3,603,,Santé publique France Data,,,sante-publique-france-data
-2021-02-01,pays,FRA,France,3201461,,173312,,53809,22703,3228,27914,1748,318,225319,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-02-01,pays,FRA,France,,,,,53783,,3218,27874,1750,318,225288,,OpenCOVID19-fr,,,opencovid19-fr
 2021-02-01,region,REG-01,Guadeloupe,,,,,170,,6,52,0,0,795,,OpenCOVID19-fr,,,opencovid19-fr
 2021-02-01,region,REG-02,Martinique,,,,,45,,3,17,3,0,384,,OpenCOVID19-fr,,,opencovid19-fr
@@ -42096,7 +42064,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-02-02,departement,DEP-973,Guyane,,,,,73,,16,48,6,2,2138,,Santé publique France Data,,,sante-publique-france-data
 2021-02-02,departement,DEP-974,La Réunion,,,,,56,,2,22,1,0,795,,Santé publique France Data,,,sante-publique-france-data
 2021-02-02,departement,DEP-976,Mayotte,,,,,47,,11,88,25,2,603,,Santé publique France Data,,,sante-publique-france-data
-2021-02-02,pays,FRA,France,3224798,,175811,,54213,23025,3280,28071,2184,368,226896,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-02-02,pays,FRA,France,,,,,54187,,3270,28029,2189,369,226865,,OpenCOVID19-fr,,,opencovid19-fr
 2021-02-02,region,REG-01,Guadeloupe,,,,,171,,5,52,3,2,796,,OpenCOVID19-fr,,,opencovid19-fr
 2021-02-02,region,REG-02,Martinique,,,,,45,,3,17,0,0,384,,OpenCOVID19-fr,,,opencovid19-fr
@@ -42217,7 +42184,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-02-03,departement,DEP-973,Guyane,,,,,74,,14,40,4,0,2148,,Santé publique France Data,,,sante-publique-france-data
 2021-02-03,departement,DEP-974,La Réunion,,,,,56,,2,22,3,0,798,,Santé publique France Data,,,sante-publique-france-data
 2021-02-03,departement,DEP-976,Mayotte,,,,,47,,11,88,0,0,603,,Santé publique France Data,,,sante-publique-france-data
-2021-02-03,pays,FRA,France,3251160,,175811,,54570,23025,3277,27955,1878,275,228472,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-02-03,pays,FRA,France,,,,,54544,,3267,27953,1882,275,228441,,OpenCOVID19-fr,,,opencovid19-fr
 2021-02-03,region,REG-01,Guadeloupe,,,,,171,,5,50,2,0,800,,OpenCOVID19-fr,,,opencovid19-fr
 2021-02-03,region,REG-02,Martinique,,,,,45,,3,18,2,0,385,,OpenCOVID19-fr,,,opencovid19-fr
@@ -42338,7 +42304,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-02-04,departement,DEP-973,Guyane,,,,,75,,12,35,3,0,2156,,Santé publique France Data,,,sante-publique-france-data
 2021-02-04,departement,DEP-974,La Réunion,,,,,56,,1,24,3,0,799,,Santé publique France Data,,,sante-publique-france-data
 2021-02-04,departement,DEP-976,Mayotte,,,,,48,,12,81,17,1,614,,Santé publique France Data,,,sante-publique-france-data
-2021-02-04,pays,FRA,France,3274608,,175811,,54927,23025,3250,27808,1745,275,229975,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-02-04,pays,FRA,France,,,,,54901,,3240,27766,1752,275,229944,,OpenCOVID19-fr,,,opencovid19-fr
 2021-02-04,region,REG-01,Guadeloupe,,,,,171,,4,50,0,0,800,,OpenCOVID19-fr,,,opencovid19-fr
 2021-02-04,region,REG-02,Martinique,,,,,45,,4,21,4,1,385,,OpenCOVID19-fr,,,opencovid19-fr
@@ -42478,3 +42443,123 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-02-05,region,REG-84,Auvergne-Rhône-Alpes,,,,,8264,,387,3751,234,28,33809,,OpenCOVID19-fr,,,opencovid19-fr
 2021-02-05,region,REG-93,Provence-Alpes-Côte d'Azur,,,,,4822,,430,3352,240,40,23415,,OpenCOVID19-fr,,,opencovid19-fr
 2021-02-05,region,REG-94,Corse,,,,,127,,8,55,8,2,573,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-06,departement,DEP-01,Ain,,,,,468,,14,233,9,3,1916,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-02,Aisne,,,,,706,,31,317,6,1,2498,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-03,Allier,,,,,431,,18,234,14,0,1369,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-04,Alpes-de-Haute-Provence,,,,,161,,4,182,15,0,676,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-05,Hautes-Alpes,,,,,178,,6,135,3,0,731,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-06,Alpes-Maritimes,,,,,873,,87,705,32,8,3549,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-07,Ardèche,,,,,371,,10,208,7,1,1367,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-08,Ardennes,,,,,274,,10,100,1,1,774,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-09,Ariège,,,,,46,,10,70,3,0,187,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-10,Aube,,,,,288,,7,77,8,0,1272,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-11,Aude,,,,,199,,14,189,7,1,655,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-12,Aveyron,,,,,148,,3,93,4,0,591,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-13,Bouches-du-Rhône,,,,,2296,,254,1508,101,10,13020,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-14,Calvados,,,,,324,,37,204,7,0,1379,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-15,Cantal,,,,,81,,6,76,1,0,369,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-16,Charente,,,,,82,,2,39,6,0,311,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-17,Charente-Maritime,,,,,166,,22,172,9,1,573,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-18,Cher,,,,,375,,11,132,7,0,980,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-19,Corrèze,,,,,119,,11,73,0,1,484,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-21,Côte-d'Or,,,,,707,,25,283,8,3,2582,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-22,Côtes-d'Armor,,,,,123,,1,37,1,0,634,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-23,Creuse,,,,,60,,9,77,11,0,347,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-24,Dordogne,,,,,85,,15,149,6,0,391,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-25,Doubs,,,,,380,,45,168,13,4,1600,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-26,Drôme,,,,,533,,27,237,15,0,1898,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-27,Eure,,,,,295,,13,130,2,0,1044,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-28,Eure-et-Loir,,,,,321,,21,176,10,1,1571,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-29,Finistère,,,,,172,,7,138,5,1,667,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-2A,Corse-du-Sud,,,,,79,,0,9,0,0,312,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-2B,Haute-Corse,,,,,48,,7,45,0,0,262,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-30,Gard,,,,,400,,37,239,10,2,1669,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-31,Haute-Garonne,,,,,508,,86,403,8,2,3118,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-32,Gers,,,,,69,,3,91,0,0,236,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-33,Gironde,,,,,668,,75,427,13,3,3277,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-34,Hérault,,,,,575,,55,227,11,3,2782,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-35,Ille-et-Vilaine,,,,,415,,26,377,14,3,1741,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-36,Indre,,,,,185,,7,91,5,1,602,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-37,Indre-et-Loire,,,,,296,,36,158,4,0,1122,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-38,Isère,,,,,1240,,60,667,26,7,4873,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-39,Jura,,,,,367,,5,193,6,0,1344,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-40,Landes,,,,,177,,16,109,0,1,588,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-41,Loir-et-Cher,,,,,212,,9,163,7,2,833,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-42,Loire,,,,,949,,45,430,12,1,3734,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-43,Haute-Loire,,,,,192,,6,125,4,0,897,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-44,Loire-Atlantique,,,,,528,,28,288,16,1,2254,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-45,Loiret,,,,,343,,51,339,9,4,1762,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-46,Lot,,,,,57,,1,39,4,0,211,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-47,Lot-et-Garonne,,,,,109,,2,46,2,0,506,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-48,Lozère,,,,,89,,2,25,2,0,276,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-49,Maine-et-Loire,,,,,504,,39,270,5,0,2045,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-50,Manche,,,,,203,,13,203,14,1,756,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-51,Marne,,,,,649,,25,323,11,0,2277,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-52,Haute-Marne,,,,,250,,11,101,3,0,814,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-53,Mayenne,,,,,209,,12,87,8,1,857,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-54,Meurthe-et-Moselle,,,,,865,,42,343,5,1,3028,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-55,Meuse,,,,,280,,5,65,1,1,982,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-56,Morbihan,,,,,262,,13,166,8,2,1156,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-57,Moselle,,,,,1660,,74,487,11,5,4970,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-58,Nièvre,,,,,170,,4,168,2,1,473,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-59,Nord,,,,,2313,,130,956,23,0,9861,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-60,Oise,,,,,843,,35,513,8,1,2620,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-61,Orne,,,,,234,,8,160,2,0,950,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-62,Pas-de-Calais,,,,,1107,,70,510,15,2,4634,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-63,Puy-de-Dôme,,,,,477,,24,311,10,1,1612,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-64,Pyrénées-Atlantiques,,,,,385,,18,187,7,1,1535,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-65,Hautes-Pyrénées,,,,,157,,6,40,1,0,747,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-66,Pyrénées-Orientales,,,,,184,,21,172,23,2,763,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-67,Bas-Rhin,,,,,1274,,84,591,15,3,4991,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-68,Haut-Rhin,,,,,1250,,47,439,11,3,4820,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-69,Rhône,,,,,2236,,139,844,28,6,10333,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-70,Haute-Saône,,,,,178,,11,107,6,0,797,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-71,Saône-et-Loire,,,,,822,,27,476,11,2,3085,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-72,Sarthe,,,,,387,,12,234,3,0,1681,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-73,Savoie,,,,,548,,17,114,3,0,2080,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-74,Haute-Savoie,,,,,757,,22,251,8,1,3497,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-75,Paris,,,,,2971,,187,848,38,15,12401,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-76,Seine-Maritime,,,,,917,,58,660,39,5,3493,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-77,Seine-et-Marne,,,,,1339,,87,428,22,3,5545,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-78,Yvelines,,,,,1252,,61,686,19,1,5293,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-79,Deux-Sèvres,,,,,180,,12,102,5,1,575,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-80,Somme,,,,,546,,27,289,14,2,1735,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-81,Tarn,,,,,230,,24,174,7,0,784,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-82,Tarn-et-Garonne,,,,,120,,17,81,12,1,504,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-83,Var,,,,,749,,57,552,25,0,3307,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-84,Vaucluse,,,,,590,,14,304,29,1,2267,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-85,Vendée,,,,,168,,7,122,7,1,903,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-86,Vienne,,,,,167,,14,64,20,4,688,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-87,Haute-Vienne,,,,,210,,13,84,1,1,716,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-88,Vosges,,,,,619,,13,206,9,2,1839,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-89,Yonne,,,,,349,,11,175,10,1,1365,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-90,Territoire de Belfort,,,,,484,,10,113,2,0,1431,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-91,Essonne,,,,,1225,,70,724,37,8,5695,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-92,Hauts-de-Seine,,,,,1836,,110,894,28,7,9231,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-93,Seine-Saint-Denis,,,,,1662,,91,764,17,5,8325,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-94,Val-de-Marne,,,,,2071,,65,637,37,6,8958,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-95,Val-d'Oise,,,,,1332,,43,446,12,3,5605,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-971,Guadeloupe,,,,,171,,5,48,1,0,804,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-972,Martinique,,,,,45,,3,15,0,0,390,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-973,Guyane,,,,,75,,12,36,5,0,2162,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-974,La Réunion,,,,,56,,3,30,6,0,805,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,departement,DEP-976,Mayotte,,,,,49,,15,94,18,1,643,,Santé publique France Data,,,sante-publique-france-data
+2021-02-06,pays,FRA,France,,,,,55385,,3215,27327,1126,168,232662,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-06,region,REG-01,Guadeloupe,,,,,171,,5,48,1,0,804,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-06,region,REG-02,Martinique,,,,,45,,3,15,0,0,390,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-06,region,REG-03,Guyane,,,,,75,,12,36,5,0,2162,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-06,region,REG-04,La Réunion,,,,,56,,3,30,6,0,805,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-06,region,REG-06,Mayotte,,,,,49,,15,94,18,1,643,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-06,region,REG-11,Île-de-France,,,,,13688,,714,5427,210,48,61053,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-06,region,REG-24,Centre-Val de Loire,,,,,1732,,135,1059,42,8,6870,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-06,region,REG-27,Bourgogne-Franche-Comté,,,,,3457,,138,1683,58,11,12677,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-06,region,REG-28,Normandie,,,,,1973,,129,1357,64,6,7622,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-06,region,REG-32,Hauts-de-France,,,,,5515,,293,2585,66,6,21348,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-06,region,REG-44,Grand Est,,,,,7409,,318,2732,75,16,25767,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-06,region,REG-52,Pays de la Loire,,,,,1796,,98,1001,39,3,7740,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-06,region,REG-53,Bretagne,,,,,972,,47,718,28,6,4198,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-06,region,REG-75,Nouvelle-Aquitaine,,,,,2408,,209,1529,80,13,9991,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-06,region,REG-76,Occitanie,,,,,2782,,279,1843,92,11,12523,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-06,region,REG-84,Auvergne-Rhône-Alpes,,,,,8283,,388,3730,137,20,33945,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-06,region,REG-93,Provence-Alpes-Côte d'Azur,,,,,4847,,422,3386,205,19,23550,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-06,region,REG-94,Corse,,,,,127,,7,54,0,0,574,,OpenCOVID19-fr,,,opencovid19-fr
