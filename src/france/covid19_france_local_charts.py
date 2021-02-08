@@ -19,6 +19,7 @@ import numpy as np
 import locale
 
 PATH="../../"
+PATH_STATS = "../../data/france/stats/"
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 now = datetime.now()
 colors = px.colors.qualitative.D3 + plotly.colors.DEFAULT_PLOTLY_COLORS + px.colors.qualitative.Plotly + px.colors.qualitative.Dark24 + px.colors.qualitative.Alphabet
@@ -663,6 +664,8 @@ std_gauss= 5
 wind = 7
 delai = 7
 
+dict_reffectif_regions = {}
+
 regions_ordered = list(dict.fromkeys(list(df_incid_region.sort_values(by=["regionName"], ascending=True)["regionName"].values)))[:]
 
 fig = make_subplots(rows=ni, cols=nj, shared_yaxes=True, subplot_titles=[ "<b>"+ str(r) +"</b>" for r in (regions_ordered)], vertical_spacing = 0.06, horizontal_spacing = 0.01)
@@ -714,6 +717,9 @@ for region in regions_ordered:
         date_reffectif_now=dates[-1]
         
     reffectifs_now += [reffectif_now]
+    
+    dict_reffectif_regions[region] = {"value": reffectif_now}
+    
     dates_reffectif_now += [date_reffectif_now]
     
     if reffectif_now >= 1.5:
@@ -902,6 +908,8 @@ plotly.offline.plot(fig, filename = PATH+'images/html_exports/france/{}.html'.fo
 print("> " + name_fig)
 
 #fig.show()
+with open(PATH_STATS + 'reffectif_region.json', 'w') as outfile:
+    json.dump(dict_reffectif_regions, outfile)
 
 
 # ## Subplots : départements

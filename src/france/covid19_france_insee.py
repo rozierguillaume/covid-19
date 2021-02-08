@@ -12,7 +12,7 @@ from datetime import datetime
 PATH = "../../"
 
 
-# In[14]:
+# In[2]:
 
 
 df_mortalite = pd.read_csv(PATH+'data/france/deces_quotidiens_departement_csv.csv', sep=";", encoding="'windows-1252'")
@@ -24,7 +24,7 @@ df_mortalite_france.loc[:,"Total_deces_2019_diff"] = df_mortalite_france["Total_
 df_mortalite_france.loc[:,"Total_deces_2020_diff"] = df_mortalite_france["Total_deces_2020"].diff().rolling(window=window, center=True).mean()
 
 
-# In[15]:
+# In[3]:
 
 
 """print(df_mortalite_france.dropna()["Total_deces_2018"].values[-1])
@@ -33,7 +33,7 @@ print(df_mortalite_france.dropna()["Total_deces_2020"].values[-1])
 print(df_mortalite_france.dropna())"""
 
 
-# In[16]:
+# In[4]:
 
 
 #### Construction du graphique

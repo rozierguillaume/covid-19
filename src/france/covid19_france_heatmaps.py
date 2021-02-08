@@ -65,7 +65,7 @@ deps_name = np.array(list(dict.fromkeys(list(df["departmentName"].values)))[:])
 #df_tests_viros = df_tests_viros[df_tests_viros['cl_age90'] != 0]
 
 for (name, data, title, scale_txt, data_example, digits) in [("cas", '', "Taux d'<br>incidence", " cas", " cas", 1)]:
-    for idx,dep in enumerate(deps_tests): #deps_tests.drop("975", "976", "977", "978")
+    for idx,dep in enumerate(deps_tests): #
         locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
         
         df_tests_viros_dep = df_tests_viros[df_tests_viros["dep"] == dep]
@@ -82,7 +82,7 @@ for (name, data, title, scale_txt, data_example, digits) in [("cas", '', "Taux d
             
             array_positif += [tranche["P"].astype(int)]
             array_taux += [np.round((tranche["P"].fillna(0)/tranche["T"].fillna(1)).fillna(0)*100, 1)]
-            array_incidence += [np.trunc(tranche["P"].fillna(0) / tranche["pop"] * 7 * 100000).astype(int)]
+            array_incidence += [round(tranche["P"].fillna(0) / tranche["pop"] * 7 * 100000).astype(int)]
             dates_heatmap = list(tranche.index.astype(str).values)
 
         
@@ -144,7 +144,7 @@ for (name, data, title, scale_txt, data_example, digits) in [("cas", '', "Taux d
                             xanchor='center',
                             opacity=0.6,
                             font=dict(color="black", size=12),
-                            text='Lecture : une case correspond au {} pour une tranche d\'âge (à lire à gauche) et à une date donnée (à lire en bas).<br>Du rouge correspond à un {} élevé.  <i>Date : {} - Source : <b>@GuillaumeRozier</b> covidtracker.fr - Données : Santé publique France</i>'.format(title.lower().replace("<br>", " "), title.lower().replace("<br>", " "), now.strftime('%d %B')),
+                            text='Lecture : une case correspond au {} pour une tranche d\'âge (à lire à droite) et à une date donnée (à lire en bas).<br>Du rouge correspond à un {} élevé.  <i>Date : {} - Source : <b>@GuillaumeRozier</b> covidtracker.fr - Données : Santé publique France</i>'.format(title.lower().replace("<br>", " "), title.lower().replace("<br>", " "), now.strftime('%d %B')),
                             showarrow = False
                         ),
                     ]
@@ -247,7 +247,7 @@ for (name, data, title, scale_txt, data_example, digits) in [("cas", '', "Taux d
                             xanchor='center',
                             opacity=0.6,
                             font=dict(color="black", size=12),
-                            text='Lecture : une case correspond au {} pour une tranche d\'âge (à lire à gauche) et à une date donnée (à lire en bas).<br>Du rouge correspond à un {} élevé.  <i>Date : {} - Source : <b>@guillaumerozier</b> covidtracker.fr - Données : Santé publique France</i>'.format(title.lower().replace("<br>", " "), title.lower().replace("<br>", " "), now.strftime('%d %B')),
+                            text='Lecture : une case correspond au {} pour une tranche d\'âge (à lire à droite) et à une date donnée (à lire en bas).<br>Du rouge correspond à un {} élevé.  <i>Date : {} - Source : <b>@guillaumerozier</b> covidtracker.fr - Données : Santé publique France</i>'.format(title.lower().replace("<br>", " "), title.lower().replace("<br>", " "), now.strftime('%d %B')),
                             showarrow = False
                         ),
                     ]

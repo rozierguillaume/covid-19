@@ -229,7 +229,7 @@ def cas_journ(departement):
 # In[7]:
 
 
-import numpy as np
+"""import numpy as np
 def cas_journ_departements_couvre_feu(departements):
     fig = go.Figure()
     
@@ -238,7 +238,8 @@ def cas_journ_departements_couvre_feu(departements):
     range_x, name_fig, range_y, n = ["2020-10-29", last_day_plot], "impact_couvre_feu", [0, df_incid_departements["P"].max()*0.7], 30
     title = "<b>Taux d'incidence</b>"
     
-    deps_couvre_feu_2_janvier = ["Hautes-Alpes", "Alpes-Maritimes", "Ardennes", "Doubs", "Jura", "Marne", "Haute-Marne", "Meurthe-et-Moselle", "Meuse", "Haute-Saône", "Vosges", "Territoire de Belfort", "Moselle", "Nièvre",                                  "Saône-et-Loire"]
+    deps_couvre_feu_2_janvier = ["Hautes-Alpes", "Alpes-Maritimes", "Ardennes", "Doubs", "Jura", "Marne", "Haute-Marne", "Meurthe-et-Moselle", "Meuse", "Haute-Saône", "Vosges", "Territoire de Belfort", "Moselle", "Nièvre", \
+                                 "Saône-et-Loire"]
     deps_couvre_feu_8_janvier = ["Bas-Rhin", "Haut-Rhin", "Côte-d'or", "Cher", "Allier", "Bouches-du-Rhône", "Vaucluse", "Alpes-de-Haute-Provence"]
     #deps_couvre_feu_8_janvier = []
     
@@ -492,7 +493,7 @@ def cas_journ_departements_couvre_feu(departements):
     
     print("> " + name_fig)
 
-cas_journ_departements_couvre_feu(departements)
+cas_journ_departements_couvre_feu(departements)"""
 
 
 # In[8]:
@@ -1826,7 +1827,7 @@ def saturation_rea_journ(dep):
     return df_saturation.values[-1]
 
 
-# In[16]:
+# In[ ]:
 
 
 import cv2
@@ -1873,7 +1874,7 @@ with open(PATH + 'images/charts/france/covidep/stats.json', 'w') as outfile:
     
 
 
-# In[17]:
+# In[ ]:
 
 
 with open(PATH_STATS + 'incidence_departements.json', 'r') as f:
@@ -1887,7 +1888,7 @@ with open(PATH_STATS + 'incidence_departements.json', 'w') as outfile:
     json.dump(incidence_departements, outfile)
 
 
-# In[18]:
+# In[ ]:
 
 
 n_tot=1
@@ -2116,7 +2117,7 @@ for i in range(0, n_tot):
             plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/evolution_deps/evolution_deps_0.html', auto_open=False)
 
 
-# In[19]:
+# In[ ]:
 
 
 #import glob
@@ -2155,7 +2156,7 @@ for (folder, n, fps) in [("evolution_deps", n_tot, 3)]:
         print("error conversion h265")
 
 
-# In[20]:
+# In[ ]:
 
 
 """for idx,dep in enumerate(departements):
@@ -2171,7 +2172,7 @@ for (folder, n, fps) in [("evolution_deps", n_tot, 3)]:
 """
 
 
-# In[21]:
+# In[ ]:
 
 
 """#print("<!-- wp:buttons --><div class=\"wp-block-buttons\">\n")

@@ -42701,7 +42701,7 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-02-07,departement,DEP-973,Guyane,,,,,75,,12,34,1,0,2165,,Santé publique France Data,,,sante-publique-france-data
 2021-02-07,departement,DEP-974,La Réunion,,,,,56,,5,31,2,1,807,,Santé publique France Data,,,sante-publique-france-data
 2021-02-07,departement,DEP-976,Mayotte,,,,,49,,14,100,8,0,644,,Santé publique France Data,,,sante-publique-france-data
-2021-02-07,pays,FRA,France,,,,,55582,,,,,,,,Ministère des Solidarités et de la Santé,,,ministere-sante
+2021-02-07,pays,FRA,France,3337048,,179604,,55582,23383,3272,27694,785,160,232977,,Ministère des Solidarités et de la Santé,,,ministere-sante
 2021-02-07,pays,FRA,France,,,,,55556,,3262,27652,790,160,232946,,OpenCOVID19-fr,,,opencovid19-fr
 2021-02-07,region,REG-01,Guadeloupe,,,,,171,,5,50,4,1,806,,OpenCOVID19-fr,,,opencovid19-fr
 2021-02-07,region,REG-02,Martinique,,,,,45,,3,15,0,0,390,,OpenCOVID19-fr,,,opencovid19-fr

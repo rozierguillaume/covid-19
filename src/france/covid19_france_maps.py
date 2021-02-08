@@ -4,7 +4,7 @@
 # # COVID-19 French Maps
 # Guillaume Rozier, 2020
 
-# In[1]:
+# In[20]:
 
 
 """
@@ -24,7 +24,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[59]:
+# In[21]:
 
 
 import france_data_management as data
@@ -38,6 +38,7 @@ import multiprocessing
 import locale
 import shutil
 import os
+from datetime import timedelta
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 PATH = "../../"
 import subprocess
@@ -45,7 +46,7 @@ import subprocess
 
 # ## Data import
 
-# In[3]:
+# In[22]:
 
 
 # Import data from Santé publique France
@@ -53,7 +54,7 @@ df, df_confirmed, dates, _, _, df_deconf, df_sursaud, df_incid, _ = data.import_
 df_incid = df_incid[df_incid["cl_age90"] == 0]
 
 
-# In[4]:
+# In[23]:
 
 
 #df_incid["incidence"] = df_incid["P"]/df_incid["pop"]*100
@@ -63,7 +64,7 @@ for dep in pd.unique(df_incid["dep"].values):
 df_incid.loc[:,"incidence_color"] = ['Rouge (>50)' if x >= 50 else 'Orange (25-50)' if x >= 25 else 'Vert (<25)' for x in df_incid['incidence']]
 
 
-# In[13]:
+# In[24]:
 
 
 """# Download and import data from INSEE
@@ -85,7 +86,7 @@ df_insee['jour'] = df_insee['jour'].dt.strftime('%Y-%m-%d')
 dates_insee = list(dict.fromkeys(list(df_insee.dropna()['jour'].values))) """
 
 
-# In[14]:
+# In[25]:
 
 
 """df_insee_france = df_insee.groupby('jour').sum().reset_index()
@@ -97,14 +98,14 @@ df_insee_france["surmortalite20"] = (df_insee_france["dc20"] - df_insee_france["
 # 
 # ## Function definition
 
-# In[5]:
+# In[26]:
 
 
 with open(PATH+'data/france/dep.geojson') as response:
     depa = json.load(response)
 
 
-# In[133]:
+# In[27]:
 
 
 def map_gif(dates, imgs_folder, df, type_ppl, legend_title, min_scale, max_scale, colorscale, subtitle, clean_before=True, clean_after=False):
@@ -282,13 +283,13 @@ def build_gif(file_gif, imgs_folder, dates):
     os.remove(file_gif)
 
 
-# In[7]:
+# In[28]:
 
 
 #build_map(df_deconf, img_folder="images/charts/france/deconf_synthese/{}.png", title="Départements déconfinés le 11/05")
 
 
-# In[8]:
+# In[29]:
 
 
 def build_map_indic1(data_df, img_folder, legend_title="legend_title", title="title"):
@@ -370,7 +371,7 @@ def build_map_indic1(data_df, img_folder, legend_title="legend_title", title="ti
 # 
 # ## Function calls
 
-# In[134]:
+# In[30]:
 
 
 def dep_map():
@@ -382,7 +383,7 @@ def dep_map():
 #dep_map()
 
 
-# In[10]:
+# In[31]:
 
 
 def dep_map_dc_cum():
@@ -393,7 +394,7 @@ def dep_map_dc_cum():
     build_gif(file_gif = PATH+"images/charts/france/dep-map-dc-cum.gif", imgs_folder = PATH+"images/charts/france/dep-map-img-dc-cum", dates=dates[-30:])
 
 
-# In[11]:
+# In[32]:
 
 
 def dep_map_dc_journ():
@@ -404,7 +405,7 @@ def dep_map_dc_journ():
     build_gif(file_gif = PATH+"images/charts/france/dep-map-dc-journ.gif", imgs_folder = PATH+"images/charts/france/dep-map-img-dc-journ", dates=dates[-30:])
 
 
-# In[135]:
+# In[33]:
 
 
 def dep_map_incidence():
@@ -419,7 +420,7 @@ def dep_map_incidence():
 #dep_map_incidence()
 
 
-# In[76]:
+# In[34]:
 
 
 dep_map_incidence()
@@ -428,7 +429,143 @@ dep_map()
 dep_map_dc_journ()
 
 
-# In[20]:
+# In[35]:
+
+
+df_incid_departements = df_incid[df_incid["cl_age90"]==0].groupby(["jour", "departmentName", "dep"]).sum().reset_index()
+departements = list(dict.fromkeys(list(df_incid_departements['departmentName'].values))) 
+
+
+# In[36]:
+
+
+dep = "Savoie"
+df_incid_pred = pd.DataFrame()
+dates_dataframe, incid_dataframe, dep_dataframe = [], [], []
+dict_json={}
+import numpy as np
+
+for dep in departements:
+    df_dep = df_incid_departements[df_incid_departements["departmentName"] == dep]
+    incidence_dep = df_dep["incidence"].values
+
+    taux_incid = []
+
+    for i in range(1, 6):
+        try:
+            taux_incid += [1+(incidence_dep[-i] - incidence_dep[-1-i])/incidence_dep[-1-i]]
+
+        except Exception as e:
+            print("exception")
+            taux_incid += [0]
+
+    pred_incid = []
+    for i in range(1, 8):
+        
+        pred_incid += [incidence_dep[-1] * (sum(taux_incid)/len(taux_incid))**i]
+
+    date_deb = (datetime.strptime(max(df_dep["jour"]), '%Y-%m-%d'))
+    x_pred_dates = [(date_deb + timedelta(days=x)).strftime("%Y-%m-%d") for x in range(1, len(pred_incid)+1)]
+
+    ## creation dataframe
+    dates_dataframe += x_pred_dates
+    incid_dataframe += pred_incid
+    dep_dataframe += [dep] * len(x_pred_dates)
+    
+    ## export json
+    dict_json[dep] = {}
+    dict_json[dep]["incidence"] = list(np.nan_to_num(incidence_dep[-60:]))
+    dict_json[dep]["pred_incidence"] = list(np.nan_to_num(pred_incid))
+    
+dict_json["dates"] = list(df_dep["jour"].values[-60:]) + x_pred_dates
+
+df_incid_pred["departementName"] = dep_dataframe
+df_incid_pred["pred_incidence"] = incid_dataframe
+df_incid_pred["jour"] = dates_dataframe
+
+
+# In[37]:
+
+
+with open(PATH + 'data/france/stats/pred_dep_incid.json', 'w') as outfile:
+    json.dump(dict_json, outfile)
+
+
+# In[38]:
+
+
+"""import plotly.graph_objects as go
+fig = go.Figure()
+
+fig.add_trace(go.Scatter(
+    x=df_incid_pred[df_incid_pred["departementName"]=="Paris"]["jour"],
+    y=df_incid_pred[df_incid_pred["departementName"]=="Paris"]["pred_incidence"] ))
+
+fig.add_trace(go.Scatter(
+    x=df_incid_departements[df_incid_departements["departmentName"]=="Paris"]["jour"],
+    y=df_incid_departements[df_incid_departements["departmentName"]=="Paris"]["incidence"] ))
+
+fig.show()"""
+
+
+# In[39]:
+
+
+"""import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+temperatures=pd.read_csv(PATH+"data/france/temperature-quotidienne-departementale.csv", sep=";")
+
+fig = make_subplots(specs=[[{"secondary_y": True}]])
+dep="Paris"
+dep_num = df_incid_departements[df_incid_departements["departmentName"]=="Paris"]["dep"].values[0]
+
+fig.add_trace(go.Scatter(
+    x=df_incid_pred[df_incid_pred["departementName"]==dep]["jour"],
+    y=df_incid_pred[df_incid_pred["departementName"]==dep]["pred_incidence"] ))
+
+fig.add_trace(go.Scatter(
+    x=df_incid_departements[df_incid_departements["departmentName"]==dep]["jour"],
+    y=df_incid_departements[df_incid_departements["departmentName"]==dep]["incidence"] ))
+
+fig.add_trace(go.Scatter(
+    x=temperatures[temperatures["code_insee_departement"]==dep_num].sort_values(["date_obs"])["date_obs"],
+    y=temperatures[temperatures["code_insee_departement"]==dep_num].sort_values(["date_obs"])["tmoy"].rolling(window=14, center=True).mean().shift(10) ), secondary_y=True)
+fig.update_xaxes(range=["2020-07-01", "2020-12-18"])
+fig.show()"""
+
+
+# In[40]:
+
+
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+temperatures=pd.read_csv(PATH+"data/france/temperature-quotidienne-departementale.csv", sep=";")
+temperatures_france = temperatures.groupby(["date_obs"]).mean().reset_index()
+
+fig = make_subplots(specs=[[{"secondary_y": True}]])
+df_incid_france = df_incid.groupby(["jour"]).sum().reset_index()
+fig.add_trace(go.Scatter(
+    x=df_incid_france["jour"],
+    y=(df_incid_france["P"].rolling(window=7, center=True).mean())/1000,
+    name="cas (en milliers)"
+))
+
+fig.add_trace(go.Scatter(
+    x=df_incid_france["jour"],
+    y=((df_incid_france["P"].rolling(window=7, center=True).mean()-df_incid_france["P"].shift(7).rolling(window=7, center=True).mean())/df_incid_france["P"].shift(7).rolling(window=7, center=True).mean()*100 ),
+    name="taux croissa hebdo cas"
+))
+fig.add_trace(go.Scatter(
+    x=temperatures_france["date_obs"],
+    y=temperatures_france["tmoy"].rolling(window=14, center=True).mean().shift(10),
+    name="température<br>moyenne (+10 jours)"), secondary_y=True)
+    
+fig.update_xaxes(range=["2020-07-01", "2020-12-18"])
+fig.update_layout(title="Nombre de cas et des températures")
+fig.show()
+
+
+# In[41]:
 
 
 """
@@ -441,7 +578,7 @@ map_gif(dates_insee, imgs_folder, df = df_insee.dropna(), type_ppl = ppl, legend
 build_gif(file_gif = "images/charts/france/dep-map-surmortalite.gif", imgs_folder = imgs_folder, dates=dates_insee)"""
 
 
-# In[21]:
+# In[42]:
 
 
 """# Line chart évolution de la mortalité

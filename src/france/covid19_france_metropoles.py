@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[26]:
+# In[1]:
 
 
 """
@@ -21,7 +21,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[27]:
+# In[2]:
 
 
 from multiprocessing import Pool
@@ -47,7 +47,7 @@ now = datetime.now()
 PATH = "../../"
 
 
-# In[28]:
+# In[3]:
 
 
 df_metro = data.import_data_metropoles()
@@ -56,7 +56,7 @@ df_metro_0 = df_metro[df_metro["clage_65"] == 0]
 nb_last_days=40
 
 
-# In[29]:
+# In[4]:
 
 
 metropoles = df_metro_0[df_metro_0["semaine_glissante"]==df_metro_0["semaine_glissante"].max()].sort_values(by=["ti"], ascending=False)["Metropole"].values
@@ -64,13 +64,7 @@ metropoles_couvre_feu = ["Paris", "Saint Etienne", "Grenoble", "Montpellier", "R
 metropoles_couvre_feu_sorted = [m for m in metropoles if m in metropoles_couvre_feu]
 
 
-# In[ ]:
-
-
-
-
-
-# In[30]:
+# In[5]:
 
 
 
@@ -110,7 +104,7 @@ fig.write_image(PATH+"images/charts/france/{}.jpeg".format(name_fig), scale=2, w
 plotly.offline.plot(fig, filename = PATH+'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
 
 
-# In[31]:
+# In[6]:
 
 
 
@@ -121,7 +115,7 @@ metropoles = df_metro_0[df_metro_0["semaine_glissante"]==df_metro_0["semaine_gli
 for i,metro in enumerate([m for m in metropoles if m not in metropoles_couvre_feu]): #list(dict.fromkeys(list(df_metro['Metropole'].values))
     
     y=df_metro_0[df_metro_0["Metropole"]==metro]
-    y=y[len(y)-nb_last_days:]
+    #y=y[len(y)-nb_last_days:]
                  
     fig.add_trace(go.Scatter(
             x = [d[-10:] for d in y["semaine_glissante"].values],
@@ -153,7 +147,7 @@ fig.write_image(PATH+"images/charts/france/{}.jpeg".format(name_fig), scale=2, w
 plotly.offline.plot(fig, filename = PATH+'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
 
 
-# In[32]:
+# In[7]:
 
 
 im1 = cv2.imread(PATH+'images/charts/france/line_metropole_avec_couvre_feu.jpeg')
@@ -164,7 +158,7 @@ im3 = cv2.hconcat([im1, im2])
 cv2.imwrite(PATH+'images/charts/france/line_metropoles_comp_couvre_feu.jpeg', im3)
 
 
-# In[33]:
+# In[8]:
 
 
 nb_last_days=25

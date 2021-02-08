@@ -27,6 +27,7 @@ Requirements: please see the imports below (use pip3 to install them).
 
 
 import pandas as pd
+import numpy as np
 import plotly.graph_objects as go
 import france_data_management as data
 from datetime import datetime
@@ -34,7 +35,13 @@ from datetime import timedelta
 import plotly
 import math
 import os
+import json
+from plotly.subplots import make_subplots
 PATH = "../../"
+PATH_STATS = "../../data/france/stats/"
+
+import locale
+locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
 
 # In[3]:
@@ -77,12 +84,13 @@ def cas_journ(region):
         
     df_incid_reg = df_incid_regions[df_incid_regions["regionName"] == region]
     df_incid_reg_rolling = df_incid_reg["P"].rolling(window=7, center=True).mean()
+    df_tests_reg_rolling = df_incid_reg["T"].rolling(window=7, center=True).mean()
     
     range_x, name_fig, range_y = ["2020-03-29", last_day_plot], "cas_journ_"+region, [0, df_incid_reg["P"].max()]
     title = "<b>Cas positifs</b> au Covid19 - <b>" + region + "</b>"
 
-    fig = go.Figure()
-
+    #fig = go.Figure()
+    fig = make_subplots(rows=1, cols=1, shared_yaxes=True, subplot_titles=[""], vertical_spacing = 0.08, horizontal_spacing = 0.1, specs=[[{"secondary_y": True}]])
 
     fig.add_trace(go.Scatter(
         x = df_incid_reg["jour"],
@@ -94,7 +102,8 @@ def cas_journ(region):
         fill='tozeroy',
         fillcolor="rgba(8, 115, 191, 0.3)",
         showlegend=False
-    ))
+    ), secondary_y=True)
+    
     fig.add_trace(go.Scatter(
         x = [dates_incid[-4]],
         y = [df_incid_reg_rolling.values[-4]],
@@ -104,9 +113,9 @@ def cas_journ(region):
         marker_size=15,
         opacity=1,
         showlegend=False
-    ))
+    ), secondary_y=True)
 
-    fig.add_trace(go.Scatter(
+    """fig.add_trace(go.Scatter(
         x = df_incid_reg["jour"],
         y = df_incid_reg["P"],
         name = "",
@@ -115,11 +124,21 @@ def cas_journ(region):
         line_width=3,
         opacity=0.4,
         showlegend=False
-    ))
+    ), secondary_y=True)"""
+    
+    fig.add_trace(go.Bar(
+        x = df_incid_reg["jour"],
+        y = df_tests_reg_rolling,
+        name = "Tests réalisés",
+        marker_color='rgba(0, 0, 0, 0.2)',
+        opacity=0.8,
+        showlegend=False,
+    ), secondary_y=False)
 
     ###
 
-    fig.update_yaxes(zerolinecolor='Grey', range=range_y, tickfont=dict(size=18))
+    fig.update_yaxes(zerolinecolor='Grey', range=range_y, tickfont=dict(size=18), secondary_y=True)
+    fig.update_yaxes(zerolinecolor='Grey', tickfont=dict(size=18), secondary_y=False)
     fig.update_xaxes(nticks=10, ticks='inside', tickangle=0, tickfont=dict(size=18))
 
     # Here we modify the tickangle of the xaxis, resulting in rotated labels.
@@ -160,9 +179,9 @@ def cas_journ(region):
     fig['layout']['annotations'] += (dict(
             x = dates_incid[-4], y = df_incid_reg_rolling.values[-4], # annotation point
             xref='x1', 
-            yref='y1',
+            yref='y2',
             text=" <b>{} {}".format('%d' % df_incid_reg_rolling.values[-4], "cas quotidiens<br></b>en moyenne du {} au {}.".format(datetime.strptime(dates_incid[-7], '%Y-%m-%d').strftime('%d'), datetime.strptime(dates_incid[-1], '%Y-%m-%d').strftime('%d %b'))),
-            xshift=-2,
+            xshift=0,
             yshift=0,
             xanchor="center",
             align='center',
@@ -179,11 +198,35 @@ def cas_journ(region):
             arrowwidth=1,
             arrowhead=0,
             showarrow=True
-        ),)
+        ),dict(
+            x = dates_incid[-4], y = df_tests_reg_rolling.values[-4], # annotation point
+            xref='x1', 
+            yref='y1',
+            text=" <b>{} {}".format('%d' % df_tests_reg_rolling.values[-4], "tests réalisés<br></b>en moyenne du {} au {}.".format(datetime.strptime(dates_incid[-7], '%Y-%m-%d').strftime('%d'), datetime.strptime(dates_incid[-1], '%Y-%m-%d').strftime('%d %b'))),
+            xshift=-2,
+            yshift=0,
+            xanchor="center",
+            align='center',
+            font=dict(
+                color="rgba(0, 0, 0, 0.5)",
+                size=13
+                ),
+            bgcolor="rgba(255, 255, 255, 0.4)",
+            opacity=1,
+            ax=-250,
+            ay=-70,
+            arrowcolor="rgba(0, 0, 0, 0.5)",
+            arrowsize=1.5,
+            arrowwidth=1,
+            arrowhead=0,
+            showarrow=True
+        ))
 
     fig.write_image(PATH+"images/charts/france/regions_dashboards/{}.jpeg".format(name_fig), scale=1.2, width=900, height=600)
 
     print("> " + name_fig)
+    
+#cas_journ("Auvergne-Rhône-Alpes")
 
 
 # In[8]:
@@ -340,6 +383,297 @@ def hosp_journ(region):
 # In[9]:
 
 
+def hosp_journ_elias(reg):
+    df_new_reg = df_new_regions[df_new_regions["regionName"]==reg]
+    
+    entrees_rolling = df_new_reg["incid_hosp"].rolling(window=7).mean().values
+    
+    rad_rolling = df_new_reg["incid_rad"].rolling(window=7).mean()
+    dc_rolling = df_new_reg["incid_dc"].rolling(window=7).mean()
+    sorties_rolling = (rad_rolling + dc_rolling).values
+
+    range_x, name_fig, range_y = ["2020-03-29", last_day_plot], "hosp_journ_flux_"+reg, [0, 1.1*max( max(np.nan_to_num(entrees_rolling)), max(np.nan_to_num(sorties_rolling)))]
+    title = "<b>Entrées et sorties de l'hôpital</b> pour Covid19 • <b>" + reg + "</b>"
+    
+    for i in [""]:
+        if i=="log":
+            title+= " [log.]"
+
+        fig = go.Figure()
+
+        fig.add_trace(go.Scatter(
+            x = dates,
+            y = entrees_rolling,
+            name = "",
+            marker_color='red',
+            line_width=6,
+            opacity=1,
+            fill='tozeroy',
+            fillcolor="rgba(235, 64, 52,0.5)",
+            showlegend=False
+        ))
+        
+        fig.add_trace(go.Scatter(
+            x = dates,
+            y = sorties_rolling,
+            name = "",
+            marker_color='green',
+            line_width=0,
+            opacity=1,
+            fill='tozeroy',
+            fillcolor="rgba(12, 161, 2, 0.5)",
+            showlegend=False
+        ))
+
+        fig.add_trace(go.Scatter(
+            x = dates,
+            y = [entrees_rolling[i] if entrees_rolling[i]<sorties_rolling[i] else sorties_rolling[i] for i in range(len(entrees_rolling))],
+            name = "",
+            marker_color='yellow',
+            line_width=0,
+            opacity=1,
+            fill='tozeroy',
+            fillcolor="rgba(255, 255, 255, 1)",
+            showlegend=False
+        ))
+
+        
+        fig.add_trace(go.Scatter(
+            x = dates,
+            y = sorties_rolling,
+            name = "",
+            marker_color='green',
+            line_width=6,
+            opacity=1,
+            showlegend=False
+        ))
+
+        fig.add_trace(go.Scatter(
+            x = dates,
+            y =entrees_rolling,
+            name = "",
+            marker_color='red',
+            line_width=6,
+            opacity=1,
+            showlegend=False
+        ))
+
+        fig.add_shape(type="line",
+        x0="2020-03-17", y0=0, x1="2020-03-17", y1=300000,
+        line=dict(color="Red",width=0.5, dash="dot")
+        )
+
+        fig.add_shape(type="line",
+        x0="2020-05-11", y0=0, x1="2020-05-11", y1=300000,
+        line=dict(color="Green",width=0.5, dash="dot")
+        )
+
+        fig.add_shape(type="line",
+        x0="2020-10-30", y0=0, x1="2020-10-30", y1=300000,
+        line=dict(color="Red",width=0.5, dash="dot")
+        )
+
+        fig.add_shape(type="line",
+        x0="2020-11-28", y0=0, x1="2020-11-28", y1=300000,
+        line=dict(color="Orange",width=0.5, dash="dot")
+        )
+
+        fig.add_shape(type="line",
+        x0="2020-12-15", y0=0, x1="2020-12-15", y1=300000,
+        line=dict(color="green",width=0.5, dash="dot")
+        )
+
+        fig.add_trace(go.Scatter(
+            x = [dates[-1]],
+            y = [sorties_rolling[-1]],
+            name = "",
+            mode="markers",
+            marker_color='green',
+            marker_size=13,
+            opacity=1,
+            showlegend=False
+        ))
+
+        fig.add_trace(go.Scatter(
+            x = [dates[-1]],
+            y = [entrees_rolling[-1]],
+            name = "",
+            mode="markers",
+            marker_color='red',
+            marker_size=13,
+            opacity=1,
+            showlegend=False
+        ))
+
+        ###
+        fig.update_xaxes(nticks=10, ticks='inside', tickangle=0, tickfont=dict(size=18), ) #range=["2020-03-17", last_day_plot_dashboard]
+        fig.update_yaxes(zerolinecolor='Grey', tickfont=dict(size=18), range=range_y)
+        
+        # Here we modify the tickangle of the xaxis, resulting in rotated labels.
+        fig.update_layout(
+            paper_bgcolor='rgba(255,255,255,1)',
+            plot_bgcolor='rgba(255,255,255,1)',
+            margin=dict(
+                    l=50,
+                    r=150,
+                    b=50,
+                    t=70,
+                    pad=0
+                ),
+            legend_orientation="h",
+            barmode='group',
+            title={
+                        'text': title,
+                        'y':0.95,
+                        'x':0.5,
+                        'xanchor': 'center',
+                        'yanchor': 'top'},
+                        titlefont = dict(
+                        size=30),
+            xaxis=dict(
+                    title='',
+                    tickformat='%d/%m'),
+
+            annotations = [
+                        dict(
+                            x=0.5,
+                            y=1.01,
+                            font=dict(size=14),
+                            xref='paper',
+                            yref='paper',
+                            text="Moyenne mobile 7 jours. Données Santé publique France. Auteurs @eorphelin @guillaumerozier - <b>covidtracker.fr</b>.", #'Date : {}. Source : Santé publique France. Auteur : guillaumerozier.fr.'.format(datetime.strptime(max(dates), '%Y-%m-%d').strftime('%d %B %Y')),                    
+                            showarrow = False
+                        ),
+
+                        ]
+                    )
+
+        if entrees_rolling[-1]<sorties_rolling[-1]:
+            y_e = -20
+            y_s = -100
+        else:
+            y_e = -100
+            y_s = -20
+            
+        fig['layout']['annotations'] += (
+            dict(
+            x = "2020-05-20", y = (entrees_rolling[62]+sorties_rolling[62])/2, # annotation point
+            xref='x1', 
+            yref='y1',
+            text="L'aire représente le solde.<br>Si elle est <span style='color:green'>verte</span>, il y a plus de sorties que d'entrées,<br>le nombre de lits occupés diminue.",
+            xshift=0,
+            yshift=0,
+            xanchor="center",
+            align='center',
+            font=dict(
+                color="black",
+                size=10
+                ),
+            bgcolor="rgba(255, 255, 255, 0)",
+            opacity=0.8,
+            ax=80,
+            ay=-100,
+            arrowcolor="black",
+            arrowsize=1.5,
+            arrowwidth=1,
+            arrowhead=6,
+            showarrow=True
+        ),
+            dict(
+                x = dates[-1], y = (entrees_rolling[-1]), # annotation point
+                xref='x1', 
+                yref='y1',
+                text=" <b>{} {}".format(round(entrees_rolling[-1], 1), "entrées à l'hôpital</b><br>en moyenne le {}.".format(datetime.strptime(dates[-1], '%Y-%m-%d').strftime('%d %b'))),
+                xshift=-2,
+                yshift=0,
+                xanchor="center",
+                align='center',
+                font=dict(
+                    color="red",
+                    size=12
+                    ),
+                bgcolor="rgba(255, 255, 255, 0)",
+                opacity=0.8,
+                ax=100,
+                ay=y_e,
+                arrowcolor="red",
+                arrowsize=1.5,
+                arrowwidth=1,
+                arrowhead=0,
+                showarrow=True
+            ),
+            dict(
+                x = dates[-1], y = (sorties_rolling[-1]), # annotation point
+                xref='x1', 
+                yref='y1',
+                text=" <b>{} {}".format(round(sorties_rolling[-1], 1), "sorties de l'hôpital</b><br>en moyenne le {}.<br>dont {} décès et<br>{} retours à domicile".format(datetime.strptime(dates[-1], '%Y-%m-%d').strftime('%d %b'), round(dc_rolling.values[-1], 1), round(rad_rolling.values[-1], 1))),
+                xshift=-2,
+                yshift=0,
+                xanchor="center",
+                align='center',
+                font=dict(
+                    color="green",
+                    size=12
+                    ),
+                bgcolor="rgba(255, 255, 255, 0)",
+                opacity=0.8,
+                ax=100,
+                ay=y_s,
+                arrowcolor="green",
+                arrowsize=1.5,
+                arrowwidth=1,
+                arrowhead=0,
+                showarrow=True
+            ), 
+                dict(
+                x = "2020-10-30", y = 40000, # annotation point
+                xref='x1', 
+                yref='y1',
+                text="Confinement",
+                xanchor="left",
+                yanchor="top",
+                align='center',
+                font=dict(
+                    color="red",
+                    size=8
+                    ),
+                showarrow=False
+            ),
+              dict(
+                x = "2020-05-11", y = 40000, # annotation point
+                xref='x1', 
+                yref='y1',
+                text="Déconfinement",
+                xanchor="left",
+                yanchor="top",
+                align='center',
+                font=dict(
+                    color="green",
+                    size=8
+                    ),
+                showarrow=False
+            ),
+               dict(
+                x=0.5,
+                y=-0.1,
+                font=dict(size=10),
+                xref='paper',
+                yref='paper',
+                text="",#'Date : {}. Source : Santé publique France. Auteur : guillaumerozier.fr.'.format(datetime.strptime(max(dates), '%Y-%m-%d').strftime('%d %B %Y')),                    showarrow = False
+                showarrow=False
+                        ))
+
+        fig.write_image(PATH + "images/charts/france/regions_dashboards/{}.jpeg".format(name_fig+i), scale=1.5, width=1100, height=600)
+
+        #plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/departements_dashboards/{}.html'.format(name_fig+i), auto_open=False)
+        print("> " + name_fig)
+            
+#hosp_journ_elias("Nouvelle-Aquitaine")
+
+
+# In[10]:
+
+
 def rea_journ(region):
     df_reg = df_regions[df_regions["regionName"] == region]
     df_new_reg = df_new_regions[df_new_regions["regionName"] == region]
@@ -482,7 +816,7 @@ def rea_journ(region):
 #rea_journ("Auvergne-Rhône-Alpes")
 
 
-# In[10]:
+# In[11]:
 
 
 def dc_journ(region): 
@@ -597,7 +931,7 @@ def dc_journ(region):
     print("> " + name_fig)
 
 
-# In[11]:
+# In[12]:
 
 
 
@@ -699,22 +1033,25 @@ def saturation_rea_journ(region):
     fig.write_image(PATH+"images/charts/france/regions_dashboards/{}.jpeg".format(name_fig), scale=1.2, width=900, height=600)
 
     print("> " + name_fig)
+    return df_saturation.values[-1]
 
 
-# In[12]:
+# In[13]:
 
 
 import cv2
+dict_saturation = {}
 
 for reg in regions:
+    dict_saturation[reg] = round(saturation_rea_journ(reg), 1)
+    
+    hosp_journ_elias(reg)
     saturation_rea_journ(reg)
     cas_journ(reg)
     hosp_journ(reg)
     rea_journ(reg)
     dc_journ(reg)
-    saturation_rea_journ(reg)
-    
-    
+
     im1 = cv2.imread(PATH+'images/charts/france/regions_dashboards/cas_journ_{}.jpeg'.format(reg))
     im2 = cv2.imread(PATH+'images/charts/france/regions_dashboards/hosp_journ_{}.jpeg'.format(reg))
     im3 = cv2.imread(PATH+'images/charts/france/regions_dashboards/rea_journ_{}.jpeg'.format(reg))
@@ -731,8 +1068,11 @@ for reg in regions:
     os.remove(PATH+'images/charts/france/regions_dashboards/rea_journ_{}.jpeg'.format(reg))
     os.remove(PATH+'images/charts/france/regions_dashboards/dc_journ_{}.jpeg'.format(reg))
 
+with open(PATH_STATS + 'saturation_rea_regions.json', 'w') as outfile:
+    json.dump(dict_saturation, outfile)
 
-# In[13]:
+
+# In[14]:
 
 
 n_tot=4
@@ -885,7 +1225,7 @@ for i in range(0, n_tot):
     fig.write_image(PATH+"images/charts/france/evolution_regs/{}_{}.jpeg".format("evolution_regs", i), scale=3, width=1000, height=900)
 
 
-# In[14]:
+# In[15]:
 
 
 """for reg in regions:
@@ -900,7 +1240,7 @@ for i in range(0, n_tot):
 """
 
 
-# In[15]:
+# In[16]:
 
 
 """print("<!-- wp:buttons --><div class=\"wp-block-buttons\">\n")

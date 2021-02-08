@@ -11,7 +11,7 @@ from tqdm import tqdm
 PATH = '../../'
 
 
-# In[2]:
+# In[47]:
 
 
 # Download data from Santé publique France and export it to local files
@@ -21,6 +21,7 @@ def download_data():
     url_metadata = "https://www.data.gouv.fr/fr/organizations/sante-publique-france/datasets-resources.csv"
     url_geojson = "https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/departements.geojson"
     url_deconf = "https://www.data.gouv.fr/fr/datasets/r/f2d0f955-f9c4-43a8-b588-a03733a38921"
+    url_opencovid = "https://raw.githubusercontent.com/opencovid19-fr/data/master/dist/chiffres-cles.csv"
     
     pbar.update(1)
     metadata = requests.get(url_metadata)
@@ -59,6 +60,7 @@ def download_data():
     data_deconf = requests.get(url_deconf)
     data_sursaud = requests.get(url_sursaud)
     data_incidence = requests.get(url_incidence)
+    data_opencovid = requests.get(url_opencovid)
     
     data_tests_viro = requests.get(url_tests_viro)
     data_clage = requests.get(url_data_clage)
@@ -94,6 +96,9 @@ def download_data():
         
     with open(PATH + 'data/france/tests_viro-fra-covid19.csv', 'wb') as f:
         f.write(data_sexe.content)
+        
+    with open(PATH + 'data/france/donnees-opencovid.csv', 'wb') as f:
+        f.write(data_opencovid.content)
         
     pbar.update(8)
 
@@ -209,7 +214,7 @@ def import_data():
     df_new = df_new.groupby(["dep", "jour"]).first().reset_index()
     
     pbar.update(8)
-    
+    import_data_opencovid()
     return df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viro
 
     
@@ -231,18 +236,28 @@ def import_data_tests_sexe():
     df = pd.read_csv(PATH + 'data/france/tests_viro-fra-covid19.csv', sep=";")
     
     return df
+
+def import_data_opencovid():
+    df = pd.read_csv(PATH + 'data/france/donnees-opencovid.csv', sep=",").groupby(["date"]).sum().diff()
+    PATH_STATS = "../../data/france/stats/"
+    
+    with open(PATH_STATS + 'opencovid.json', 'w') as outfile:
+        dict_data = {"cas":  int(df["cas_confirmes"].values[-1]), "update": df.index.values[-1][-2:] + "/" + df.index.values[-1][-5:-3]}
+        json.dump(dict_data, outfile)
+    return df
         
 
 
-# In[3]:
+# In[50]:
 
 
+#import_data_opencovid()
 #download_data()
 #df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viro = import_data()
 
 
-# In[ ]:
+# In[48]:
 
 
-
+#import_data_opencovid()
 
