@@ -22,6 +22,7 @@ def download_data():
     url_geojson = "https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/departements.geojson"
     url_deconf = "https://www.data.gouv.fr/fr/datasets/r/f2d0f955-f9c4-43a8-b588-a03733a38921"
     url_opencovid = "https://raw.githubusercontent.com/opencovid19-fr/data/master/dist/chiffres-cles.csv"
+    url_vacsi_a_fra = "https://www.data.gouv.fr/fr/datasets/r/54dd5f8d-1e2e-4ccb-8fb8-eac68245befd"
     
     pbar.update(1)
     metadata = requests.get(url_metadata)
@@ -61,6 +62,7 @@ def download_data():
     data_sursaud = requests.get(url_sursaud)
     data_incidence = requests.get(url_incidence)
     data_opencovid = requests.get(url_opencovid)
+    data_vacsi_a_fra = requests.get(url_vacsi_a_fra)
     
     data_tests_viro = requests.get(url_tests_viro)
     data_clage = requests.get(url_data_clage)
@@ -99,6 +101,9 @@ def download_data():
         
     with open(PATH + 'data/france/donnees-opencovid.csv', 'wb') as f:
         f.write(data_opencovid.content)
+        
+    with open(PATH + 'data/france/donnees-vacsi-a-fra.csv', 'wb') as f:
+        f.write(data_vacsi_a_fra.content)
         
     pbar.update(8)
 
@@ -217,6 +222,10 @@ def import_data():
     import_data_opencovid()
     return df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viro
 
+def download_data_hosp_fra_clage():
+    data = requests.get("https://www.data.gouv.fr/fr/datasets/r/08c18e08-6780-452d-9b8c-ae244ad529b3")
+    with open(PATH + 'data/france/donnees-hosp-fra-clage.csv', 'wb') as f:
+        f.write(data.content)
     
 def import_data_metropoles():
     df_metro = pd.read_csv(PATH + 'data/france/donnes-incidence-metropoles.csv', sep=";")
@@ -234,7 +243,6 @@ def import_data_hosp_clage():
 
 def import_data_tests_sexe():
     df = pd.read_csv(PATH + 'data/france/tests_viro-fra-covid19.csv', sep=";")
-    
     return df
 
 def import_data_opencovid():
@@ -245,7 +253,16 @@ def import_data_opencovid():
         dict_data = {"cas":  int(df["cas_confirmes"].values[-1]), "update": df.index.values[-1][-2:] + "/" + df.index.values[-1][-5:-3]}
         json.dump(dict_data, outfile)
     return df
-        
+
+def import_data_vacsi_a_fra():
+    df = pd.read_csv(PATH + 'data/france/donnees-vacsi-a-fra.csv', sep=",")
+    df = df[df.clage_vacsi != 0]
+    return df
+
+def import_data_hosp_fra_clage():
+    df = pd.read_csv(PATH + 'data/france/donnees-hosp-fra-clage.csv', sep=";").groupby(["cl_age90", "jour"]).sum().reset_index()
+    df = df[df.cl_age90 != 0]
+    return df
 
 
 # In[50]:
