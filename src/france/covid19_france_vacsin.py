@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[174]:
 
 
 """
@@ -22,45 +22,173 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[2]:
+# In[175]:
 
 
 import pandas as pd
+import cv2
 import plotly.graph_objects as go
 import france_data_management as data
+import plotly
 PATH = '../../'
 from datetime import datetime
 import locale
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
 
-# In[3]:
+# In[176]:
 
 
 data.download_data()
 data.download_data_hosp_fra_clage()
 
 
-# In[4]:
+# In[177]:
 
 
 df_a_vacsi_a_france = data.import_data_vacsi_a_fra()
 df_hosp_fra_clage = data.import_data_hosp_fra_clage()
+clage_spf = pd.read_csv(PATH+"data/france/clage_spf.csv", sep=";")
+df_a_vacsi_a_france = df_a_vacsi_a_france.merge(clage_spf, left_on="clage_vacsi", right_on="code_spf")
 
 
-# In[ ]:
+# In[190]:
 
 
-df_hosp_fra_clage
+df_a_vacsi_a_france_80 = df_a_vacsi_a_france[df_a_vacsi_a_france.clage_vacsi==80]
+df_hosp_fra_clage_80 = df_hosp_fra_clage[df_hosp_fra_clage.cl_age90 >= 89].groupby(["jour"]).sum().reset_index()
+
+fig = go.Figure()
+fig.add_trace(go.Scatter(
+    x=df_hosp_fra_clage_80.jour,
+    y=df_hosp_fra_clage_80.hosp.rolling(window=7).mean(),
+    showlegend=False,
+    line=dict(color="red", width=4)
+))
+
+fig.add_trace(go.Scatter(
+    x=df_a_vacsi_a_france_80.jour,
+    y=df_a_vacsi_a_france_80.n_cum_dose1/4156974*100,
+    line=dict(width=4, color="#1f77b4"),
+    showlegend=False,
+    yaxis="y2"
+))
+
+fig.update_layout(
+    title=dict(
+        y=0.90, x=0.5,
+        font = dict(
+                size=20, color="black"),
+        text="<b>[+ de 80 ans] <span style='color:red;'>personnes hospitalisées</span> et <span style='color:#1f77b4;'>vaccinations</span></b>"),
+    
+    yaxis=dict(
+        title="<b>Personnes hospitalisées</b>",
+        titlefont=dict(
+            color="red"
+        ),
+        tickfont=dict(
+            color="red"
+        )
+    ),
+    yaxis2=dict(
+            range=[0, 100],
+            title="<b>% vaccinés</b> (au moins 1 dose)",
+            titlefont=dict(
+                color="#1f77b4"
+            ),
+            ticksuffix=" %",
+            tickfont=dict(
+                color="#1f77b4"
+            ),
+            anchor="free",
+            overlaying="y",
+            side="right",
+            position=1
+        ),
+    annotations = [
+                dict(
+                    x=0.5,
+                    y=1.07,
+                    xref='paper',
+                    yref='paper',
+                    font=dict(color="black"),
+                    text='Date : {}. Données : Santé publique France. Auteur : @guillaumerozier covidtracker.fr.'.format(datetime.strptime(max(df_hosp_fra_clage_80.jour), '%Y-%m-%d').strftime('%d %B %Y')),
+                    showarrow = False
+                )]
+)
+fig.write_image(PATH + "images/charts/france/hosp_vacsi_p80.jpeg", scale=2, width=800, height=500)
+plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/dc_vacsi_p80.html', auto_open=False)
 
 
-# In[ ]:
+# In[191]:
 
 
-df_a_vacsi_a_france
+df_a_vacsi_a_france_80 = df_a_vacsi_a_france[df_a_vacsi_a_france.clage_vacsi!=80].groupby(["jour"]).sum().reset_index()
+df_hosp_fra_clage_80 = df_hosp_fra_clage[df_hosp_fra_clage.cl_age90 < 89].groupby(["jour"]).sum().reset_index()
+
+fig = go.Figure()
+fig.add_trace(go.Scatter(
+    x=df_hosp_fra_clage_80.jour,
+    y=df_hosp_fra_clage_80.hosp.rolling(window=7).mean(),
+    showlegend=False,
+    line=dict(color="red", width=4)
+))
+
+fig.add_trace(go.Scatter(
+    x=df_a_vacsi_a_france_80.jour,
+    y=df_a_vacsi_a_france_80.n_cum_dose1/(66990000-4156974)*100,
+    line=dict(width=4, color="#1f77b4"),
+    showlegend=False,
+    yaxis="y2"
+))
+
+fig.update_layout(
+    title=dict(
+        y=0.90, x=0.5,
+        font = dict(
+                size=20, color="black"),
+        text="<b>[0 - 79 ans] <span style='color:red;'>personnes hospitalisées</span> et <span style='color:#1f77b4;'>vaccinations</span></b>"),
+    
+    yaxis=dict(
+        title="<b>Personnes hospitalisées</b>",
+        titlefont=dict(
+            color="red"
+        ),
+        tickfont=dict(
+            color="red"
+        )
+    ),
+    yaxis2=dict(
+            range=[0, 100],
+            title="<b>% vaccinés</b> (au moins 1 dose)",
+            titlefont=dict(
+                color="#1f77b4"
+            ),
+            ticksuffix=" %",
+            tickfont=dict(
+                color="#1f77b4"
+            ),
+            anchor="free",
+            overlaying="y",
+            side="right",
+            position=1
+        ),
+    annotations = [
+                dict(
+                    x=0.5,
+                    y=1.07,
+                    xref='paper',
+                    yref='paper',
+                    font=dict(color="black"),
+                    text='Date : {}. Données : Santé publique France. Auteur : @guillaumerozier covidtracker.fr.'.format(datetime.strptime(max(df_hosp_fra_clage_80.jour), '%Y-%m-%d').strftime('%d %B %Y')),
+                    showarrow = False
+                )]
+)
+fig.write_image(PATH + "images/charts/france/hosp_vacsi_m80.jpeg", scale=2, width=800, height=500)
+plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/dc_vacsi_m80.html', auto_open=False)
 
 
-# In[ ]:
+# In[185]:
 
 
 df_a_vacsi_a_france_80 = df_a_vacsi_a_france[df_a_vacsi_a_france.clage_vacsi==80]
@@ -87,7 +215,7 @@ fig.update_layout(
         y=0.90, x=0.5,
         font = dict(
                 size=20, color="black"),
-        text="<b>[Plus de 80 ans] <span style='color:red;'>décès hospitaliers</span> et <span style='color:#1f77b4;'>vaccinations</span></b>"),
+        text="<b>[+ de 80 ans] <span style='color:red;'>décès hospitaliers</span> et <span style='color:#1f77b4;'>vaccinations</span></b>"),
     
     yaxis=dict(
         title="<b>Décès hospitaliers</b>",
@@ -124,9 +252,11 @@ fig.update_layout(
                     showarrow = False
                 )]
 )
+fig.write_image(PATH + "images/charts/france/dc_vacsi_p80.jpeg", scale=2, width=800, height=500)
+plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/dc_vacsi_p80.html', auto_open=False)
 
 
-# In[ ]:
+# In[186]:
 
 
 df_a_vacsi_a_france_80 = df_a_vacsi_a_france[df_a_vacsi_a_france.clage_vacsi!=80].groupby(["jour"]).sum().reset_index()
@@ -190,10 +320,149 @@ fig.update_layout(
                     showarrow = False
                 )]
 )
+fig.write_image(PATH + "images/charts/france/dc_vacsi_m80.jpeg", scale=2, width=800, height=500)
+plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/dc_vacsi_m80.html', auto_open=False)
 
 
 # In[ ]:
 
 
-df_a_vacsi_a_france.clage_vacsi.unique()
+
+
+
+# In[187]:
+
+
+def dc_hosp_clage(df_hosp_fra_clage, lastday="", minday=""):    
+    #lastday = df_hosp_fra_clage.jour.max()
+    #lastday="2020-09-01"
+    df_hosp_fra_clage_lastday = df_hosp_fra_clage[df_hosp_fra_clage.jour == lastday]
+    df_hosp_fra_clage_minday = df_hosp_fra_clage[df_hosp_fra_clage.jour == minday]
+    sum_hosp = df_hosp_fra_clage_lastday["hosp"].sum()
+
+    fig = go.Figure()
+    
+    fig.add_trace(go.Bar(
+        y=[str(age-9) + " - " + str(age) +" ans" for age in df_hosp_fra_clage_lastday["cl_age90"].values[:-1]] + ["+ 90 ans"],
+        x=df_hosp_fra_clage_minday["hosp"]/df_hosp_fra_clage_minday["hosp"].sum()*100,
+        marker_color='grey',
+        orientation='h',
+        name=minday
+    ))
+    
+    fig.add_trace(go.Bar(
+        y=[str(age-9) + " - " + str(age) +" ans" for age in df_hosp_fra_clage_lastday["cl_age90"].values[:-1]] + ["+ 90 ans"],
+        x=df_hosp_fra_clage_lastday["hosp"]/sum_hosp*100,
+        orientation='h',
+        name=lastday
+    ))
+    fig.update_layout(
+        legend_orientation="h",
+        barmode='overlay',
+        xaxis=dict(ticksuffix=" %"),
+        title=dict(
+            text="Répartition des hospitalisations Covid19 - {}".format(lastday),
+            x=0.5
+        ),
+        bargap=0
+    )
+    fig.write_image(PATH + "images/charts/france/dc_hosp_clage/{}.jpeg".format(lastday), scale=2, width=500, height=500)
+
+
+# In[181]:
+
+
+def vacsi_clage(df_a_vacsi_a_france, lastday=""):
+    #lastday = df_a_vacsi_a_france.jour.max()
+    #lastday="2020-09-01"
+    df_a_vacsi_a_france_lastday = df_a_vacsi_a_france[df_a_vacsi_a_france.jour == lastday].sort_values(["clage_vacsi"])
+    sum_hosp = df_a_vacsi_a_france_lastday["n_cum_dose1"].sum()
+
+    fig = go.Figure()
+    fig.add_trace(go.Bar(
+        #y=[str(age) + " ans" for age in df_a_vacsi_a_france.clage_vacsi],
+        y=df_a_vacsi_a_france_lastday.categorie_fine,
+        x=df_a_vacsi_a_france_lastday["n_cum_dose1"]/df_a_vacsi_a_france_lastday["population"]*100,
+        orientation='h',
+    ))
+    fig.update_layout(
+        title=dict(
+            text="% de la population ayant reçu 1 dose de vaccin - {}".format(lastday),
+            x=0.5
+        ),
+        xaxis=dict(range=[0, 100], ticksuffix=" %"),
+        bargap=0
+    )
+    fig.write_image(PATH + "images/charts/france/vacsi_clage/{}.jpeg".format(lastday), scale=2, width=500, height=500)
+
+
+# In[ ]:
+
+
+
+
+
+# In[182]:
+
+
+def assemble_images(date):
+    #Assemble images
+    
+    import numpy as np
+    PATH = "../../"
+
+    im1 = cv2.imread(PATH+'images/charts/france/vacsi_clage/{}.jpeg'.format(date))
+    im2 = cv2.imread(PATH+'images/charts/france/dc_hosp_clage/{}.jpeg'.format(date))
+
+    im_h = cv2.hconcat([im1, im2])
+    cv2.imwrite(PATH+'images/charts/france/vacsi_hosp_comp/{}.jpeg'.format(date), im_h)
+
+
+# In[183]:
+
+
+def build_video(dates):
+        #import glob
+    for (folder, fps) in [("vacsi_hosp_comp", 4),]:
+        img_array = []
+        for i in range(len(dates)):
+            img = cv2.imread((PATH + "images/charts/france/{}/{}.jpeg").format(folder, dates[i]))
+            height, width, layers = img.shape
+            size = (width,height)
+            img_array.append(img)
+
+            if i==len(dates)-1:
+                for k in range(4):
+                    img_array.append(img)
+
+            if i==0:
+                for k in range(6):
+                    img_array.append(img)
+
+        out = cv2.VideoWriter(PATH + 'images/charts/france/{}.mp4'.format(folder),cv2.VideoWriter_fourcc(*'MP4V'), fps, size)
+
+        for i in range(len(img_array)):
+            out.write(img_array[i])
+
+        out.release()
+
+        try:
+            import subprocess
+            subprocess.run(["ffmpeg", "-y", "-i", PATH + "images/charts/france/{}.mp4".format(folder), PATH + "images/charts/france/{}_opti.mp4".format(folder)])
+            subprocess.run(["rm", PATH + "images/charts/france/{}.mp4".format(folder)])
+
+        except:
+            print("error conversion h265")
+
+
+# In[184]:
+
+
+days = sorted(df_a_vacsi_a_france.jour.unique())[-40:]
+for date in days:
+    print(date)
+    vacsi_clage(df_a_vacsi_a_france, date)
+    dc_hosp_clage(df_hosp_fra_clage, date, minday=days[0])
+    assemble_images(date)
+build_video(days)
 

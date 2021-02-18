@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[16]:
 
 
 import requests
@@ -9,9 +9,10 @@ import pandas as pd
 import json
 from tqdm import tqdm
 PATH = '../../'
+PATH_STATS = "../../data/france/stats/"
 
 
-# In[47]:
+# In[18]:
 
 
 # Download data from Santé publique France and export it to local files
@@ -226,6 +227,12 @@ def download_data_hosp_fra_clage():
     data = requests.get("https://www.data.gouv.fr/fr/datasets/r/08c18e08-6780-452d-9b8c-ae244ad529b3")
     with open(PATH + 'data/france/donnees-hosp-fra-clage.csv', 'wb') as f:
         f.write(data.content)
+        
+def download_data_vue_ensemble():
+    data = requests.get("https://www.data.gouv.fr/fr/datasets/r/d3a98a30-893f-47f7-96c5-2f4bcaaa0d71")        
+    with open(PATH + 'data/france/synthese-fra.csv', 'wb') as f:
+        f.write(data.content)
+
     
 def import_data_metropoles():
     df_metro = pd.read_csv(PATH + 'data/france/donnes-incidence-metropoles.csv', sep=";")
@@ -245,9 +252,17 @@ def import_data_tests_sexe():
     df = pd.read_csv(PATH + 'data/france/tests_viro-fra-covid19.csv', sep=";")
     return df
 
+def import_data_vue_ensemble():
+    df = pd.read_csv(PATH + 'data/france/synthese-fra.csv', sep=",")
+    df = df.sort_values(["date"])
+    
+    with open(PATH_STATS + 'vue-ensemble.json', 'w') as outfile:
+        dict_data = {"cas":  int(df["total_cas_confirmes"].diff().values[-1]), "update": df.date.values[-1][-2:] + "/" + df.date.values[-1][-5:-3]}
+        json.dump(dict_data, outfile)
+    return df
+
 def import_data_opencovid():
     df = pd.read_csv(PATH + 'data/france/donnees-opencovid.csv', sep=",").groupby(["date"]).sum().diff()
-    PATH_STATS = "../../data/france/stats/"
     
     with open(PATH_STATS + 'opencovid.json', 'w') as outfile:
         dict_data = {"cas":  int(df["cas_confirmes"].values[-1]), "update": df.index.values[-1][-2:] + "/" + df.index.values[-1][-5:-3]}
@@ -263,6 +278,13 @@ def import_data_hosp_fra_clage():
     df = pd.read_csv(PATH + 'data/france/donnees-hosp-fra-clage.csv', sep=";").groupby(["cl_age90", "jour"]).sum().reset_index()
     df = df[df.cl_age90 != 0]
     return df
+
+
+# In[19]:
+
+
+download_data_vue_ensemble()
+import_data_vue_ensemble()
 
 
 # In[50]:

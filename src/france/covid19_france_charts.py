@@ -4,7 +4,7 @@
 # # COVID-19 French Charts
 # Guillaume Rozier, 2020
 
-# In[5]:
+# In[35]:
 
 
 """
@@ -26,7 +26,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[9]:
+# In[5]:
 
 
 from multiprocessing import Pool
@@ -55,7 +55,7 @@ PATH = "../../"
 now = datetime.now()
 
 
-# In[10]:
+# In[37]:
 
 
 try:
@@ -71,7 +71,7 @@ except:
 
 # # Data download and import
 
-# In[11]:
+# In[38]:
 
 
 import time
@@ -100,6 +100,13 @@ while not success:
 
 
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
+
+
+# In[4]:
+
+
+data.download_data_vue_ensemble()
+data.import_data_vue_ensemble()
 
 
 # In[19]:
@@ -612,9 +619,9 @@ def incidence_regs_data():
     
     dict_json = {"liste_regions": [], "donnees_regions": {}, "donnees_france": {}, "date_donnees": dates_incid[-1][-2:]+"/"+dates_incid[-1][-5:-3], "date_update": dates[-1][-2:]+"/"+dates[-1][-5:-3]}
     
-    df_temp = df_new[["jour", "incid_dc", "incid_hosp", "incid_rea", "regionName", "departmentPopulation"]][ df_new["jour"] >= dates[-7]].groupby(["jour", "regionName"]).sum().reset_index()
+    df_temp = df_new[["jour", "incid_dc", "incid_hosp", "incid_rea", "regionName", "departmentPopulation"]][ df_new["jour"] >= dates[-14]].groupby(["jour", "regionName"]).sum().reset_index()
     
-    df_tests_viros_regions = df_incid[(df_incid["jour"] >= dates_incid[-7]) & (df_incid["cl_age90"]==0)].groupby(["jour", "regionName"]).sum().reset_index()
+    df_tests_viros_regions = df_incid[(df_incid["jour"] >= dates_incid[-14]) & (df_incid["cl_age90"]==0)].groupby(["jour", "regionName"]).sum().reset_index()
     
     for reg in regions:
         data_json = {"incidence_cas": 0, "incidence_hosp": 0, "incidence_dc": 0, "population": 0}
@@ -622,12 +629,29 @@ def incidence_regs_data():
         df_reg = df_temp[df_temp["regionName"] == reg].reset_index()
         df_reg_tests = df_tests_viros_regions[df_tests_viros_regions["regionName"] == reg].reset_index()
         
-        data_json["incidence_cas"] = int(np.round(df_reg_tests["P"].sum()/df_reg_tests["pop"].values[0]*100000))
-        data_json["taux_positivite"] = (np.round(df_reg_tests["P"].sum()/df_reg_tests["T"].sum()*100, 1))
-        data_json["incidence_dc"] = df_reg["incid_dc"].sum()/df_reg["departmentPopulation"].values[0]*100000
-        data_json["incidence_hosp"] = df_reg["incid_hosp"].sum()/df_reg["departmentPopulation"].values[0]*100000
-        data_json["incidence_rea"] = df_reg["incid_rea"].sum()/df_reg["departmentPopulation"].values[0]*100000
+        data_json["incidence_cas"] = int(np.round(df_reg_tests["P"].values[-7:].sum()/df_reg_tests["pop"].values[0]*100000))
+        data_json["taux_positivite"] = (np.round(df_reg_tests["P"].values[-7:].sum()/df_reg_tests["T"].sum()*100, 1))
+        data_json["incidence_dc"] = df_reg["incid_dc"].values[-7:].sum()/df_reg["departmentPopulation"].values[0]*100000
+        data_json["incidence_hosp"] = df_reg["incid_hosp"].values[-7:].sum()/df_reg["departmentPopulation"].values[0]*100000
+        data_json["incidence_rea"] = df_reg["incid_rea"].values[-7:].sum()/df_reg["departmentPopulation"].values[0]*100000
         data_json["population"] = int(df_reg["departmentPopulation"].values[0])
+        
+        
+        ###
+        incidence_j7 = int(np.round(df_reg_tests["P"].values[-14:-7].sum()/df_reg_tests["pop"].values[0]*100000))
+        data_json["incidence_evol"] = np.nan_to_num(round((data_json["incidence_cas"]-incidence_j7)/incidence_j7*100, 2))
+        
+        #data_json["lits_hosp"] = round(df_dep_lits["hosp"].values[-1]/df_dep["departmentPopulation"].values[0]*100000, 2)
+        #data_json["lits_hosp_evol"] = np.nan_to_num(round((df_dep_lits["hosp"].values[-1]-df_dep_lits["hosp"].values[-8])/df_dep_lits["hosp"].values[-8]*100, 2))
+        
+        #data_json["incidence_rea"] = round(df_dep["incid_rea"].values[-7:].sum()/df_dep["departmentPopulation"].values[0]*100000, 3)
+        #data_json["lits_rea"] = round(df_dep_lits["rea"].values[-1]/df_dep["departmentPopulation"].values[0]*100000, 2)
+        #data_json["lits_rea_evol"] = np.nan_to_num(round((df_dep_lits["rea"].values[-1]-df_dep_lits["rea"].values[-8])/df_dep_lits["rea"].values[-8]*100, 2))
+            
+        #data_json["incidence_dc"] = round(df_dep["incid_dc"].values[-7:].sum()/df_dep["departmentPopulation"].values[0]*100000, 3)
+        #incidence_dc_j7 = round(df_dep["incid_dc"].values[-14:-7].sum()/df_dep["departmentPopulation"].values[0]*100000, 3)
+        #data_json["incidence_dc_evol"] = np.nan_to_num(round((data_json["incidence_dc"]-incidence_dc_j7)/incidence_dc_j7*100, 2))
+        ###
         
         dict_json["donnees_regions"][reg] = data_json
         
