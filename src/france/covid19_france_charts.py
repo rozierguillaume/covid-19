@@ -4,7 +4,7 @@
 # # COVID-19 French Charts
 # Guillaume Rozier, 2020
 
-# In[35]:
+# In[1]:
 
 
 """
@@ -26,7 +26,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[5]:
+# In[2]:
 
 
 from multiprocessing import Pool
@@ -55,7 +55,7 @@ PATH = "../../"
 now = datetime.now()
 
 
-# In[37]:
+# In[3]:
 
 
 try:
@@ -71,7 +71,7 @@ except:
 
 # # Data download and import
 
-# In[38]:
+# In[4]:
 
 
 import time
@@ -96,27 +96,27 @@ while not success:
 
 # ## Data transformations
 
-# In[13]:
+# In[5]:
 
 
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
 
 
-# In[4]:
+# In[6]:
 
 
 data.download_data_vue_ensemble()
-data.import_data_vue_ensemble()
+df_vue_ensemble = data.import_data_vue_ensemble()
 
 
-# In[19]:
+# In[7]:
 
 
 df_incid_fra_clage = data.import_data_tests_sexe()
 df_incid_fra = df_incid_fra_clage[df_incid_fra_clage["cl_age90"]==0]
 
 
-# In[20]:
+# In[8]:
 
 
 df_new_france = df_new.groupby(["jour"]).sum().reset_index()
@@ -155,7 +155,7 @@ regions = list(dict.fromkeys(list(df['regionName'].values)))
 departements_noms = list(dict.fromkeys(list(df['departmentName'].values))) 
 
 
-# In[21]:
+# In[9]:
 
 
 #Calcul sorties de réa
@@ -3100,11 +3100,11 @@ if show_charts:
     fig.show()
 
 
-# In[50]:
+# In[10]:
 
 
 suffixe=""
-for (date_deb, date_fin) in [("2020-03-18", last_day_plot_dashboard), (dates[-60], last_day_plot)]:
+for (date_deb, date_fin) in [("2020-03-18", last_day_plot_dashboard), (dates[-100], last_day_plot)]:
     range_x, name_fig, range_y = [date_deb, date_fin], "cas_journ"+suffixe, [0, df_incid_fra["P"].max()*0.7]
     
     title = "<b>Cas positifs</b> au Covid19"
@@ -3249,7 +3249,7 @@ for (date_deb, date_fin) in [("2020-03-18", last_day_plot_dashboard), (dates[-60
             barmode='group',
             title={
                         'text': title,
-                        'y':0.95,
+                        'y':0.99,
                         'x':0.5,
                         'xanchor': 'center',
                         'yanchor': 'top'},
@@ -3266,7 +3266,16 @@ for (date_deb, date_fin) in [("2020-03-18", last_day_plot_dashboard), (dates[-60
                             xref='paper',
                             yref='paper',
                             font=dict(size=14),
-                            text="<b>@GuillaumeRozier - covidtracker.fr</b>",#'Date : {}. Source : Santé publique France. Auteur : GRZ - covidtracker.fr.'.format(datetime.strptime(max(dates), '%Y-%m-%d').strftime('%d %B %Y')),                    showarrow = False
+                            text="",#'Date : {}. Source : Santé publique France. Auteur : GRZ - covidtracker.fr.'.format(datetime.strptime(max(dates), '%Y-%m-%d').strftime('%d %B %Y')),                    showarrow = False
+                            showarrow=False
+                        ),
+                        dict(
+                            x=0.5,
+                            y=1.08,
+                            xref='paper',
+                            yref='paper',
+                            font=dict(size=14),
+                            text="Par date de prélèvement sur le patient - @GuillaumeRozier - covidtracker.fr",#'Date : {}. Source : Santé publique France. Auteur : GRZ - covidtracker.fr.'.format(datetime.strptime(max(dates), '%Y-%m-%d').strftime('%d %B %Y')),                    showarrow = False
                             showarrow=False
                         ),
                         ]
@@ -3295,7 +3304,7 @@ for (date_deb, date_fin) in [("2020-03-18", last_day_plot_dashboard), (dates[-60
                 x = dates_incid[-4], y = y, # annotation point
                 xref='x1', 
                 yref='y2',
-                text=" <b>{} {}".format('%d' % df_incid_france_cas_rolling.values[-4], "cas quotidiens<br></b>en moyenne du {} au {}.<br> {} % en 7 jours".format(datetime.strptime(dates_incid[-7], '%Y-%m-%d').strftime('%d'), datetime.strptime(dates_incid[-1], '%Y-%m-%d').strftime('%d %b'), croissance)),
+                text=" <b>{} {}".format('%d' % df_incid_france_cas_rolling.values[-4], "cas quotidiens<br></b>en moyenne<br>prélevés du {} au {}.<br> {} % en 7 jours".format(datetime.strptime(dates_incid[-7], '%Y-%m-%d').strftime('%d'), datetime.strptime(dates_incid[-1], '%Y-%m-%d').strftime('%d %b'), croissance)),
                 xshift=-2,
                 yshift=0,
                 xanchor="center",
@@ -3330,6 +3339,209 @@ for (date_deb, date_fin) in [("2020-03-18", last_day_plot_dashboard), (dates[-60
                 ax=ax2,
                 ay=-100,
                 arrowcolor="grey",
+                arrowsize=1.5,
+                arrowwidth=1,
+                arrowhead=0,
+                showarrow=True
+            ),
+              dict(
+                x = dates_incid[-1], y = 5000, # annotation point
+                xref='x1', 
+                yref='y2',
+                text="Objectif",
+                xshift=0,
+                yshift=0,
+                xanchor="left",
+                yanchor="top",
+                align='center',
+                font=dict(
+                    color="green",
+                    size=10
+                    ),
+                opacity=1,
+                ax=0,
+                ay=0,
+                showarrow=False
+            ),
+                dict(
+                x = "2020-10-30", y = 65000, # annotation point
+                xref='x1', 
+                yref='y2',
+                text="Confinement",
+                xanchor="left",
+                yanchor="top",
+                align='center',
+                font=dict(
+                    color="red",
+                    size=8
+                    ),
+                showarrow=False
+            ),
+             dict(
+                x=0.5,
+                y=-0.1,
+                font=dict(size=10),
+                xref='paper',
+                yref='paper',
+                text="Données Santé publique France",#'Date : {}. Source : Santé publique France. Auteur : guillaumerozier.fr.'.format(datetime.strptime(max(dates), '%Y-%m-%d').strftime('%d %B %Y')),                    showarrow = False
+                showarrow=False
+                        ))
+
+        fig.write_image(PATH + "images/charts/france/{}.jpeg".format(name_fig+i), scale=2, width=900, height=600)
+
+        plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/{}.html'.format(name_fig+i), auto_open=False)
+        print("> " + name_fig)
+        if show_charts:
+            fig.show()
+        suffixe="_recent"
+
+
+# In[15]:
+
+
+suffixe=""
+for (date_deb, date_fin) in [("2020-03-18", last_day_plot_dashboard), (dates[-60], last_day_plot)]:
+    range_x, name_fig, range_y = [date_deb, date_fin], "cas_journ_spf"+suffixe, [0, df_incid_fra["P"].max()*0.7]
+    
+    title = "<b>Cas positifs</b> au Covid19"
+
+    #fig = go.Figure()
+    for i in ("", "log"):
+        if i=="log":
+            title += " [log.]"
+            range_y=[0, math.log(df_incid_fra["P"].max())/2]
+
+        fig = make_subplots(rows=1, cols=1, shared_yaxes=True, subplot_titles=[""], vertical_spacing = 0.08, horizontal_spacing = 0.1, specs=[[{"secondary_y": True}]])
+        df_incid_france_cas_rolling = df_vue_ensemble["total_cas_confirmes"].diff().rolling(window=7, center=True).mean()#df_incid_france["P"].rolling(window=7, center=True).mean()
+
+        fig.add_trace(go.Scatter(
+            x = df_vue_ensemble["date"],
+            y = df_incid_france_cas_rolling,
+            name = "Cas positifs (moyenne 7 j.)",
+            marker_color='rgb(8, 115, 191)',
+            line_width=8,
+            opacity=0.8,
+            fill='tozeroy',
+            fillcolor="rgba(8, 115, 191, 0.3)",
+            showlegend=True
+        ), secondary_y=True)
+        
+
+        fig.add_shape(type="line",
+        x0="2019-12-15", y0=5000, x1="2021-12-15", y1=5000,
+        line=dict(color="green",width=2, dash="dot"), xref='x1', yref='y2'
+        )
+
+        fig.add_trace(go.Scatter(
+            x = [df_vue_ensemble["date"].values[-4]],
+            y = [df_incid_france_cas_rolling.values[-4]],
+            name = "",
+            mode="markers",
+            marker_color='rgba(255, 255, 255, 0.6)',
+            marker_size=16,
+            opacity=1,
+            showlegend=False
+        ), secondary_y=True)
+
+        fig.add_trace(go.Scatter(
+            x = [df_vue_ensemble["date"].values[-4]],
+            y = [df_incid_france_cas_rolling.values[-4]],
+            name = "",
+            mode="markers",
+            marker_color='rgb(8, 115, 191)',
+            marker_size=11,
+            opacity=1,
+            showlegend=False
+        ), secondary_y=True)
+
+        ###
+        if i=="log":
+            fig.update_yaxes(zerolinecolor='Grey', range=range_y, tickfont=dict(size=13), type="log", secondary_y=True)
+            fig.update_yaxes(zerolinecolor='Grey', range=range_y, tickfont=dict(size=13), type="log", secondary_y=False)
+        else:
+            fig.update_yaxes(zerolinecolor='Grey', range=range_y, tickfont=dict(size=13, color="rgba(8, 115, 191, 1)"), secondary_y=True,)
+            fig.update_yaxes(zerolinecolor='blue', tickfont=dict(size=13, color="Grey"), secondary_y=False)
+
+        fig.update_xaxes(nticks=10, ticks='inside', tickangle=0, tickfont=dict(size=16), range=range_x)
+
+        # Here we modify the tickangle of the xaxis, resulting in rotated labels.
+        fig.update_layout(
+            bargap=0,
+            margin=dict(
+                    l=50,
+                    r=0,
+                    b=0,
+                    t=70,
+                    pad=10
+                ),
+            legend_orientation="h",
+            barmode='group',
+            title={
+                        'text': title,
+                        'y':0.99,
+                        'x':0.5,
+                        'xanchor': 'center',
+                        'yanchor': 'top'},
+                        titlefont = dict(
+                        size=30),
+            xaxis=dict(
+                    title='',
+                    tickformat='%d/%m'),
+
+            annotations = [
+                        dict(
+                            x=0.5,
+                            y=0.99,
+                            xref='paper',
+                            yref='paper',
+                            font=dict(size=14),
+                            text="",#'Date : {}. Source : Santé publique France. Auteur : GRZ - covidtracker.fr.'.format(datetime.strptime(max(dates), '%Y-%m-%d').strftime('%d %B %Y')),                    showarrow = False
+                            showarrow=False
+                        ),
+                        dict(
+                            x=0.5,
+                            y=1.08,
+                            xref='paper',
+                            yref='paper',
+                            font=dict(size=14),
+                            text="Par date de remontée du résultat de test - @GuillaumeRozier - covidtracker.fr",#'Date : {}. Source : Santé publique France. Auteur : GRZ - covidtracker.fr.'.format(datetime.strptime(max(dates), '%Y-%m-%d').strftime('%d %B %Y')),                    showarrow = False
+                            showarrow=False
+                        ),
+                        ]
+                         )
+
+        croissance = math.trunc(round(((df_incid_france_cas_rolling.values[-4]-df_incid_france_cas_rolling.values[-4-7]) / df_incid_france_cas_rolling.values[-4-7])*100))
+        if croissance >= 0:
+            croissance="+"+str(abs(croissance))
+
+        if i=="log":
+            y=math.log(df_incid_france_cas_rolling.values[-4])
+        else:
+            y=df_incid_france_cas_rolling.values[-4]
+            
+        ax=-400
+        ax2=-400
+        if(suffixe=="_recent"):
+            ax=-100
+            ax2=0
+            
+        fig['layout']['annotations'] += (dict(
+                x = df_vue_ensemble["date"].values[-4], y = y, # annotation point
+                xref='x1', 
+                yref='y2',
+                text=" <b>{} {}".format('%d' % df_incid_france_cas_rolling.values[-4], "cas quotidiens</b><br>en moyenne<br> publiés du {} au {}.<br> {} % en 7 jours".format(datetime.strptime(dates_incid[-7], '%Y-%m-%d').strftime('%d'), datetime.strptime(dates_incid[-1], '%Y-%m-%d').strftime('%d %b'), croissance)),
+                xshift=-2,
+                yshift=0,
+                xanchor="center",
+                align='center',
+                font=dict(
+                    color="rgb(8, 115, 191)",
+                    size=20
+                    ),
+                opacity=1,
+                ax=ax,
+                ay=-100,
+                arrowcolor="rgb(8, 115, 191)",
                 arrowsize=1.5,
                 arrowwidth=1,
                 arrowhead=0,
@@ -7772,7 +7984,7 @@ if show_charts:
 
 # ## Réanimations par département (line chart)
 
-# In[98]:
+# In[39]:
 
 
 df_last_d = df[df['jour'] == dates[-1]]

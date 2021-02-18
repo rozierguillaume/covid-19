@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[212]:
+# In[270]:
 
 
 """
@@ -22,7 +22,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[213]:
+# In[271]:
 
 
 import pandas as pd
@@ -34,13 +34,13 @@ show_charts = False
 PATH_STATS = "../../data/france/stats/"
 
 
-# In[214]:
+# In[272]:
 
 
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
 
 
-# In[215]:
+# In[273]:
 
 
 df_incid_fra_clage = data.import_data_tests_sexe()
@@ -55,7 +55,7 @@ df_new_france = df_new.groupby(["jour"]).sum().reset_index()
 df_new_regions = df_new.groupby(["jour", "regionName"]).sum().reset_index()
 
 
-# In[252]:
+# In[274]:
 
 
 departements = list(dict.fromkeys(list(df_incid['dep'].values))) 
@@ -71,7 +71,7 @@ zone_b = ["zone_b", "02", "04", "05", "06", "08", "10", "13", "14", "18", "22", 
 zone_c = ["zone_c", "09", "11", "12", "30", "31", "32", "34", "46", "48", "65", "66", "75", "77", "78", "81", "82", "91", "92", "93", "94", "95"]
 
 
-# In[266]:
+# In[275]:
 
 
 def generate_data(data_incid, data_hosp, data_sursaud, data_new, export_jour=False):## Incidence
@@ -124,7 +124,7 @@ def generate_data(data_incid, data_hosp, data_sursaud, data_new, export_jour=Fal
  
 
 
-# In[218]:
+# In[276]:
 
 
 def generate_data_age(data_incid, data_hosp, clage_list):## Incidence
@@ -160,7 +160,7 @@ def generate_data_age(data_incid, data_hosp, clage_list):## Incidence
  
 
 
-# In[219]:
+# In[277]:
 
 
 def export_data(data, suffix=""):
@@ -168,7 +168,7 @@ def export_data(data, suffix=""):
         json.dump(data, outfile)
 
 
-# In[263]:
+# In[278]:
 
 
 def dataexplorer():
@@ -203,7 +203,7 @@ def dataexplorer():
     export_data(dict_data, suffix="_compr")
 
 
-# In[267]:
+# In[279]:
 
 
 dataexplorer()

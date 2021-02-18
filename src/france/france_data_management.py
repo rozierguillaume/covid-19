@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[16]:
+# In[1]:
 
 
 import requests
@@ -12,7 +12,7 @@ PATH = '../../'
 PATH_STATS = "../../data/france/stats/"
 
 
-# In[18]:
+# In[2]:
 
 
 # Download data from Santé publique France and export it to local files
@@ -235,7 +235,7 @@ def download_data_vue_ensemble():
 
     
 def import_data_metropoles():
-    df_metro = pd.read_csv(PATH + 'data/france/donnes-incidence-metropoles.csv', sep=";")
+    df_metro = pd.read_csv(PATH + 'data/france/donnes-incidence-metropoles.csv', sep=",")
     epci = pd.read_csv(PATH + 'data/france/metropole-epci.csv', sep=";", encoding="'windows-1252'")
     
     df_metro = df_metro.merge(epci, left_on='epci2020', right_on='EPCI').drop(['EPCI'], axis=1)
@@ -280,14 +280,7 @@ def import_data_hosp_fra_clage():
     return df
 
 
-# In[19]:
-
-
-download_data_vue_ensemble()
-import_data_vue_ensemble()
-
-
-# In[50]:
+# In[4]:
 
 
 #import_data_opencovid()
@@ -295,7 +288,7 @@ import_data_vue_ensemble()
 #df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viro = import_data()
 
 
-# In[48]:
+# In[5]:
 
 
 #import_data_opencovid()
