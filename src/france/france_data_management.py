@@ -245,6 +245,8 @@ def import_data_metropoles():
 def import_data_hosp_clage():
     df_hosp = pd.read_csv(PATH + 'data/france/donnes-hospitalieres-clage-covid19.csv', sep=";")
     df_hosp = df_hosp.groupby(["reg", "jour", "cl_age90"]).first().reset_index()
+    df_reg_pop = pd.read_csv(PATH + 'data/france/population_grandes_regions.csv', sep=",")
+    df_hosp = df_hosp.merge(df_reg_pop, left_on="reg", right_on="code")
     
     return df_hosp
 
@@ -280,7 +282,7 @@ def import_data_hosp_fra_clage():
     return df
 
 
-# In[4]:
+# In[3]:
 
 
 #import_data_opencovid()
@@ -288,7 +290,7 @@ def import_data_hosp_fra_clage():
 #df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viro = import_data()
 
 
-# In[5]:
+# In[4]:
 
 
 #import_data_opencovid()

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[270]:
+# In[1]:
 
 
 """
@@ -22,7 +22,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[271]:
+# In[2]:
 
 
 import pandas as pd
@@ -34,14 +34,16 @@ show_charts = False
 PATH_STATS = "../../data/france/stats/"
 
 
-# In[272]:
+# In[34]:
 
 
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
 
 
-# In[273]:
+# In[35]:
 
+
+df_incid_clage = df_incid.copy()
 
 df_incid_fra_clage = data.import_data_tests_sexe()
 df_incid_fra = df_incid_fra_clage[df_incid_fra_clage["cl_age90"]==0]
@@ -55,7 +57,20 @@ df_new_france = df_new.groupby(["jour"]).sum().reset_index()
 df_new_regions = df_new.groupby(["jour", "regionName"]).sum().reset_index()
 
 
-# In[274]:
+# In[90]:
+
+
+df_incid_clage_regions = df_incid_clage.groupby(["regionName"]).sum().reset_index()
+
+
+# In[43]:
+
+
+df_hosp_clage = data.import_data_hosp_clage()
+df_hosp_clage_france = df_hosp_clage.groupby(["jour", "cl_age90"]).sum().reset_index()
+
+
+# In[5]:
 
 
 departements = list(dict.fromkeys(list(df_incid['dep'].values))) 
@@ -71,7 +86,7 @@ zone_b = ["zone_b", "02", "04", "05", "06", "08", "10", "13", "14", "18", "22", 
 zone_c = ["zone_c", "09", "11", "12", "30", "31", "32", "34", "46", "48", "65", "66", "75", "77", "78", "81", "82", "91", "92", "93", "94", "95"]
 
 
-# In[275]:
+# In[28]:
 
 
 def generate_data(data_incid, data_hosp, data_sursaud, data_new, export_jour=False):## Incidence
@@ -124,43 +139,60 @@ def generate_data(data_incid, data_hosp, data_sursaud, data_new, export_jour=Fal
  
 
 
-# In[276]:
+# In[87]:
 
 
-def generate_data_age(data_incid, data_hosp, clage_list):## Incidence
+def generate_data_age(data_incid, data_hosp, export_jour=False):## Incidence
+    clage_tranches = [[0], [9, 19], [29, 39], [49, 59], [69, 79], [89, 90]]
+    clage_noms = ["tous", "19", "39", "59", "79", "90"]
+    clage_noms_disp = ["Tous âges", "0 à 19 ans", "20 à 39 ans", "40 à 59 ans", "60 à 79 ans", "Plus de 80 ans"]
+    
     dict_data = {}
     
-    for clage in clage_list:
-        dict_data[clage] = {}
-        taux_incidence = data_incid["P"].rolling(window=7).sum().fillna(0) * 100000 / data_incid["pop"].values[0]
-        dict_data[clage]["incidence"] = {"jour": list(data_incid.jour), "valeur": list(round(taux_incidence,2))}
+    for (idx, clage) in enumerate(clage_tranches):
+        clage_nom = clage_noms[idx]
+        
+        data_incid_clage = data_incid[data_incid.cl_age90.isin(clage)].groupby("jour").sum().reset_index()
+        data_hosp_clage = data_hosp[data_hosp.cl_age90.isin(clage)].groupby("jour").sum().reset_index()
 
-        taux_positivite = (data_incid["P"].rolling(window=7).sum() * 100 / data_incid["T"].rolling(window=7).sum()).fillna(0)
-        dict_data[clage]["taux_positivite"] = {"jour": list(data_incid.jour), "valeur": list(round(taux_positivite,2))}
+        dict_data[clage_nom] = {}
 
-        cas = data_incid["P"].rolling(window=7).mean().fillna(0)
-        dict_data[clage]["cas"] = {"jour": list(data_incid.jour), "valeur": list(round(cas,2))}
+        taux_incidence = data_incid_clage["P"].rolling(window=7).sum().fillna(0) * 100000 / data_incid_clage["pop"].values[0]
+        dict_data[clage_nom]["incidence"] = {"jour_nom": "jour_incid", "valeur": list(round(taux_incidence,2))}
 
-        tests = data_incid["T"].rolling(window=7).mean().fillna(0)
-        dict_data[clage]["tests"] = {"jour": list(data_incid.jour), "valeur": list(round(tests,2))}
+        taux_positivite = (data_incid_clage["P"].rolling(window=7).sum() * 100 / data_incid_clage["T"].rolling(window=7).sum()).fillna(0)
+        dict_data[clage_nom]["taux_positivite"] = {"jour_nom": "jour_incid", "valeur": list(round(taux_positivite,2))}
 
-        hospitalisations = data_hosp.hosp.fillna(0)
-        dict_data[clage]["hospitalisations"] = {"jour": list(data_hosp.jour), "valeur": list(hospitalisations)}
+        cas = data_incid_clage["P"].rolling(window=7).mean().fillna(0)
+        dict_data[clage_nom]["cas"] = {"jour_nom": "jour_incid", "valeur": list(round(cas,2))}
 
-        reanimations = data_hosp.rea.fillna(0)
-        dict_data[clage]["reanimations"] = {"jour": list(data_hosp.jour), "valeur": list(reanimations)}
+        tests = data_incid_clage["T"].rolling(window=7).mean().fillna(0)
+        dict_data[clage_nom]["tests"] = {"jour_nom": "jour_incid", "valeur": list(round(tests,2))}
 
-        deces_hospitaliers = data_hosp.dc.diff().rolling(window=7).mean().fillna(0)
-        dict_data[clage]["deces_hospitaliers"] = {"jour": list(data_hosp.jour), "valeur": list(round(deces_hospitaliers,2))}
+        hospitalisations = data_hosp_clage.hosp.fillna(0)
+        dict_data[clage_nom]["hospitalisations"] = {"jour_nom": "jour_hosp", "valeur": list(hospitalisations)}
 
-        population = data_incid["pop"].values[0]
-        dict_data["population"] = population
-    
+        reanimations = data_hosp_clage.rea.fillna(0)
+        dict_data[clage_nom]["reanimations"] = {"jour_nom": "jour_hosp", "valeur": list(reanimations)}
+
+        deces_hospitaliers = data_hosp_clage.dc.diff().rolling(window=7).mean().fillna(0)
+        dict_data[clage_nom]["deces_hospitaliers"] = {"jour_nom": "jour_hosp", "valeur": list(round(deces_hospitaliers,2))}
+
+        population = data_incid_clage["pop"].values[0]
+        dict_data[clage_nom]["population"] = population
+        
+    if export_jour:
+            dict_data["jour_incid"] = list(data_incid.jour.unique())
+            dict_data["jour_hosp"] = list(data_hosp.jour.unique())
+            dict_data["tranches"] = clage_tranches
+            dict_data["tranches_noms"] = clage_noms
+            dict_data["tranches_noms_affichage"] = clage_noms_disp
+
     return dict_data
  
 
 
-# In[277]:
+# In[29]:
 
 
 def export_data(data, suffix=""):
@@ -168,7 +200,7 @@ def export_data(data, suffix=""):
         json.dump(data, outfile)
 
 
-# In[278]:
+# In[32]:
 
 
 def dataexplorer():
@@ -203,8 +235,53 @@ def dataexplorer():
     export_data(dict_data, suffix="_compr")
 
 
-# In[279]:
+# In[ ]:
+
+
+
+
+
+# In[77]:
+
+
+def dataexplorer_age():
+    dict_data = {}
+    dict_data["regions"] = sorted(regions)
+    
+    dict_data["france"] = generate_data_age(df_incid_fra_clage, df_hosp_clage_france, export_jour=True)
+    
+    for reg in regions:
+        dict_data[reg] = generate_data_age(df_incid_clage_regions, df_hosp_clage_france)
+    
+    export_data(dict_data, suffix="_compr_age")
+
+
+# In[33]:
 
 
 dataexplorer()
+
+
+# In[88]:
+
+
+dataexplorer_age()
+
+
+# In[93]:
+
+
+df_incid_clage
+
+
+# In[ ]:
+
+
+df_hosp_clage.merge(df_incid_clage[["regionCode", "regionName"]], left_on="reg", right_on="regionCode")
+
+
+# In[96]:
+
+
+df_hosp_clage
 
