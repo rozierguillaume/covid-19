@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[35]:
+# In[1]:
 
 
 """
@@ -22,7 +22,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[36]:
+# In[1]:
 
 
 import pandas as pd
@@ -34,19 +34,20 @@ show_charts = False
 PATH_STATS = "../../data/france/stats/"
 
 
-# In[66]:
+# In[4]:
 
 
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
 
 
-# In[68]:
+# In[2]:
 
 
+df_tests_viros_enrichi = data.import_data_tests_viros()
+df_tests_viros_enrichi = df_tests_viros_enrichi.drop("regionName_y", axis=1).rename({"regionName_x": "regionName"}, axis=1)
 
 
-
-# In[38]:
+# In[3]:
 
 
 df_incid_clage = df_incid.copy()
@@ -63,15 +64,20 @@ df_new_france = df_new.groupby(["jour"]).sum().reset_index()
 df_new_regions = df_new.groupby(["jour", "regionName"]).sum().reset_index()
 
 
-# In[72]:
+# In[4]:
 
 
 df_incid_clage_regions = df_incid_clage.groupby(["regionName", "jour", "cl_age90"]).sum().reset_index()
-df_tests_viros_regions = df_tests_viros.groupby(["regionName", "jour", "cl_age90"]).sum().reset_index()
-df_tests_viros_france = df_tests_viros.groupby(["jour", "cl_age90"]).sum().reset_index()
 
 
-# In[40]:
+# In[5]:
+
+
+df_tests_viros_regions = df_tests_viros_enrichi.groupby(["regionName", "jour", "cl_age90"]).sum().reset_index()
+df_tests_viros_france = df_tests_viros_enrichi.groupby(["jour", "cl_age90"]).sum().reset_index()
+
+
+# In[6]:
 
 
 df_hosp_clage = data.import_data_hosp_clage()
@@ -79,7 +85,7 @@ df_hosp_clage_france = df_hosp_clage.groupby(["jour", "cl_age90"]).sum().reset_i
 df_hosp_clage_regions = df_hosp_clage.groupby(["regionName", "jour", "cl_age90"]).sum().reset_index()
 
 
-# In[41]:
+# In[7]:
 
 
 departements = list(dict.fromkeys(list(df_incid['dep'].values))) 
@@ -148,7 +154,7 @@ def generate_data(data_incid, data_hosp, data_sursaud, data_new, export_jour=Fal
  
 
 
-# In[43]:
+# In[13]:
 
 
 def generate_data_age(data_incid, data_hosp, export_jour=False):## Incidence
@@ -201,7 +207,7 @@ def generate_data_age(data_incid, data_hosp, export_jour=False):## Incidence
  
 
 
-# In[44]:
+# In[13]:
 
 
 def export_data(data, suffix=""):
@@ -209,11 +215,12 @@ def export_data(data, suffix=""):
         json.dump(data, outfile)
 
 
-# In[45]:
+# In[14]:
 
 
 def dataexplorer():
     dict_data = {}
+    
     dict_data["regions"] = sorted(regions)
     dict_data["departements"] = departements
     dict_data["france"] = generate_data(df_incid_fra, df_france, df_sursaud_france, df_new_france, export_jour=True)
@@ -250,17 +257,18 @@ def dataexplorer():
 
 
 
-# In[69]:
+# In[14]:
 
 
 def dataexplorer_age():
+    regions_tests_viros = list(dict.fromkeys(list(df_tests_viros_enrichi['regionName'].dropna().values))) 
     dict_data = {}
-    dict_data["regions"] = sorted(regions)
+    dict_data["regions"] = sorted(regions_tests_viros)
     
     dict_data["france"] = generate_data_age(df_tests_viros_france, df_hosp_clage_france, export_jour=True)
     
-    for reg in regions:
-        dict_data[reg] = generate_data_age(df_tests_viros_regions[df_tests_viros_regions.regionName == reg],                                           df_hosp_clage_regions[df_hosp_clage_regions.regionName == reg])
+    for dep in departements_tests_viros:
+        dict_data[reg] = generate_data_age(df_tests_viros_enrichi[df_tests_viros_enrichi.dep == dep],                                           df_hosp_clage[df_hosp_clage.regionName == reg])
     
     export_data(dict_data, suffix="_compr_age")
 
@@ -271,18 +279,23 @@ def dataexplorer_age():
 dataexplorer()
 
 
-# In[70]:
+# In[15]:
 
 
 dataexplorer_age()
 
 
-# In[65]:
+# In[22]:
 
 
-data_incid = df_incid_clage_regions[df_incid_clage_regions.regionName == regions[0]]
-data_incid_clage = data_incid[data_incid.cl_age90.isin([19])].groupby("jour").sum().reset_index()
-(data_incid_clage["P"].rolling(window=7).sum() * 100 / data_incid_clage["T"].rolling(window=7).sum()).fillna(0)
-#data_incid_clage["P"]/data_incid_clage["T"]
-df_incid_clage
+
+#df[df.cl_age90.isin([0])].groupby("jour").sum().reset_index()
+df_tests_viros_enrichi.groupby("jour").sum()["P"].rolling(window=7).mean()
+df_tests_viros_enrichi
+
+
+# In[9]:
+
+
+df_incid_regions[df_incid_regions.regionName== "Auvergne-Rhône-Alpes"]
 

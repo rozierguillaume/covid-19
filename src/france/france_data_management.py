@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[2]:
 
 
 import requests
@@ -256,8 +256,11 @@ def import_data_tests_viros():
     df_reg_pop = pd.read_csv(PATH + 'data/france/population_grandes_regions.csv', sep=",")
     df_dep_reg = pd.read_csv(PATH + 'data/france/departments_regions_france_2016.csv', sep=",")
     
-    df = df.merge(df_dep_reg, left_on="dep", right_on="departmentCode")
-    df = df.merge(df_reg_pop, left_on="regionName", right_on="regionName")
+    df["dep"] = df["dep"].astype(str)
+    df_dep_reg["departmentCode.astype"] = df_dep_reg.departmentCode.astype(str)
+    
+    df = df.merge(df_dep_reg, left_on="dep", right_on="departmentCode", how="left")
+    df = df.merge(df_reg_pop, left_on="regionCode", right_on="code", how="left")
     
     return df
 
@@ -305,4 +308,21 @@ def import_data_hosp_fra_clage():
 
 
 #import_data_opencovid()
+
+
+# In[35]:
+
+
+"""df = pd.read_csv(PATH + 'data/france/tests_viro-dep-quot.csv', sep=";")
+    
+df_reg_pop = pd.read_csv(PATH + 'data/france/population_grandes_regions.csv', sep=",")
+df_dep_reg = pd.read_csv(PATH + 'data/france/departments_regions_france_2016.csv', sep=",")
+
+df["dep"] = df["dep"].astype(str)
+df_dep_reg["departmentCode.astype"] = df_dep_reg.departmentCode.astype(str)
+
+df = df.merge(df_dep_reg, left_on="dep", right_on="departmentCode", how="left")
+#df = df.merge(df_reg_pop, left_on="regionCode", right_on="code", how="left")
+df[df.regionName.isna()].dep.unique()
+"""
 
