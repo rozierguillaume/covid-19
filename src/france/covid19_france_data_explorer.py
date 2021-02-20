@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[35]:
 
 
 """
@@ -22,7 +22,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[2]:
+# In[36]:
 
 
 import pandas as pd
@@ -34,13 +34,19 @@ show_charts = False
 PATH_STATS = "../../data/france/stats/"
 
 
-# In[34]:
+# In[66]:
 
 
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
 
 
-# In[35]:
+# In[68]:
+
+
+
+
+
+# In[38]:
 
 
 df_incid_clage = df_incid.copy()
@@ -57,20 +63,23 @@ df_new_france = df_new.groupby(["jour"]).sum().reset_index()
 df_new_regions = df_new.groupby(["jour", "regionName"]).sum().reset_index()
 
 
-# In[90]:
+# In[72]:
 
 
-df_incid_clage_regions = df_incid_clage.groupby(["regionName"]).sum().reset_index()
+df_incid_clage_regions = df_incid_clage.groupby(["regionName", "jour", "cl_age90"]).sum().reset_index()
+df_tests_viros_regions = df_tests_viros.groupby(["regionName", "jour", "cl_age90"]).sum().reset_index()
+df_tests_viros_france = df_tests_viros.groupby(["jour", "cl_age90"]).sum().reset_index()
 
 
-# In[43]:
+# In[40]:
 
 
 df_hosp_clage = data.import_data_hosp_clage()
 df_hosp_clage_france = df_hosp_clage.groupby(["jour", "cl_age90"]).sum().reset_index()
+df_hosp_clage_regions = df_hosp_clage.groupby(["regionName", "jour", "cl_age90"]).sum().reset_index()
 
 
-# In[5]:
+# In[41]:
 
 
 departements = list(dict.fromkeys(list(df_incid['dep'].values))) 
@@ -86,7 +95,7 @@ zone_b = ["zone_b", "02", "04", "05", "06", "08", "10", "13", "14", "18", "22", 
 zone_c = ["zone_c", "09", "11", "12", "30", "31", "32", "34", "46", "48", "65", "66", "75", "77", "78", "81", "82", "91", "92", "93", "94", "95"]
 
 
-# In[28]:
+# In[42]:
 
 
 def generate_data(data_incid, data_hosp, data_sursaud, data_new, export_jour=False):## Incidence
@@ -139,7 +148,7 @@ def generate_data(data_incid, data_hosp, data_sursaud, data_new, export_jour=Fal
  
 
 
-# In[87]:
+# In[43]:
 
 
 def generate_data_age(data_incid, data_hosp, export_jour=False):## Incidence
@@ -192,7 +201,7 @@ def generate_data_age(data_incid, data_hosp, export_jour=False):## Incidence
  
 
 
-# In[29]:
+# In[44]:
 
 
 def export_data(data, suffix=""):
@@ -200,7 +209,7 @@ def export_data(data, suffix=""):
         json.dump(data, outfile)
 
 
-# In[32]:
+# In[45]:
 
 
 def dataexplorer():
@@ -241,47 +250,39 @@ def dataexplorer():
 
 
 
-# In[77]:
+# In[69]:
 
 
 def dataexplorer_age():
     dict_data = {}
     dict_data["regions"] = sorted(regions)
     
-    dict_data["france"] = generate_data_age(df_incid_fra_clage, df_hosp_clage_france, export_jour=True)
+    dict_data["france"] = generate_data_age(df_tests_viros_france, df_hosp_clage_france, export_jour=True)
     
     for reg in regions:
-        dict_data[reg] = generate_data_age(df_incid_clage_regions, df_hosp_clage_france)
+        dict_data[reg] = generate_data_age(df_tests_viros_regions[df_tests_viros_regions.regionName == reg],                                           df_hosp_clage_regions[df_hosp_clage_regions.regionName == reg])
     
     export_data(dict_data, suffix="_compr_age")
 
 
-# In[33]:
+# In[47]:
 
 
 dataexplorer()
 
 
-# In[88]:
+# In[70]:
 
 
 dataexplorer_age()
 
 
-# In[93]:
+# In[65]:
 
 
+data_incid = df_incid_clage_regions[df_incid_clage_regions.regionName == regions[0]]
+data_incid_clage = data_incid[data_incid.cl_age90.isin([19])].groupby("jour").sum().reset_index()
+(data_incid_clage["P"].rolling(window=7).sum() * 100 / data_incid_clage["T"].rolling(window=7).sum()).fillna(0)
+#data_incid_clage["P"]/data_incid_clage["T"]
 df_incid_clage
-
-
-# In[ ]:
-
-
-df_hosp_clage.merge(df_incid_clage[["regionCode", "regionName"]], left_on="reg", right_on="regionCode")
-
-
-# In[96]:
-
-
-df_hosp_clage
 

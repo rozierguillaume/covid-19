@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[174]:
+# In[1]:
 
 
 """
@@ -22,7 +22,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[175]:
+# In[2]:
 
 
 import pandas as pd
@@ -36,14 +36,14 @@ import locale
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
 
-# In[176]:
+# In[3]:
 
 
 data.download_data()
 data.download_data_hosp_fra_clage()
 
 
-# In[177]:
+# In[4]:
 
 
 df_a_vacsi_a_france = data.import_data_vacsi_a_fra()
@@ -52,7 +52,7 @@ clage_spf = pd.read_csv(PATH+"data/france/clage_spf.csv", sep=";")
 df_a_vacsi_a_france = df_a_vacsi_a_france.merge(clage_spf, left_on="clage_vacsi", right_on="code_spf")
 
 
-# In[190]:
+# In[5]:
 
 
 df_a_vacsi_a_france_80 = df_a_vacsi_a_france[df_a_vacsi_a_france.clage_vacsi==80]
@@ -120,7 +120,7 @@ fig.write_image(PATH + "images/charts/france/hosp_vacsi_p80.jpeg", scale=2, widt
 plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/dc_vacsi_p80.html', auto_open=False)
 
 
-# In[191]:
+# In[6]:
 
 
 df_a_vacsi_a_france_80 = df_a_vacsi_a_france[df_a_vacsi_a_france.clage_vacsi!=80].groupby(["jour"]).sum().reset_index()
@@ -188,7 +188,7 @@ fig.write_image(PATH + "images/charts/france/hosp_vacsi_m80.jpeg", scale=2, widt
 plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/dc_vacsi_m80.html', auto_open=False)
 
 
-# In[185]:
+# In[7]:
 
 
 df_a_vacsi_a_france_80 = df_a_vacsi_a_france[df_a_vacsi_a_france.clage_vacsi==80]
@@ -256,7 +256,7 @@ fig.write_image(PATH + "images/charts/france/dc_vacsi_p80.jpeg", scale=2, width=
 plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/dc_vacsi_p80.html', auto_open=False)
 
 
-# In[186]:
+# In[8]:
 
 
 df_a_vacsi_a_france_80 = df_a_vacsi_a_france[df_a_vacsi_a_france.clage_vacsi!=80].groupby(["jour"]).sum().reset_index()
@@ -330,7 +330,7 @@ plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/dc_vacsi_
 
 
 
-# In[187]:
+# In[9]:
 
 
 def dc_hosp_clage(df_hosp_fra_clage, lastday="", minday=""):    
@@ -369,7 +369,7 @@ def dc_hosp_clage(df_hosp_fra_clage, lastday="", minday=""):
     fig.write_image(PATH + "images/charts/france/dc_hosp_clage/{}.jpeg".format(lastday), scale=2, width=500, height=500)
 
 
-# In[181]:
+# In[10]:
 
 
 def vacsi_clage(df_a_vacsi_a_france, lastday=""):
@@ -402,7 +402,7 @@ def vacsi_clage(df_a_vacsi_a_france, lastday=""):
 
 
 
-# In[182]:
+# In[11]:
 
 
 def assemble_images(date):
@@ -418,7 +418,7 @@ def assemble_images(date):
     cv2.imwrite(PATH+'images/charts/france/vacsi_hosp_comp/{}.jpeg'.format(date), im_h)
 
 
-# In[183]:
+# In[12]:
 
 
 def build_video(dates):
@@ -455,7 +455,7 @@ def build_video(dates):
             print("error conversion h265")
 
 
-# In[184]:
+# In[13]:
 
 
 days = sorted(df_a_vacsi_a_france.jour.unique())[-40:]

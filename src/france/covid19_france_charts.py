@@ -96,27 +96,27 @@ while not success:
 
 # ## Data transformations
 
-# In[5]:
+# In[6]:
 
 
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
 
 
-# In[6]:
+# In[7]:
 
 
 data.download_data_vue_ensemble()
 df_vue_ensemble = data.import_data_vue_ensemble()
 
 
-# In[7]:
+# In[8]:
 
 
 df_incid_fra_clage = data.import_data_tests_sexe()
 df_incid_fra = df_incid_fra_clage[df_incid_fra_clage["cl_age90"]==0]
 
 
-# In[8]:
+# In[9]:
 
 
 df_new_france = df_new.groupby(["jour"]).sum().reset_index()
@@ -155,7 +155,7 @@ regions = list(dict.fromkeys(list(df['regionName'].values)))
 departements_noms = list(dict.fromkeys(list(df['departmentName'].values))) 
 
 
-# In[9]:
+# In[10]:
 
 
 #Calcul sorties de réa
@@ -174,7 +174,7 @@ df_france_last15 = df_france[ df_france["jour"].isin(dates[-19:]) ]
 df_tests_tot_last15 = df_tests_tot[ df_tests_tot["jour"].isin(dates[-19:]) ]
 
 
-# In[22]:
+# In[11]:
 
 
 departements_name = {}
@@ -610,7 +610,7 @@ def incidence_deps_data():
 incidence_deps_data()
 
 
-# In[34]:
+# In[12]:
 
 
 df_tests_viros_france = df_tests_viros.groupby(['jour', 'cl_age90']).sum().reset_index()
@@ -630,7 +630,7 @@ def incidence_regs_data():
         df_reg_tests = df_tests_viros_regions[df_tests_viros_regions["regionName"] == reg].reset_index()
         
         data_json["incidence_cas"] = int(np.round(df_reg_tests["P"].values[-7:].sum()/df_reg_tests["pop"].values[0]*100000))
-        data_json["taux_positivite"] = (np.round(df_reg_tests["P"].values[-7:].sum()/df_reg_tests["T"].sum()*100, 1))
+        data_json["taux_positivite"] = (np.round(df_reg_tests["P"].values[-7:].sum()/df_reg_tests["T"].values[-7:].sum()*100, 1))
         data_json["incidence_dc"] = df_reg["incid_dc"].values[-7:].sum()/df_reg["departmentPopulation"].values[0]*100000
         data_json["incidence_hosp"] = df_reg["incid_hosp"].values[-7:].sum()/df_reg["departmentPopulation"].values[0]*100000
         data_json["incidence_rea"] = df_reg["incid_rea"].values[-7:].sum()/df_reg["departmentPopulation"].values[0]*100000

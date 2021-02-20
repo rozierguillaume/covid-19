@@ -250,6 +250,17 @@ def import_data_hosp_clage():
     
     return df_hosp
 
+def import_data_tests_viros():
+    df = pd.read_csv(PATH + 'data/france/tests_viro-dep-quot.csv', sep=";")
+    
+    df_reg_pop = pd.read_csv(PATH + 'data/france/population_grandes_regions.csv', sep=",")
+    df_dep_reg = pd.read_csv(PATH + 'data/france/departments_regions_france_2016.csv', sep=",")
+    
+    df = df.merge(df_dep_reg, left_on="dep", right_on="departmentCode")
+    df = df.merge(df_reg_pop, left_on="regionName", right_on="regionName")
+    
+    return df
+
 def import_data_tests_sexe():
     df = pd.read_csv(PATH + 'data/france/tests_viro-fra-covid19.csv', sep=";")
     return df
