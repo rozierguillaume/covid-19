@@ -4,7 +4,7 @@
 # # COVID-19 French Charts
 # Guillaume Rozier, 2020
 
-# In[1]:
+# In[179]:
 
 
 """
@@ -26,7 +26,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[2]:
+# In[180]:
 
 
 from multiprocessing import Pool
@@ -55,7 +55,7 @@ PATH = "../../"
 now = datetime.now()
 
 
-# In[3]:
+# In[181]:
 
 
 try:
@@ -71,7 +71,7 @@ except:
 
 # # Data download and import
 
-# In[4]:
+# In[182]:
 
 
 import time
@@ -96,27 +96,27 @@ while not success:
 
 # ## Data transformations
 
-# In[6]:
+# In[17]:
 
 
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
 
 
-# In[7]:
+# In[183]:
 
 
 data.download_data_vue_ensemble()
 df_vue_ensemble = data.import_data_vue_ensemble()
 
 
-# In[8]:
+# In[184]:
 
 
 df_incid_fra_clage = data.import_data_tests_sexe()
 df_incid_fra = df_incid_fra_clage[df_incid_fra_clage["cl_age90"]==0]
 
 
-# In[9]:
+# In[185]:
 
 
 df_new_france = df_new.groupby(["jour"]).sum().reset_index()
@@ -155,7 +155,7 @@ regions = list(dict.fromkeys(list(df['regionName'].values)))
 departements_noms = list(dict.fromkeys(list(df['departmentName'].values))) 
 
 
-# In[10]:
+# In[186]:
 
 
 #Calcul sorties de réa
@@ -172,6 +172,113 @@ df_new_tot["incid_dep_hosp_nonrea"] = df_france["hosp_nonrea"] - df_france["hosp
 df_new_tot_last15 = df_new_tot[ df_new_tot["jour"].isin(dates[:]) ]
 df_france_last15 = df_france[ df_france["jour"].isin(dates[-19:]) ]
 df_tests_tot_last15 = df_tests_tot[ df_tests_tot["jour"].isin(dates[-19:]) ]
+
+
+# In[178]:
+
+
+"""y = np.array(np.log([3.3, 14.7, 22.5, 41])).reshape(-1, 1)
+x = np.array([1, 19, 35, 42]).reshape(-1, 1)
+
+model = make_pipeline(PolynomialFeatures(1), Ridge())
+model.fit(x, y)
+
+imax = 60
+x_pred = np.linspace(1, imax, imax).reshape(-1, 1)
+y_plot = np.exp(model.predict(x_pred))
+
+date_deb = (datetime.strptime("2021-01-07", '%Y-%m-%d') - timedelta(days=0))
+x_pred_dates = [(date_deb + timedelta(days=x)).strftime("%Y-%m-%d") for x in range(0, imax)]
+
+
+fig = go.Figure()
+x_dates = [x_pred_dates[1], x_pred_dates[19], x_pred_dates[35], x_pred_dates[42]]
+fig.add_trace(go.Scatter(
+    x=x_dates,
+    y=np.exp(y.reshape(1, -1)[0]),
+    mode="markers",
+    name="Valeurs mesurées (enquêtes flash)"
+))
+
+fig.add_trace(go.Scatter(
+    x=x_pred_dates,
+    y=y_plot.reshape(1, -1)[0],
+    line=dict(width=1),
+    marker=dict(color="black"),
+    name="Hypothèse croissance exponentielle",
+    #fill="tonexty"
+))
+fig.add_trace(go.Scatter(
+    x=x_pred_dates,
+    y=y_plot.reshape(1, -1)[0]*1.3,
+    line=dict(width=0),
+    showlegend=False,
+    fillcolor="rgba(0,0,0,0.1)"
+))
+
+
+## Fit polyn
+y = np.array([3.3, 14.7, 22.5, 41]).reshape(-1, 1)
+x = np.array([1, 19, 35, 42]).reshape(-1, 1)
+
+model = make_pipeline(PolynomialFeatures(2), Ridge())
+model.fit(x, y)
+
+imax = 90
+x_pred = np.linspace(1, imax, imax).reshape(-1, 1)
+y_plot = model.predict(x_pred)
+
+date_deb = (datetime.strptime("2021-01-07", '%Y-%m-%d') - timedelta(days=0))
+x_pred_dates = [(date_deb + timedelta(days=x)).strftime("%Y-%m-%d") for x in range(0, imax)]
+
+fig.add_trace(go.Scatter(
+    x=x_pred_dates,
+    y=y_plot.reshape(1, -1)[0],
+    line=dict(width=0),
+    fill="tonexty",
+    fillcolor="rgba(0,0,0,0.1)",
+    showlegend=False
+))
+fig.add_trace(go.Scatter(
+    x=x_pred_dates,
+    y=y_plot.reshape(1, -1)[0]*0.7,
+    line=dict(width=0),
+    fill="tonexty",
+    fillcolor="rgba(0,0,0,0.1)",
+    showlegend=False
+))
+fig.add_trace(go.Scatter(
+    x=x_pred_dates,
+    y=y_plot.reshape(1, -1)[0],
+    line=dict(width=1, dash='dash'),
+    marker=dict(color="black"),
+    name="Hypothèse croissance polynomiale",
+))
+
+fig.update_layout(
+    yaxis=dict(range=[0, 100], ticksuffix=" %"),
+    legend_orientation="h",
+    title={
+                'text': "Proportion de variants dans le nombre de cas",
+                'y':0.93,
+                'x':0.5,
+                'xanchor': 'center',
+                'yanchor': 'top'},
+                titlefont = dict(
+                size=25),
+    annotations = [
+                dict(
+                    x=0.5,
+                    y=1.1,
+                    xref='paper',
+                    yref='paper',
+                    text='Date : 21/02/21. Données : Santé publique France. Auteur : covidtracker.fr.',
+                    showarrow = False
+                )]
+)
+
+fig.write_image(PATH + "images/charts/france/proportion_variants.jpeg", scale=2, width=900, height=500)
+"""
 
 
 # In[11]:
@@ -327,7 +434,7 @@ fig.write_image(PATH + "images/charts/france/points_deces.jpeg", scale=4, width=
 # In[27]:
 
 
-clrs_sun_ref = ["#3c0000", "#4c0000", "#6a0000", "#840000", "#a00000", "#c40001", "#d50100", "#e20001", "#f50e07", "#f95228", "#fb9449", "#98ac3b", "#118408"]
+"""clrs_sun_ref = ["#3c0000", "#4c0000", "#6a0000", "#840000", "#a00000", "#c40001", "#d50100", "#e20001", "#f50e07", "#f95228", "#fb9449", "#98ac3b", "#118408"]
 clrs_sun_ref = ["#3c0000", "#840000", "#a00000", "#f50e07", "#f95228", "#118408"]
 values_sun_ref = [300, 250, 200, 150, 100, 50]
 
@@ -354,6 +461,7 @@ fig =go.Figure(go.Sunburst(
 fig.update_layout(margin = dict(t=0, l=0, r=0, b=0))
 
 #fig.show()
+"""
 
 
 # In[28]:
@@ -3396,7 +3504,7 @@ for (date_deb, date_fin) in [("2020-03-18", last_day_plot_dashboard), (dates[-10
         suffixe="_recent"
 
 
-# In[15]:
+# In[187]:
 
 
 suffixe=""
