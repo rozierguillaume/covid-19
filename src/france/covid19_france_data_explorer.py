@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[97]:
+# In[113]:
 
 
 """
@@ -22,7 +22,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[98]:
+# In[114]:
 
 
 import pandas as pd
@@ -34,20 +34,39 @@ show_charts = False
 PATH_STATS = "../../data/france/stats/"
 
 
-# In[99]:
+# In[115]:
 
 
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
 
 
-# In[100]:
+# In[140]:
+
+
+data.download_data_vue_ensemble()
+df_vue_ensemble = data.import_data_vue_ensemble()
+
+
+# In[168]:
+
+
+df_metro = data.import_data_metropoles()
+df_metro["jour"] = df_metro["semaine_glissante"].map(lambda x: x[11:])
+
+df_metro_65 = df_metro[df_metro["clage_65"] == 65]
+df_metro_0 = df_metro[df_metro["clage_65"] == 0]
+metropoles = list(dict.fromkeys(list(df_metro['Metropole'].dropna().values))) 
+df_metro_0
+
+
+# In[116]:
 
 
 df_tests_viros_enrichi = data.import_data_tests_viros()
 df_tests_viros_enrichi = df_tests_viros_enrichi.drop("regionName_y", axis=1).rename({"regionName_x": "regionName"}, axis=1)
 
 
-# In[101]:
+# In[117]:
 
 
 df_incid_clage = df_incid.copy()
@@ -64,20 +83,20 @@ df_new_france = df_new.groupby(["jour"]).sum().reset_index()
 df_new_regions = df_new.groupby(["jour", "regionName"]).sum().reset_index()
 
 
-# In[102]:
+# In[118]:
 
 
 df_incid_clage_regions = df_incid_clage.groupby(["regionName", "jour", "cl_age90"]).sum().reset_index()
 
 
-# In[103]:
+# In[119]:
 
 
 df_tests_viros_regions = df_tests_viros_enrichi.groupby(["regionName", "jour", "cl_age90"]).sum().reset_index()
 df_tests_viros_france = df_tests_viros_enrichi.groupby(["jour", "cl_age90"]).sum().reset_index()
 
 
-# In[104]:
+# In[120]:
 
 
 df_hosp_clage = data.import_data_hosp_clage()
@@ -85,7 +104,7 @@ df_hosp_clage_france = df_hosp_clage.groupby(["jour", "cl_age90"]).sum().reset_i
 df_hosp_clage_regions = df_hosp_clage.groupby(["regionName", "jour", "cl_age90"]).sum().reset_index()
 
 
-# In[105]:
+# In[121]:
 
 
 departements = list(dict.fromkeys(list(df_incid['dep'].values))) 
@@ -101,10 +120,10 @@ zone_b = ["zone_b", "02", "04", "05", "06", "08", "10", "13", "14", "18", "22", 
 zone_c = ["zone_c", "09", "11", "12", "30", "31", "32", "34", "46", "48", "65", "66", "75", "77", "78", "81", "82", "91", "92", "93", "94", "95"]
 
 
-# In[106]:
+# In[188]:
 
 
-def generate_data(data_incid, data_hosp, data_sursaud, data_new, export_jour=False):## Incidence
+def generate_data(data_incid=pd.DataFrame(), data_hosp=pd.DataFrame(), data_sursaud=pd.DataFrame(), data_new=pd.DataFrame(), data_vue_ensemble=pd.DataFrame(), data_metropole=pd.DataFrame(), mode="", export_jour=False):## Incidence
         
     dict_data = {}
     
@@ -113,48 +132,64 @@ def generate_data(data_incid, data_hosp, data_sursaud, data_new, export_jour=Fal
         dict_data["jour_hosp"] = list(data_hosp.jour)
         dict_data["jour_new"] = list(data_new.jour)
         dict_data["jour_sursaud"] = list(data_sursaud.date_de_passage)
+        dict_data["jour_metropoles"] = list(data_metropole.jour.unique())
     
-    taux_incidence = data_incid["P"].rolling(window=7).sum().fillna(0) * 100000 / data_incid["pop"].values[0]
-    dict_data["incidence"] = {"jour_nom": "jour_incid", "valeur": list(round(taux_incidence,2))}
-    
-    taux_positivite = (data_incid["P"].rolling(window=7).sum() * 100 / data_incid["T"].rolling(window=7).sum()).fillna(0)
-    dict_data["taux_positivite"] = {"jour_nom": "jour_incid", "valeur": list(round(taux_positivite,2))}
+    if len(data_vue_ensemble)>0:
+        dict_data["jour_ehpad"] = list(data_vue_ensemble.date)
+        deces_ehpad = data_vue_ensemble["total_deces_ehpad"].diff().rolling(window=7).mean().fillna(0)
+        dict_data["deces_ehpad"] = {"jour_nom": "jour_ehpad", "valeur": list(round(deces_ehpad,2))}
+        
+    if len(data_incid)>0:
+        taux_incidence = data_incid["P"].rolling(window=7).sum().fillna(0) * 100000 / data_incid["pop"].values[0]
+        dict_data["incidence"] = {"jour_nom": "jour_incid", "valeur": list(round(taux_incidence,2))}
 
-    cas = data_incid["P"].rolling(window=7).mean().fillna(0)
-    dict_data["cas"] = {"jour_nom": "jour_incid", "valeur": list(round(cas,2))}
+        taux_positivite = (data_incid["P"].rolling(window=7).sum() * 100 / data_incid["T"].rolling(window=7).sum()).fillna(0)
+        dict_data["taux_positivite"] = {"jour_nom": "jour_incid", "valeur": list(round(taux_positivite,2))}
     
-    tests = data_incid["T"].rolling(window=7).mean().fillna(0)
-    dict_data["tests"] = {"jour_nom": "jour_incid", "valeur": list(round(tests,2))}
+        cas = data_incid["P"].rolling(window=7).mean().fillna(0)
+        dict_data["cas"] = {"jour_nom": "jour_incid", "valeur": list(round(cas,2))}
+    
+        tests = data_incid["T"].rolling(window=7).mean().fillna(0)
+        dict_data["tests"] = {"jour_nom": "jour_incid", "valeur": list(round(tests,2))}
+        
+    if (len(data_metropole)>0) & (mode=="metropoles"):
+        taux_incidence = data_metropole["ti"].fillna(0)
+        dict_data["incidence"] = {"jour_nom": "jour_metropoles", "valeur": list(round(taux_incidence, 2))}
+        
+    if len(data_hosp)>0:
+        hospitalisations = data_hosp.hosp.fillna(0)
+        dict_data["hospitalisations"] = {"jour_nom": "jour_hosp", "valeur": list(hospitalisations)}
 
-    hospitalisations = data_hosp.hosp.fillna(0)
-    dict_data["hospitalisations"] = {"jour_nom": "jour_hosp", "valeur": list(hospitalisations)}
+        reanimations = data_hosp.rea.fillna(0)
+        dict_data["reanimations"] = {"jour_nom": "jour_hosp", "valeur": list(reanimations)}
+    
+    if len(data_new)>0:
+        incid_hospitalisations = data_new.incid_hosp.rolling(window=7).mean().fillna(0)
+        dict_data["incid_hospitalisations"] = {"jour_nom": "jour_new", "valeur": list(round(incid_hospitalisations, 2))}
 
-    reanimations = data_hosp.rea.fillna(0)
-    dict_data["reanimations"] = {"jour_nom": "jour_hosp", "valeur": list(reanimations)}
+        incid_reanimations = data_new.incid_rea.rolling(window=7).mean().fillna(0)
+        dict_data["incid_reanimations"] = {"jour_nom": "jour_new", "valeur": list(round(incid_reanimations,2))}
     
-    incid_hospitalisations = data_new.incid_hosp.rolling(window=7).mean().fillna(0)
-    dict_data["incid_hospitalisations"] = {"jour_nom": "jour_new", "valeur": list(round(incid_hospitalisations, 2))}
-    
-    incid_reanimations = data_new.incid_rea.rolling(window=7).mean().fillna(0)
-    dict_data["incid_reanimations"] = {"jour_nom": "jour_new", "valeur": list(round(incid_reanimations,2))}
-    
-    nbre_acte_corona = data_sursaud.nbre_acte_corona.rolling(window=7).mean().fillna(0)
-    dict_data["nbre_acte_corona"] = {"jour_nom": "jour_sursaud", "valeur": list(round(nbre_acte_corona, 2))}
-    
-    nbre_pass_corona = data_sursaud.nbre_pass_corona.rolling(window=7).mean().fillna(0)
-    dict_data["nbre_pass_corona"] = {"jour_nom": "jour_sursaud", "valeur": list(round(nbre_pass_corona, 2))}
+    if len(data_sursaud)>0:
+        nbre_acte_corona = data_sursaud.nbre_acte_corona.rolling(window=7).mean().fillna(0)
+        dict_data["nbre_acte_corona"] = {"jour_nom": "jour_sursaud", "valeur": list(round(nbre_acte_corona, 2))}
 
-    deces_hospitaliers = data_hosp.dc.diff().rolling(window=7).mean().fillna(0)
-    dict_data["deces_hospitaliers"] = {"jour_nom": "jour_hosp", "valeur": list(round(deces_hospitaliers,2))}
+        nbre_pass_corona = data_sursaud.nbre_pass_corona.rolling(window=7).mean().fillna(0)
+        dict_data["nbre_pass_corona"] = {"jour_nom": "jour_sursaud", "valeur": list(round(nbre_pass_corona, 2))}
     
-    population = data_incid["pop"].values[0]
-    dict_data["population"] = population
+    if len(data_hosp)>0:
+        deces_hospitaliers = data_hosp.dc.diff().rolling(window=7).mean().fillna(0)
+        dict_data["deces_hospitaliers"] = {"jour_nom": "jour_hosp", "valeur": list(round(deces_hospitaliers,2))}
+    
+    if len(data_incid)>0:
+        population = data_incid["pop"].values[0]
+        dict_data["population"] = population
 
     return dict_data
  
 
 
-# In[107]:
+# In[123]:
 
 
 def generate_data_age(data_incid, data_hosp, export_jour=False):## Incidence
@@ -209,7 +244,7 @@ def generate_data_age(data_incid, data_hosp, export_jour=False):## Incidence
  
 
 
-# In[108]:
+# In[142]:
 
 
 def export_data(data, suffix=""):
@@ -217,15 +252,16 @@ def export_data(data, suffix=""):
         json.dump(data, outfile)
 
 
-# In[109]:
+# In[186]:
 
 
 def dataexplorer():
     dict_data = {}
     
     dict_data["regions"] = sorted(regions)
+    dict_data["metropoles"] = sorted(metropoles)
     dict_data["departements"] = departements
-    dict_data["france"] = generate_data(df_incid_fra, df_france, df_sursaud_france, df_new_france, export_jour=True)
+    dict_data["france"] = generate_data(df_incid_fra, df_france, df_sursaud_france, df_new_france, df_vue_ensemble, data_metropole=df_metro_0, mode="france", export_jour=True)
     
     noms_departements={}
     
@@ -246,20 +282,20 @@ def dataexplorer():
         df_zone = df[df.dep.isin(zone)].groupby("jour").sum().reset_index()
         df_sursaud_zone = df_sursaud[df_sursaud.dep.isin(zone)].groupby("date_de_passage").sum().reset_index()
         df_new_zone = df_new[df_new.dep.isin(zone)].groupby("jour").sum().reset_index()
+        
         dict_data[zone[0]] = generate_data(df_incid_zone, df_zone, df_sursaud_zone, df_new_zone)
+        
+    for metropole in metropoles:
+        print(metropole)
+        dict_data[metropole] = generate_data(data_metropole=df_metro_0[df_metro_0.Metropole == metropole], mode="metropoles")
+        print(dict_data[metropole])
         
     dict_data["zones_vacances"] = ["zone_a", "zone_b", "zone_c"]
     
     export_data(dict_data, suffix="_compr")
 
 
-# In[ ]:
-
-
-
-
-
-# In[110]:
+# In[146]:
 
 
 import math
@@ -293,13 +329,13 @@ def dataexplorer_age():
     return dict_data
 
 
-# In[111]:
+# In[189]:
 
 
 dataexplorer()
 
 
-# In[112]:
+# In[128]:
 
 
 dict_data = dataexplorer_age()
