@@ -26,7 +26,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[206]:
+# In[1]:
 
 
 from multiprocessing import Pool
@@ -55,7 +55,7 @@ PATH = "../../"
 now = datetime.now()
 
 
-# In[207]:
+# In[2]:
 
 
 try:
@@ -71,7 +71,7 @@ except:
 
 # # Data download and import
 
-# In[208]:
+# In[3]:
 
 
 import time
@@ -96,27 +96,27 @@ while not success:
 
 # ## Data transformations
 
-# In[209]:
+# In[4]:
 
 
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
 
 
-# In[210]:
+# In[5]:
 
 
 data.download_data_vue_ensemble()
 df_vue_ensemble = data.import_data_vue_ensemble()
 
 
-# In[211]:
+# In[6]:
 
 
 df_incid_fra_clage = data.import_data_tests_sexe()
 df_incid_fra = df_incid_fra_clage[df_incid_fra_clage["cl_age90"]==0]
 
 
-# In[212]:
+# In[7]:
 
 
 df_new_france = df_new.groupby(["jour"]).sum().reset_index()
@@ -155,7 +155,7 @@ regions = list(dict.fromkeys(list(df['regionName'].values)))
 departements_noms = list(dict.fromkeys(list(df['departmentName'].values))) 
 
 
-# In[213]:
+# In[8]:
 
 
 #Calcul sorties de réa
@@ -3498,7 +3498,13 @@ for (date_deb, date_fin) in [("2020-03-18", last_day_plot_dashboard), (dates[-10
         suffixe="_recent"
 
 
-# In[243]:
+# In[11]:
+
+
+df_vue_ensemble["total_cas_confirmes"].diff().rolling(window=7, center=True).mean()
+
+
+# In[28]:
 
 
 suffixe=""
@@ -3527,6 +3533,19 @@ for (date_deb, date_fin) in [("2020-03-18", last_day_plot_dashboard), (dates[-60
             fillcolor="rgba(8, 115, 191, 0.3)",
             showlegend=True
         ), secondary_y=True)
+        
+        """fig.add_trace(go.Bar(
+            x = df_vue_ensemble["date"],
+            y = df_vue_ensemble.total_cas_confirmes.diff(),
+            name = "Cas positifs (brut)",
+            marker_color='rgb(8, 115, 191)',
+            #marker_width=2,
+            #line_width=8,
+            opacity=0.8,
+            #fill='tozeroy',
+            #fillcolor="rgba(8, 115, 191, 0.3)",
+            showlegend=True
+        ), secondary_y=True)"""
         
 
         fig.add_shape(type="line",
@@ -3699,6 +3718,19 @@ for (date_deb, date_fin) in [("2020-03-18", last_day_plot_dashboard), (dates[-60
         if show_charts:
             fig.show()
         suffixe="_recent"
+
+
+# In[18]:
+
+
+"""fig = go.Figure()
+fig.add_trace(go.Bar(
+    x=df_vue_ensemble.date.values[-50:],
+    y=df_vue_ensemble["total_cas_confirmes"].diff().values[-50:]
+))
+fig.update_layout(
+    title=dict(text="Nombre de cas brut quotidien (par date de résultat)")
+)"""
 
 
 # In[244]:

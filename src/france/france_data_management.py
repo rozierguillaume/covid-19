@@ -12,7 +12,7 @@ PATH = '../../'
 PATH_STATS = "../../data/france/stats/"
 
 
-# In[2]:
+# In[1]:
 
 
 # Download data from Santé publique France and export it to local files
@@ -263,6 +263,10 @@ def import_data_tests_viros():
     df = df.merge(df_reg_pop, left_on="regionCode", right_on="code", how="left")
     
     return df
+
+def import_data_new():
+    df_new = pd.read_csv(PATH + 'data/france/donnes-hospitalieres-covid19-nouveaux.csv', sep=";")
+    return df_new
 
 def import_data_tests_sexe():
     df = pd.read_csv(PATH + 'data/france/tests_viro-fra-covid19.csv', sep=";")
