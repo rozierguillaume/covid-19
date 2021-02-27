@@ -44773,3 +44773,243 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-02-24,region,REG-84,Auvergne-Rhône-Alpes,,,,,8959,,406,3365,199,30,36637,,OpenCOVID19-fr,,,opencovid19-fr
 2021-02-24,region,REG-93,Provence-Alpes-Côte d'Azur,,,,,5561,,473,3458,227,41,26307,,OpenCOVID19-fr,,,opencovid19-fr
 2021-02-24,region,REG-94,Corse,,,,,143,,11,93,3,3,618,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-25,departement,DEP-01,Ain,,,,,506,,21,224,10,5,2095,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-02,Aisne,,,,,777,,36,268,38,14,2822,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-03,Allier,,,,,485,,15,140,5,2,1559,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-04,Alpes-de-Haute-Provence,,,,,185,,8,162,4,3,762,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-05,Hautes-Alpes,,,,,203,,11,143,5,1,811,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-06,Alpes-Maritimes,,,,,1040,,114,721,50,13,4135,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-07,Ardèche,,,,,422,,9,127,9,0,1546,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-08,Ardennes,,,,,286,,11,54,3,0,852,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-09,Ariège,,,,,55,,7,53,1,0,242,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-10,Aube,,,,,302,,10,85,1,0,1353,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-11,Aude,,,,,240,,10,156,10,0,751,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-12,Aveyron,,,,,165,,5,96,1,0,634,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-13,Bouches-du-Rhône,,,,,2614,,256,1558,89,19,14420,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-14,Calvados,,,,,375,,25,209,8,0,1514,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-15,Cantal,,,,,102,,3,37,3,0,419,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-16,Charente,,,,,99,,6,68,8,4,350,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-17,Charente-Maritime,,,,,215,,14,113,3,0,673,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-18,Cher,,,,,408,,5,107,8,0,1076,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-19,Corrèze,,,,,135,,5,49,3,0,571,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-21,Côte-d'Or,,,,,756,,29,247,7,3,2862,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-22,Côtes-d'Armor,,,,,133,,4,69,9,0,675,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-23,Creuse,,,,,72,,10,59,1,0,405,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-24,Dordogne,,,,,130,,12,142,6,0,486,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-25,Doubs,,,,,402,,38,162,3,0,1732,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-26,Drôme,,,,,601,,34,255,22,2,2089,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-27,Eure,,,,,318,,10,121,14,1,1151,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-28,Eure-et-Loir,,,,,367,,23,203,21,3,1693,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-29,Finistère,,,,,201,,9,95,1,0,740,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-2A,Corse-du-Sud,,,,,79,,1,13,2,0,325,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-2B,Haute-Corse,,,,,65,,9,81,0,0,293,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-30,Gard,,,,,436,,37,199,9,1,1843,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-31,Haute-Garonne,,,,,606,,74,363,19,5,3550,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-32,Gers,,,,,73,,4,83,1,1,280,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-33,Gironde,,,,,741,,64,364,9,2,3592,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-34,Hérault,,,,,644,,54,225,15,5,3014,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-35,Ille-et-Vilaine,,,,,497,,29,372,15,2,2036,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-36,Indre,,,,,208,,8,104,0,0,682,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-37,Indre-et-Loire,,,,,329,,34,185,17,4,1252,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-38,Isère,,,,,1343,,63,669,38,6,5309,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-39,Jura,,,,,400,,4,144,2,0,1478,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-40,Landes,,,,,199,,4,66,2,0,665,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-41,Loir-et-Cher,,,,,240,,8,165,18,1,948,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-42,Loire,,,,,1024,,51,432,31,10,4001,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-43,Haute-Loire,,,,,207,,7,92,2,0,994,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-44,Loire-Atlantique,,,,,597,,20,218,17,2,2518,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-45,Loiret,,,,,413,,51,269,13,2,1982,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-46,Lot,,,,,68,,4,48,1,1,231,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-47,Lot-et-Garonne,,,,,114,,6,35,0,0,562,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-48,Lozère,,,,,94,,2,13,2,0,303,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-49,Maine-et-Loire,,,,,546,,38,263,9,1,2209,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-50,Manche,,,,,242,,14,210,2,0,869,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-51,Marne,,,,,710,,20,260,8,0,2479,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-52,Haute-Marne,,,,,275,,2,74,3,0,905,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-53,Mayenne,,,,,225,,7,62,7,0,939,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-54,Meurthe-et-Moselle,,,,,925,,54,283,6,4,3270,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-55,Meuse,,,,,289,,8,50,5,0,1046,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-56,Morbihan,,,,,297,,7,144,12,2,1291,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-57,Moselle,,,,,1820,,88,558,55,18,5422,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-58,Nièvre,,,,,190,,5,160,3,0,556,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-59,Nord,,,,,2553,,146,1141,84,14,10804,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-60,Oise,,,,,933,,47,416,12,5,2974,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-61,Orne,,,,,252,,9,122,3,2,1052,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-62,Pas-de-Calais,,,,,1213,,117,643,50,11,5088,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-63,Puy-de-Dôme,,,,,536,,24,239,5,3,1821,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-64,Pyrénées-Atlantiques,,,,,424,,9,126,3,1,1650,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-65,Hautes-Pyrénées,,,,,167,,7,34,11,2,785,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-66,Pyrénées-Orientales,,,,,215,,17,140,11,1,873,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-67,Bas-Rhin,,,,,1358,,72,464,15,11,5413,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-68,Haut-Rhin,,,,,1340,,33,303,6,1,5110,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-69,Rhône,,,,,2389,,151,797,53,15,11033,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-70,Haute-Saône,,,,,209,,17,98,1,1,883,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-71,Saône-et-Loire,,,,,894,,23,361,12,0,3426,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-72,Sarthe,,,,,436,,9,197,17,0,1836,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-73,Savoie,,,,,578,,14,117,2,0,2170,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-74,Haute-Savoie,,,,,802,,25,204,20,2,3760,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-75,Paris,,,,,3187,,222,929,68,13,13215,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-76,Seine-Maritime,,,,,1027,,62,582,22,4,3889,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-77,Seine-et-Marne,,,,,1448,,78,420,21,5,5951,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-78,Yvelines,,,,,1363,,42,564,28,2,5746,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-79,Deux-Sèvres,,,,,203,,9,53,4,0,667,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-80,Somme,,,,,635,,42,328,25,5,1931,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-81,Tarn,,,,,268,,18,111,4,0,910,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-82,Tarn-et-Garonne,,,,,142,,14,64,3,2,559,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-83,Var,,,,,921,,66,492,49,3,3858,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-84,Vaucluse,,,,,645,,17,313,12,2,2551,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-85,Vendée,,,,,187,,6,73,4,0,1004,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-86,Vienne,,,,,193,,8,74,9,2,799,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-87,Haute-Vienne,,,,,236,,11,66,1,0,790,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-88,Vosges,,,,,663,,12,162,8,3,1999,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-89,Yonne,,,,,384,,15,185,10,0,1491,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-90,Territoire de Belfort,,,,,501,,16,69,0,0,1550,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-91,Essonne,,,,,1339,,77,613,32,6,6147,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-92,Hauts-de-Seine,,,,,1992,,140,815,30,13,10016,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-93,Seine-Saint-Denis,,,,,1786,,101,713,34,10,9000,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-94,Val-de-Marne,,,,,2215,,92,610,55,14,9531,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-95,Val-d'Oise,,,,,1408,,46,385,33,6,6109,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-971,Guadeloupe,,,,,176,,9,25,0,0,844,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-972,Martinique,,,,,45,,3,13,0,0,405,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-973,Guyane,,,,,82,,6,21,1,0,2214,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-974,La Réunion,,,,,63,,59,130,8,2,887,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,departement,DEP-976,Mayotte,,,,,83,,22,178,22,3,865,,Santé publique France Data,,,sante-publique-france-data
+2021-02-25,pays,FRA,France,,,,,60981,,3430,25317,1454,301,254868,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-25,region,REG-01,Guadeloupe,,,,,176,,9,25,0,0,844,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-25,region,REG-02,Martinique,,,,,45,,3,13,0,0,405,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-25,region,REG-03,Guyane,,,,,82,,6,21,1,0,2214,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-25,region,REG-04,La Réunion,,,,,63,,59,130,8,2,887,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-25,region,REG-06,Mayotte,,,,,83,,22,178,22,3,865,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-25,region,REG-11,Île-de-France,,,,,14738,,798,5049,301,69,65715,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-25,region,REG-24,Centre-Val de Loire,,,,,1965,,129,1033,77,10,7633,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-25,region,REG-27,Bourgogne-Franche-Comté,,,,,3736,,147,1426,38,4,13978,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-25,region,REG-28,Normandie,,,,,2214,,120,1244,49,7,8475,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-25,region,REG-32,Hauts-de-France,,,,,6111,,388,2796,209,49,23619,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-25,region,REG-44,Grand Est,,,,,7968,,310,2293,110,37,27849,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-25,region,REG-52,Pays de la Loire,,,,,1991,,80,813,54,3,8506,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-25,region,REG-53,Bretagne,,,,,1128,,49,680,37,4,4742,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-25,region,REG-75,Nouvelle-Aquitaine,,,,,2761,,158,1215,49,9,11210,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-25,region,REG-76,Occitanie,,,,,3173,,253,1585,88,18,13975,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-25,region,REG-84,Auvergne-Rhône-Alpes,,,,,8995,,417,3333,200,45,36796,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-25,region,REG-93,Provence-Alpes-Côte d'Azur,,,,,5608,,472,3389,209,41,26537,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-25,region,REG-94,Corse,,,,,144,,10,94,2,0,618,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-26,departement,DEP-01,Ain,,,,,508,,24,228,16,6,2102,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-02,Aisne,,,,,778,,34,261,7,0,2835,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-03,Allier,,,,,486,,15,136,3,1,1565,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-04,Alpes-de-Haute-Provence,,,,,185,,8,167,8,0,763,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-05,Hautes-Alpes,,,,,205,,8,140,6,0,817,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-06,Alpes-Maritimes,,,,,1047,,113,716,45,12,4171,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-07,Ardèche,,,,,423,,9,132,9,0,1549,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-08,Ardennes,,,,,286,,11,54,0,0,852,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-09,Ariège,,,,,55,,6,49,5,1,250,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-10,Aube,,,,,305,,10,88,13,1,1359,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-11,Aude,,,,,242,,10,158,5,1,752,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-12,Aveyron,,,,,166,,3,89,4,0,644,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-13,Bouches-du-Rhône,,,,,2636,,262,1525,90,21,14525,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-14,Calvados,,,,,379,,24,209,12,1,1522,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-15,Cantal,,,,,102,,4,38,3,1,421,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-16,Charente,,,,,100,,5,66,1,0,352,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-17,Charente-Maritime,,,,,217,,13,105,0,0,679,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-18,Cher,,,,,411,,7,106,8,2,1082,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-19,Corrèze,,,,,138,,5,53,8,0,571,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-21,Côte-d'Or,,,,,760,,28,245,11,4,2868,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-22,Côtes-d'Armor,,,,,135,,5,66,7,1,685,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-23,Creuse,,,,,72,,10,58,2,0,409,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-24,Dordogne,,,,,132,,12,147,10,0,490,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-25,Doubs,,,,,403,,40,161,6,4,1738,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-26,Drôme,,,,,607,,35,244,17,3,2106,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-27,Eure,,,,,321,,11,122,14,2,1161,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-28,Eure-et-Loir,,,,,368,,25,203,8,3,1700,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-29,Finistère,,,,,201,,9,93,3,1,744,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-2A,Corse-du-Sud,,,,,79,,1,15,3,0,326,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-2B,Haute-Corse,,,,,65,,8,82,2,0,294,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-30,Gard,,,,,437,,39,202,11,3,1850,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-31,Haute-Garonne,,,,,609,,73,344,20,5,3585,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-32,Gers,,,,,75,,4,83,8,0,286,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-33,Gironde,,,,,745,,66,362,30,11,3621,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-34,Hérault,,,,,646,,55,226,20,3,3031,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-35,Ille-et-Vilaine,,,,,498,,30,357,13,1,2062,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-36,Indre,,,,,209,,10,108,14,3,692,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-37,Indre-et-Loire,,,,,331,,34,179,7,2,1261,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-38,Isère,,,,,1349,,64,669,26,9,5325,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-39,Jura,,,,,402,,4,136,8,0,1492,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-40,Landes,,,,,199,,5,64,1,1,668,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-41,Loir-et-Cher,,,,,240,,8,166,3,0,950,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-42,Loire,,,,,1025,,50,430,19,1,4021,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-43,Haute-Loire,,,,,207,,7,92,3,1,997,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-44,Loire-Atlantique,,,,,600,,19,213,25,3,2545,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-45,Loiret,,,,,418,,50,263,13,6,1992,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-46,Lot,,,,,69,,4,48,0,0,231,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-47,Lot-et-Garonne,,,,,114,,8,43,11,2,566,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-48,Lozère,,,,,94,,3,13,1,1,304,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-49,Maine-et-Loire,,,,,546,,36,245,7,2,2234,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-50,Manche,,,,,242,,15,195,3,1,887,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-51,Marne,,,,,714,,19,276,30,0,2490,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-52,Haute-Marne,,,,,276,,1,75,3,0,906,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-53,Mayenne,,,,,226,,6,58,0,0,942,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-54,Meurthe-et-Moselle,,,,,926,,53,292,19,3,3278,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-55,Meuse,,,,,289,,9,53,5,1,1048,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-56,Morbihan,,,,,299,,8,152,12,2,1293,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-57,Moselle,,,,,1830,,86,539,23,4,5451,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-58,Nièvre,,,,,194,,5,157,6,0,563,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-59,Nord,,,,,2566,,155,1149,92,21,10875,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-60,Oise,,,,,934,,44,406,14,1,2994,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-61,Orne,,,,,252,,9,127,5,0,1053,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-62,Pas-de-Calais,,,,,1223,,115,649,55,9,5125,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-63,Puy-de-Dôme,,,,,537,,26,233,8,4,1835,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-64,Pyrénées-Atlantiques,,,,,424,,9,125,2,0,1653,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-65,Hautes-Pyrénées,,,,,168,,8,38,6,1,786,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-66,Pyrénées-Orientales,,,,,215,,16,136,4,0,880,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-67,Bas-Rhin,,,,,1369,,69,458,38,9,5445,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-68,Haut-Rhin,,,,,1344,,29,296,9,0,5122,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-69,Rhône,,,,,2397,,156,818,64,18,11059,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-70,Haute-Saône,,,,,209,,19,94,3,2,890,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-71,Saône-et-Loire,,,,,897,,22,364,17,2,3435,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-72,Sarthe,,,,,436,,9,198,13,0,1847,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-73,Savoie,,,,,578,,14,117,8,0,2177,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-74,Haute-Savoie,,,,,806,,31,208,14,6,3767,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-75,Paris,,,,,3198,,219,921,85,20,13285,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-76,Seine-Maritime,,,,,1032,,59,557,19,0,3927,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-77,Seine-et-Marne,,,,,1455,,76,425,43,6,5981,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-78,Yvelines,,,,,1369,,39,571,37,1,5765,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-79,Deux-Sèvres,,,,,203,,8,51,3,0,672,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-80,Somme,,,,,641,,39,321,20,2,1952,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-81,Tarn,,,,,268,,19,107,1,1,915,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-82,Tarn-et-Garonne,,,,,143,,15,69,8,1,561,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-83,Var,,,,,927,,71,498,38,8,3878,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-84,Vaucluse,,,,,650,,20,296,28,5,2590,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-85,Vendée,,,,,190,,8,75,12,2,1010,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-86,Vienne,,,,,195,,9,73,5,1,801,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-87,Haute-Vienne,,,,,236,,11,66,6,0,796,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-88,Vosges,,,,,666,,12,161,12,1,2008,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-89,Yonne,,,,,386,,13,179,6,0,1499,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-90,Territoire de Belfort,,,,,502,,14,69,9,1,1558,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-91,Essonne,,,,,1341,,79,598,24,9,6184,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-92,Hauts-de-Seine,,,,,1999,,139,825,42,11,10051,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-93,Seine-Saint-Denis,,,,,1788,,96,727,61,11,9047,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-94,Val-de-Marne,,,,,2225,,95,602,45,7,9569,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-95,Val-d'Oise,,,,,1421,,45,406,58,3,6132,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-971,Guadeloupe,,,,,176,,9,27,3,1,845,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-972,Martinique,,,,,45,,3,13,3,0,408,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-973,Guyane,,,,,82,,6,19,1,0,2217,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-974,La Réunion,,,,,64,,59,135,11,2,893,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,departement,DEP-976,Mayotte,,,,,87,,25,127,35,7,936,,Santé publique France Data,,,sante-publique-france-data
+2021-02-26,pays,FRA,France,,,,,61265,,3445,25130,1634,303,256326,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-26,region,REG-01,Guadeloupe,,,,,176,,9,27,3,1,845,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-26,region,REG-02,Martinique,,,,,45,,3,13,3,0,408,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-26,region,REG-03,Guyane,,,,,82,,6,19,1,0,2217,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-26,region,REG-04,La Réunion,,,,,64,,59,135,11,2,893,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-26,region,REG-06,Mayotte,,,,,87,,25,127,35,7,936,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-26,region,REG-11,Île-de-France,,,,,14796,,788,5075,395,68,66014,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-26,region,REG-24,Centre-Val de Loire,,,,,1977,,134,1025,53,16,7677,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-26,region,REG-27,Bourgogne-Franche-Comté,,,,,3753,,145,1405,66,13,14043,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-26,region,REG-28,Normandie,,,,,2226,,118,1210,53,4,8550,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-26,region,REG-32,Hauts-de-France,,,,,6142,,387,2786,188,33,23781,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-26,region,REG-44,Grand Est,,,,,8005,,299,2292,152,19,27959,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-26,region,REG-52,Pays de la Loire,,,,,1998,,78,789,57,7,8578,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-26,region,REG-53,Bretagne,,,,,1133,,52,668,35,5,4784,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-26,region,REG-75,Nouvelle-Aquitaine,,,,,2775,,161,1213,79,15,11278,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-26,region,REG-76,Occitanie,,,,,3187,,255,1562,93,17,14075,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-26,region,REG-84,Auvergne-Rhône-Alpes,,,,,9025,,435,3345,190,50,36924,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-26,region,REG-93,Provence-Alpes-Côte d'Azur,,,,,5650,,482,3342,215,46,26744,,OpenCOVID19-fr,,,opencovid19-fr
+2021-02-26,region,REG-94,Corse,,,,,144,,9,97,5,0,620,,OpenCOVID19-fr,,,opencovid19-fr
