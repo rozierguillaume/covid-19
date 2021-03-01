@@ -227,6 +227,11 @@ def download_data_hosp_fra_clage():
     data = requests.get("https://www.data.gouv.fr/fr/datasets/r/08c18e08-6780-452d-9b8c-ae244ad529b3")
     with open(PATH + 'data/france/donnees-hosp-fra-clage.csv', 'wb') as f:
         f.write(data.content)
+
+def download_data_opencovid():
+    data = requests.get("https://raw.githubusercontent.com/opencovid19-fr/data/master/dist/chiffres-cles.csv")
+    with open(PATH + 'data/france/donnees-opencovid.csv', 'wb') as f:
+        f.write(data.content)
         
 def download_data_vue_ensemble():
     data = requests.get("https://www.data.gouv.fr/fr/datasets/r/d3a98a30-893f-47f7-96c5-2f4bcaaa0d71")        
@@ -282,11 +287,11 @@ def import_data_vue_ensemble():
     return df
 
 def import_data_opencovid():
-    df = pd.read_csv(PATH + 'data/france/donnees-opencovid.csv', sep=",").groupby(["date"]).sum().diff()
+    df = pd.read_csv(PATH + 'data/france/donnees-opencovid.csv', sep=",")
     
-    with open(PATH_STATS + 'opencovid.json', 'w') as outfile:
+    """with open(PATH_STATS + 'opencovid.json', 'w') as outfile:
         dict_data = {"cas":  int(df["cas_confirmes"].values[-1]), "update": df.index.values[-1][-2:] + "/" + df.index.values[-1][-5:-3]}
-        json.dump(dict_data, outfile)
+        json.dump(dict_data, outfile)"""
     return df
 
 def import_data_vacsi_a_fra():

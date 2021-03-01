@@ -1888,7 +1888,7 @@ with open(PATH_STATS + 'incidence_departements.json', 'w') as outfile:
     json.dump(incidence_departements, outfile)
 
 
-# In[18]:
+# In[9]:
 
 
 n_tot=1
@@ -2042,7 +2042,7 @@ for i in range(0, n_tot):
     liste_deps_str = liste_deps_str_vert + liste_deps_str_orange + liste_deps_str_rouge
     
     fig['layout']['annotations'] += (dict(
-            x = 80, y = 80, # annotation point
+            x = 100, y = 100, # annotation point
             xref='x1', yref='y1',
             text="Les cas augmentent.<br>Les admissions à l'hôpital augmentent.",
             xanchor="center",align='center',
@@ -2051,7 +2051,7 @@ for i in range(0, n_tot):
                 ),
             showarrow=False
         ),dict(
-            x = -80, y = -80, # annotation point
+            x = -50, y = -50, # annotation point
             xref='x1', yref='y1',
             text="Les cas baissent.<br>Les admissions à l'hôpital baissent.",
             xanchor="center",align='center',
@@ -2060,7 +2060,7 @@ for i in range(0, n_tot):
                 ),
             showarrow=False
         ),dict(
-            x = -80, y = 80, # annotation point
+            x = -50, y = 100, # annotation point
             xref='x1', yref='y1',
             text="Les cas baissent.<br>Les admissions à l'hôpital augmentent.",
             xanchor="center",align='center',
@@ -2069,7 +2069,7 @@ for i in range(0, n_tot):
                 ),
             showarrow=False
         ),dict(
-            x = 80, y = -80, # annotation point
+            x = 100, y = -50, # annotation point
             xref='x1', yref='y1',
             text="Les cas augmentent.<br>Les admissions à l'hôpital baissent.",
             xanchor="center",align='center',
@@ -2095,8 +2095,8 @@ for i in range(0, n_tot):
                 text=liste_deps_str, showarrow = False
           ),)
 
-    fig.update_xaxes(title="Évolution hebdomadaire des cas positifs", range=[-200, 200], ticksuffix="%")
-    fig.update_yaxes(title="Évolution hedbomadaire des admissions à l'hôpital", range=[-200, 200], ticksuffix="%")
+    fig.update_xaxes(title="Évolution hebdomadaire des cas positifs", range=[-100, 200], ticksuffix="%")
+    fig.update_yaxes(title="Évolution hedbomadaire des admissions à l'hôpital", range=[-100, 200], ticksuffix="%")
     fig.update_layout(
          title={
                         'text': "<b>Évolution des cas et hospitalisations dans les départements</b> • {}".format(datetime.strptime(dates[-i-1], '%Y-%m-%d').strftime('%d %b')),

@@ -12,41 +12,56 @@ from datetime import datetime
 PATH = "../../"
 
 
-# In[2]:
+# In[19]:
 
 
 df_mortalite = pd.read_csv(PATH+'data/france/deces_quotidiens_departement_csv.csv', sep=";", encoding="'windows-1252'")
+df_mortalite_2018 = pd.read_csv(PATH+'data/france/deces_quotidiens_departement_csv_avec_2018.csv', sep=";", encoding="'windows-1252'")
+
+
+# In[7]:
+
+
+#df_mortalite = df_mortalite.merge(df_mortalite_2018[["Date_evenement", "Total_deces_2018"]], left_on="Date_evenement", right_on="Date_evenement", how="left")
+
+
+# In[29]:
+
+
 
 df_mortalite_france = df_mortalite[df_mortalite["Zone"] == "France"]
+df_mortalite_france_2018 = df_mortalite_2018[df_mortalite_2018["Zone"] == "France"]
 window = 7
-df_mortalite_france.loc[:,"Total_deces_2018_diff"] = df_mortalite_france["Total_deces_2018"].diff().rolling(window=window, center=True).mean()
+#df_mortalite_france.loc[:,"Total_deces_2018_diff"] = df_mortalite_france["Total_deces_2018"].diff().rolling(window=window, center=True).mean()
+df_mortalite_france_2018.loc[:,"Total_deces_2018_diff"] = df_mortalite_france_2018["Total_deces_2018"].diff().rolling(window=window, center=True).mean()
+
 df_mortalite_france.loc[:,"Total_deces_2019_diff"] = df_mortalite_france["Total_deces_2019"].diff().rolling(window=window, center=True).mean()
 df_mortalite_france.loc[:,"Total_deces_2020_diff"] = df_mortalite_france["Total_deces_2020"].diff().rolling(window=window, center=True).mean()
+df_mortalite_france.loc[:,"Total_deces_2021_diff"] = df_mortalite_france["Total_deces_2021"].diff().rolling(window=window, center=True).mean()
 
 
-# In[3]:
+# In[40]:
 
 
-"""print(df_mortalite_france.dropna()["Total_deces_2018"].values[-1])
-print(df_mortalite_france.dropna()["Total_deces_2019"].values[-1])
-print(df_mortalite_france.dropna()["Total_deces_2020"].values[-1])
-print(df_mortalite_france.dropna())"""
+df_mortalite_france_2018
 
 
-# In[4]:
+# In[42]:
 
 
 #### Construction du graphique
 fig = make_subplots(specs=[[{"secondary_y": False}]])
 
 # Ajout R_effectif estimé via les urgences au graph
-fig.add_trace(go.Scatter(x = df_mortalite_france["Date_evenement"], y = df_mortalite_france["Total_deces_2018_diff"],
+"""fig.add_trace(go.Scatter(x = df_mortalite_france["Date_evenement"], y = df_mortalite_france["Total_deces_2018_diff"],
                     mode='lines',
                     line=dict(width=4, color="rgb(96, 178, 219)"),
                     name="Décès 2018",
                     marker_size=4,
                     showlegend=True
-                       ))
+                       ))"""
+
+
 fig.add_trace(go.Scatter(x = df_mortalite_france["Date_evenement"], y = df_mortalite_france["Total_deces_2019_diff"],
                     mode='lines',
                     line=dict(width=4, color="rgb(11, 131, 191)"),
@@ -54,16 +69,32 @@ fig.add_trace(go.Scatter(x = df_mortalite_france["Date_evenement"], y = df_morta
                     marker_size=4,
                     showlegend=True
                        ))
+fig.add_trace(go.Scatter(x = df_mortalite_france_2018["Date_evenement"], y = df_mortalite_france_2018["Total_deces_2018_diff"],
+                    mode='lines',
+                    line=dict(width=4, color="rgb(96, 178, 219)"),
+                    name="Décès 2018",
+                    marker_size=4,
+                    showlegend=True
+                       ))
+
 fig.add_trace(go.Scatter(x = df_mortalite_france["Date_evenement"], y = df_mortalite_france["Total_deces_2020_diff"],
                     mode='lines',
-                    line=dict(width=4, color="red"),
+                    line=dict(width=4, color="#ffa58f"),
                     name="Décès 2020",
                     marker_size=4,
                     showlegend=True
                        ))
 
-# Mise en valeur de la dernière valeur de décès
-mortalite_now = df_mortalite_france.dropna()["Total_deces_2020_diff"].values[-1]
+
+fig.add_trace(go.Scatter(x = df_mortalite_france["Date_evenement"], y = df_mortalite_france["Total_deces_2021_diff"],
+                    mode='lines',
+                    line=dict(width=4, color="red"),
+                    name="Décès 2021",
+                    marker_size=4,
+                    showlegend=True
+                       ))
+
+mortalite_now = df_mortalite_france.dropna()["Total_deces_2021_diff"].values[-1]
 fig.add_trace(go.Scatter(x = [df_mortalite_france.dropna()["Date_evenement"].values[-1]], y = [mortalite_now],
                     mode='markers',
                     name="",
