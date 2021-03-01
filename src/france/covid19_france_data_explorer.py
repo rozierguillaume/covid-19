@@ -143,7 +143,7 @@ def generate_data(data_incid=pd.DataFrame(), data_hosp=pd.DataFrame(), data_surs
         taux_incidence = data_incid["P"].rolling(window=7).sum().fillna(0) * 100000 / data_incid["pop"].values[0]
         dict_data["incidence"] = {"jour_nom": "jour_incid", "valeur": list(round(taux_incidence,2))}
 
-        taux_positivite = (data_incid["P"].rolling(window=7).sum() * 100 / data_incid["T"].rolling(window=7).sum()).fillna(0)
+        taux_positivite = (data_incid["P"] / data_incid["T"] * 100).rolling(window=7).mean().fillna(0)
         dict_data["taux_positivite"] = {"jour_nom": "jour_incid", "valeur": list(round(taux_positivite,2))}
     
         cas = data_incid["P"].rolling(window=7).mean().fillna(0)
@@ -209,7 +209,7 @@ def generate_data_age(data_incid, data_hosp, export_jour=False):## Incidence
         taux_incidence = data_incid_clage["P"].rolling(window=7).sum().fillna(0) * 100000 / data_incid_clage["pop"].values[0]
         dict_data[clage_nom]["incidence"] = {"jour_nom": "jour_incid", "valeur": list(round(taux_incidence,2))}
 
-        taux_positivite = (data_incid_clage["P"].rolling(window=7).sum() * 100 / data_incid_clage["T"].rolling(window=7).sum()).fillna(0)
+        taux_positivite = (data_incid_clage["P"] / data_incid_clage["T"] * 100).rolling(window=7).mean().fillna(0)
         dict_data[clage_nom]["taux_positivite"] = {"jour_nom": "jour_incid", "valeur": list(round(taux_positivite,2))}
 
         cas = data_incid_clage["P"].rolling(window=7).mean().fillna(0)
