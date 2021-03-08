@@ -242,7 +242,12 @@ def download_data_variants():
     data = requests.get("https://www.data.gouv.fr/fr/datasets/r/c43d7f3f-c9f5-436b-9b26-728f80e0fd52")        
     with open(PATH + 'data/france/donnees-variants.csv', 'wb') as f:
         f.write(data.content)
-    
+        
+def download_data_variants_deps():
+    data = requests.get("https://www.data.gouv.fr/fr/datasets/r/16f4fd03-797f-4616-bca9-78ff212d06e8")        
+    with open(PATH + 'data/france/donnees-variants-deps.csv', 'wb') as f:
+        f.write(data.content)
+
 def import_data_metropoles():
     df_metro = pd.read_csv(PATH + 'data/france/donnes-incidence-metropoles.csv', sep=",")
     epci = pd.read_csv(PATH + 'data/france/metropole-epci.csv', sep=";", encoding="'windows-1252'")
@@ -278,8 +283,16 @@ def import_data_new():
     return df_new
 
 def import_data_variants():
-    df = pd.read_csv(PATH + 'data/france/donnees-variants.csv', sep=";")
-    return df
+    df_variants = pd.read_csv(PATH + 'data/france/donnees-variants.csv', sep=";")
+    df_variants["jour"] = df_variants.semaine.apply(lambda x: x[11:]) 
+    df_variants = df_variants[df_variants.cl_age90==0]
+    return df_variants
+
+def import_data_variants_deps():
+    df_variants = pd.read_csv(PATH + 'data/france/donnees-variants-deps.csv', sep=";")
+    df_variants["jour"] = df_variants.semaine.apply(lambda x: x[11:]) 
+    df_variants = df_variants[df_variants.cl_age90==0]
+    return df_variants
 
 def import_data_tests_sexe():
     df = pd.read_csv(PATH + 'data/france/tests_viro-fra-covid19.csv', sep=";")

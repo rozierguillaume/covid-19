@@ -23,7 +23,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[2]:
+# In[1]:
 
 
 import pandas as pd
@@ -47,6 +47,19 @@ locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
 
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
+
+
+# In[5]:
+
+
+data.download_data_variants_deps()
+df_variants = data.import_data_variants_deps()
+
+
+# In[6]:
+
+
+df_variants
 
 
 # In[4]:
@@ -74,7 +87,7 @@ lits_reas = pd.read_csv(PATH+'data/france/lits_rea.csv', sep=",")
 df_departements_lits = df_departements.merge(lits_reas, left_on="departmentName", right_on="nom_dpt")
 
 
-# In[6]:
+# In[22]:
 
 
 def cas_journ(departement):
