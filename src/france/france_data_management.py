@@ -238,6 +238,10 @@ def download_data_vue_ensemble():
     with open(PATH + 'data/france/synthese-fra.csv', 'wb') as f:
         f.write(data.content)
 
+def download_data_variants():
+    data = requests.get("https://www.data.gouv.fr/fr/datasets/r/c43d7f3f-c9f5-436b-9b26-728f80e0fd52")        
+    with open(PATH + 'data/france/donnees-variants.csv', 'wb') as f:
+        f.write(data.content)
     
 def import_data_metropoles():
     df_metro = pd.read_csv(PATH + 'data/france/donnes-incidence-metropoles.csv', sep=",")
@@ -272,6 +276,10 @@ def import_data_tests_viros():
 def import_data_new():
     df_new = pd.read_csv(PATH + 'data/france/donnes-hospitalieres-covid19-nouveaux.csv', sep=";")
     return df_new
+
+def import_data_variants():
+    df = pd.read_csv(PATH + 'data/france/donnees-variants.csv', sep=";")
+    return df
 
 def import_data_tests_sexe():
     df = pd.read_csv(PATH + 'data/france/tests_viro-fra-covid19.csv', sep=";")

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[43]:
 
 
 import pandas as pd
@@ -12,20 +12,20 @@ from datetime import datetime
 PATH = "../../"
 
 
-# In[19]:
+# In[44]:
 
 
 df_mortalite = pd.read_csv(PATH+'data/france/deces_quotidiens_departement_csv.csv', sep=";", encoding="'windows-1252'")
 df_mortalite_2018 = pd.read_csv(PATH+'data/france/deces_quotidiens_departement_csv_avec_2018.csv', sep=";", encoding="'windows-1252'")
 
 
-# In[7]:
+# In[45]:
 
 
 #df_mortalite = df_mortalite.merge(df_mortalite_2018[["Date_evenement", "Total_deces_2018"]], left_on="Date_evenement", right_on="Date_evenement", how="left")
 
 
-# In[29]:
+# In[46]:
 
 
 
@@ -40,13 +40,13 @@ df_mortalite_france.loc[:,"Total_deces_2020_diff"] = df_mortalite_france["Total_
 df_mortalite_france.loc[:,"Total_deces_2021_diff"] = df_mortalite_france["Total_deces_2021"].diff().rolling(window=window, center=True).mean()
 
 
-# In[40]:
+# In[47]:
 
 
 df_mortalite_france_2018
 
 
-# In[42]:
+# In[48]:
 
 
 #### Construction du graphique

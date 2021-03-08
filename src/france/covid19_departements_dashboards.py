@@ -1888,7 +1888,7 @@ with open(PATH_STATS + 'incidence_departements.json', 'w') as outfile:
     json.dump(incidence_departements, outfile)
 
 
-# In[9]:
+# In[18]:
 
 
 n_tot=1

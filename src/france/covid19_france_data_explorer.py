@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[113]:
+# In[1]:
 
 
 """
@@ -22,7 +22,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[114]:
+# In[2]:
 
 
 import pandas as pd
@@ -34,20 +34,20 @@ show_charts = False
 PATH_STATS = "../../data/france/stats/"
 
 
-# In[115]:
+# In[3]:
 
 
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
 
 
-# In[140]:
+# In[4]:
 
 
 data.download_data_vue_ensemble()
 df_vue_ensemble = data.import_data_vue_ensemble()
 
 
-# In[168]:
+# In[5]:
 
 
 df_metro = data.import_data_metropoles()
@@ -59,14 +59,14 @@ metropoles = list(dict.fromkeys(list(df_metro['Metropole'].dropna().values)))
 df_metro_0
 
 
-# In[116]:
+# In[6]:
 
 
 df_tests_viros_enrichi = data.import_data_tests_viros()
 df_tests_viros_enrichi = df_tests_viros_enrichi.drop("regionName_y", axis=1).rename({"regionName_x": "regionName"}, axis=1)
 
 
-# In[117]:
+# In[7]:
 
 
 df_incid_clage = df_incid.copy()
@@ -83,20 +83,20 @@ df_new_france = df_new.groupby(["jour"]).sum().reset_index()
 df_new_regions = df_new.groupby(["jour", "regionName"]).sum().reset_index()
 
 
-# In[118]:
+# In[8]:
 
 
 df_incid_clage_regions = df_incid_clage.groupby(["regionName", "jour", "cl_age90"]).sum().reset_index()
 
 
-# In[119]:
+# In[9]:
 
 
 df_tests_viros_regions = df_tests_viros_enrichi.groupby(["regionName", "jour", "cl_age90"]).sum().reset_index()
 df_tests_viros_france = df_tests_viros_enrichi.groupby(["jour", "cl_age90"]).sum().reset_index()
 
 
-# In[120]:
+# In[10]:
 
 
 df_hosp_clage = data.import_data_hosp_clage()
@@ -104,7 +104,7 @@ df_hosp_clage_france = df_hosp_clage.groupby(["jour", "cl_age90"]).sum().reset_i
 df_hosp_clage_regions = df_hosp_clage.groupby(["regionName", "jour", "cl_age90"]).sum().reset_index()
 
 
-# In[121]:
+# In[11]:
 
 
 departements = list(dict.fromkeys(list(df_incid['dep'].values))) 
@@ -120,7 +120,7 @@ zone_b = ["zone_b", "02", "04", "05", "06", "08", "10", "13", "14", "18", "22", 
 zone_c = ["zone_c", "09", "11", "12", "30", "31", "32", "34", "46", "48", "65", "66", "75", "77", "78", "81", "82", "91", "92", "93", "94", "95"]
 
 
-# In[188]:
+# In[12]:
 
 
 def generate_data(data_incid=pd.DataFrame(), data_hosp=pd.DataFrame(), data_sursaud=pd.DataFrame(), data_new=pd.DataFrame(), data_vue_ensemble=pd.DataFrame(), data_metropole=pd.DataFrame(), mode="", export_jour=False):## Incidence
@@ -189,7 +189,7 @@ def generate_data(data_incid=pd.DataFrame(), data_hosp=pd.DataFrame(), data_surs
  
 
 
-# In[123]:
+# In[13]:
 
 
 def generate_data_age(data_incid, data_hosp, export_jour=False):## Incidence
@@ -244,7 +244,7 @@ def generate_data_age(data_incid, data_hosp, export_jour=False):## Incidence
  
 
 
-# In[142]:
+# In[14]:
 
 
 def export_data(data, suffix=""):
@@ -252,7 +252,7 @@ def export_data(data, suffix=""):
         json.dump(data, outfile)
 
 
-# In[186]:
+# In[15]:
 
 
 def dataexplorer():
@@ -288,14 +288,14 @@ def dataexplorer():
     for metropole in metropoles:
         print(metropole)
         dict_data[metropole] = generate_data(data_metropole=df_metro_0[df_metro_0.Metropole == metropole], mode="metropoles")
-        print(dict_data[metropole])
+        #print(dict_data[metropole])
         
     dict_data["zones_vacances"] = ["zone_a", "zone_b", "zone_c"]
     
     export_data(dict_data, suffix="_compr")
 
 
-# In[146]:
+# In[16]:
 
 
 import math
@@ -318,7 +318,7 @@ def dataexplorer_age():
         nom_dep = df_tests_viros_enrichi_temp["departmentName"].values[0]
         
         if(type(nom_dep) is float): #Pas de nom, nom_dep == NaN
-            print(dep)
+            #print(dep)
             nom_dep = "--"
         
         noms_departements[dep] = nom_dep
@@ -329,13 +329,13 @@ def dataexplorer_age():
     return dict_data
 
 
-# In[189]:
+# In[17]:
 
 
 dataexplorer()
 
 
-# In[128]:
+# In[18]:
 
 
 dict_data = dataexplorer_age()
