@@ -316,7 +316,7 @@ def import_data_opencovid():
     return df
 
 def import_data_vacsi_a_fra():
-    df = pd.read_csv(PATH + 'data/france/donnees-vacsi-a-fra.csv', sep=",")
+    df = pd.read_csv(PATH + 'data/france/donnees-vacsi-a-fra.csv', sep=";")
     df = df[df.clage_vacsi != 0]
     return df
 

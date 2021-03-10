@@ -23,7 +23,22 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[1]:
+# In[2]:
+
+
+def nbWithSpaces(nb):
+    str_nb = str(int(round(nb)))
+    if(nb>100000):
+        return str_nb[:3] + " " + str_nb[3:]
+    elif(nb>10000):
+        return str_nb[:2] + " " + str_nb[2:]
+    elif(nb>1000):
+        return str_nb[:1] + " " + str_nb[1:]
+    else:
+        return str_nb
+
+
+# In[3]:
 
 
 import pandas as pd
@@ -43,7 +58,7 @@ import locale
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
 
-# In[3]:
+# In[4]:
 
 
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
@@ -57,12 +72,6 @@ df_variants = data.import_data_variants_deps()
 
 
 # In[6]:
-
-
-df_variants
-
-
-# In[4]:
 
 
 df_departements = df.groupby(["jour", "departmentName"]).sum().reset_index()
@@ -79,7 +88,7 @@ last_day_plot_plus2 = (datetime.strptime(max(dates), '%Y-%m-%d') + timedelta(day
 departements_nb = list(dict.fromkeys(list(df_tests_viros['dep'].values))) 
 
 
-# In[5]:
+# In[7]:
 
 
 lits_reas = pd.read_csv(PATH+'data/france/lits_rea.csv', sep=",")
@@ -87,7 +96,7 @@ lits_reas = pd.read_csv(PATH+'data/france/lits_rea.csv', sep=",")
 df_departements_lits = df_departements.merge(lits_reas, left_on="departmentName", right_on="nom_dpt")
 
 
-# In[22]:
+# In[21]:
 
 
 def cas_journ(departement):
@@ -237,6 +246,88 @@ def cas_journ(departement):
     print("> " + name_fig)
 
 #cas_journ("Savoie")
+
+
+# In[8]:
+
+
+def nombre_variants(departement):
+    df_incid_dep = df_incid_departements[df_incid_departements["departmentName"] == departement]
+    df_incid_dep["P_rolling"] = df_incid_dep["P"].rolling(window=7).mean()
+    
+    df_variants_dep = df_variants[df_variants["dep"] == df_incid_dep["dep"].values[0]]
+    
+    fig = go.Figure()
+    n_days = len(df_variants_dep)
+
+    y=df_incid_dep["P_rolling"].values[-n_days:] * df_variants_dep.Prc_susp_501Y_V1.values/100
+    proportion = str(round(y[-1]/df_incid_dep["P_rolling"].values[-1]*100, 1)).replace(".", ",")
+    fig.add_trace(
+        go.Scatter(
+            x=df_variants_dep.jour,
+            y=y,
+            name="<b>Variant UK </b><br>" + str(nbWithSpaces(y[-1])) + " cas (" + proportion + " %)",
+            stackgroup='one'
+        )
+    )
+
+    y=df_incid_dep["P_rolling"].values[-n_days:] * df_variants_dep.Prc_susp_501Y_V2_3.values/100
+    proportion = str(round(y[-1]/df_incid_dep["P_rolling"].values[-1]*100, 1)).replace(".", ",")
+    fig.add_trace(
+        go.Scatter(
+            x=df_variants_dep.jour,
+            y=y,
+            name="<b>Variants SA + BZ </b><br>" + str(nbWithSpaces(y[-1])) + " cas (" + proportion + " %)",
+            showlegend=True,
+            stackgroup='one'
+        )
+    )
+
+    y=df_incid_dep["P_rolling"].values[-n_days:] * df_variants_dep.Prc_susp_IND.values/100
+    proportion = str(round(y[-1]/df_incid_dep["P_rolling"].values[-1]*100, 1)).replace(".", ",")
+    fig.add_trace(
+        go.Scatter(
+            x=df_variants_dep.jour,
+            y=y,
+            name="<b>Variants indéterminés </b><br>" + str(nbWithSpaces(y[-1])) + " cas (" + proportion + " %)",
+            showlegend=True,
+            stackgroup='one'
+        )
+    )
+    y=df_incid_dep["P_rolling"].values[-n_days:] * df_variants_dep.Prc_susp_ABS.values/100
+    proportion = str(round(y[-1]/df_incid_dep["P_rolling"].values[-1]*100, 1)).replace(".", ",")
+    fig.add_trace(
+        go.Scatter(
+            x=df_variants_dep.jour,
+            y=y,
+            name="<b>Souche classique </b><br>" + str(nbWithSpaces(y[-1])) + " cas (" + proportion + " %)",
+            showlegend=True,
+            stackgroup='one'
+        )
+    )
+
+    fig.update_yaxes(ticksuffix="")
+
+    fig.update_layout(
+         title={
+            'text': "Nombre de variants dans les cas détectés - " + departement,
+            'y':0.97,
+            'x':0.5,
+            'xanchor': 'center',
+            'yanchor': 'top',
+             'font': {'size': 20}
+        },
+        annotations = [
+                        dict(
+                            x=0.5,
+                            y=1.1,
+                            xref='paper',
+                            yref='paper',
+                            text='Date : 08/03/21. Données : Santé publique France. Auteur : @guillaumerozier - covidtracker.fr.',
+                            showarrow = False
+                        )]
+    )
+    fig.write_image(PATH+"images/charts/france/departements_dashboards/{}.jpeg".format("variants_nombre_"+departement), scale=1.5, width=750, height=500)
 
 
 # In[7]:
@@ -1885,6 +1976,14 @@ for dep in departements:
 with open(PATH + 'images/charts/france/covidep/stats.json', 'w') as outfile:
     json.dump(stats, outfile)
     
+
+
+# In[9]:
+
+
+for dep in departements:
+    print("variants " + dep)
+    nombre_variants(dep)
 
 
 # In[17]:

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[30]:
+# In[34]:
 
 
 """
@@ -22,7 +22,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[31]:
+# In[35]:
 
 
 import pandas as pd
@@ -36,14 +36,21 @@ import locale
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
 
-# In[32]:
+# In[39]:
 
 
 data.download_data()
 data.download_data_hosp_fra_clage()
 
 
-# In[33]:
+# In[40]:
+
+
+df_a_vacsi_a_france = data.import_data_vacsi_a_fra()
+df_a_vacsi_a_france
+
+
+# In[37]:
 
 
 df_a_vacsi_a_france = data.import_data_vacsi_a_fra()

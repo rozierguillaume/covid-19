@@ -4,7 +4,7 @@
 # # COVID-19 French Charts
 # Guillaume Rozier, 2020
 
-# In[2]:
+# In[1]:
 
 
 """
@@ -26,7 +26,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[1]:
+# In[21]:
 
 
 from multiprocessing import Pool
@@ -55,7 +55,7 @@ PATH = "../../"
 now = datetime.now()
 
 
-# In[2]:
+# In[3]:
 
 
 try:
@@ -71,7 +71,7 @@ except:
 
 # # Data download and import
 
-# In[46]:
+# In[22]:
 
 
 import time
@@ -96,13 +96,13 @@ while not success:
 
 # ## Data transformations
 
-# In[4]:
+# In[ ]:
 
 
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
 
 
-# In[5]:
+# In[ ]:
 
 
 data.download_data_vue_ensemble()
@@ -111,14 +111,14 @@ df_vue_ensemble = data.import_data_vue_ensemble()
 df_opencovid = data.import_data_opencovid()
 
 
-# In[6]:
+# In[ ]:
 
 
 df_incid_fra_clage = data.import_data_tests_sexe()
 df_incid_fra = df_incid_fra_clage[df_incid_fra_clage["cl_age90"]==0]
 
 
-# In[7]:
+# In[ ]:
 
 
 df_new_france = df_new.groupby(["jour"]).sum().reset_index()
@@ -157,7 +157,7 @@ regions = list(dict.fromkeys(list(df['regionName'].values)))
 departements_noms = list(dict.fromkeys(list(df['departmentName'].values))) 
 
 
-# In[8]:
+# In[ ]:
 
 
 #Calcul sorties de réa
@@ -283,7 +283,7 @@ fig.write_image(PATH + "images/charts/france/proportion_variants.jpeg", scale=2,
 """
 
 
-# In[14]:
+# In[10]:
 
 
 def nbWithSpaces(nb):
@@ -298,7 +298,7 @@ def nbWithSpaces(nb):
         return str_nb
 
 
-# In[123]:
+# In[11]:
 
 
 departements_name = {}
@@ -612,7 +612,7 @@ def stats_dep_vague(nb_first_values):
 stats_dep_vague(len(dates)-1)
 
 
-# In[43]:
+# In[16]:
 
 
 def caracterisation_valeur(valeur, valeur_j1, seuils=[1, 2, 3]):
@@ -639,7 +639,7 @@ def caracterisation_valeur(valeur, valeur_j1, seuils=[1, 2, 3]):
     return caract
 
 
-# In[44]:
+# In[12]:
 
 
 
@@ -650,7 +650,14 @@ df_dep_tests = df_tests_viros_departements[df_tests_viros_departements["departme
 df_dep_tests["P"].values[-7:].sum()/df_dep_tests["pop"].values[0]*100000
 
 
-# In[45]:
+# In[13]:
+
+
+data.download_data_variants_deps()
+df_variants = data.import_data_variants_deps()
+
+
+# In[20]:
 
 
 df_tests_viros_france = df_tests_viros.groupby(['jour', 'cl_age90']).sum().reset_index()
@@ -684,6 +691,11 @@ def incidence_deps_data():
         #data_json["incidence_evol_abs"] = np.nan_to_num(round((data_json["incidence_cas"]-incidence_j7), 2))
         
         data_json["taux_positivite"] = np.round(df_dep_tests["P"].sum()/df_dep_tests["T"].sum()*100, 1)
+        
+        dep_num = df_dep.dep.values[0]
+        df_variants_dep = df_variants[df_variants.dep == dep_num]
+        data_json["var_uk"] = df_variants_dep.Prc_susp_501Y_V1.values[-1]
+        data_json["var_sa_bz"] = df_variants_dep.Prc_susp_501Y_V2_3.values[-1]
         
         data_json["incidence_hosp"] = round(df_dep["incid_hosp"].values[-7:].sum()/df_dep["departmentPopulation"].values[0]*100000, 3)
         data_json["lits_hosp"] = round(df_dep_lits["hosp"].values[-1]/df_dep["departmentPopulation"].values[0]*100000, 2)
@@ -3521,10 +3533,8 @@ for (date_deb, date_fin) in [("2020-03-18", last_day_plot_dashboard), (dates[-10
         suffixe="_recent"
 
 
-# In[45]:
+# In[ ]:
 
-
-#last_day_plot_dashboard = "2021-03-02"
 
 suffixe=""
 for (date_deb, date_fin) in [("2020-03-18", last_day_plot_dashboard), (dates[-60], last_day_plot)]:
@@ -3546,7 +3556,7 @@ for (date_deb, date_fin) in [("2020-03-18", last_day_plot_dashboard), (dates[-60
             y = df_incid_france_cas_rolling,
             name = "Cas positifs (moyenne 7 j.)",
             marker_color='rgb(8, 115, 191)',
-            line_width=6,
+            line_width=8,
             opacity=0.8,
             fill='tozeroy',
             fillcolor="rgba(8, 115, 191, 0.3)",
@@ -3578,7 +3588,7 @@ for (date_deb, date_fin) in [("2020-03-18", last_day_plot_dashboard), (dates[-60
             name = "",
             mode="markers",
             marker_color='rgba(255, 255, 255, 0.6)',
-            marker_size=12,
+            marker_size=16,
             opacity=1,
             showlegend=False
         ), secondary_y=True)
@@ -3589,7 +3599,7 @@ for (date_deb, date_fin) in [("2020-03-18", last_day_plot_dashboard), (dates[-60
             name = "",
             mode="markers",
             marker_color='rgb(8, 115, 191)',
-            marker_size=8,
+            marker_size=11,
             opacity=1,
             showlegend=False
         ), secondary_y=True)
@@ -3650,17 +3660,16 @@ for (date_deb, date_fin) in [("2020-03-18", last_day_plot_dashboard), (dates[-60
                         ]
                          )
 
-        croissance = round(((df_incid_france_cas_rolling.values[-4]-df_incid_france_cas_rolling.values[-4-7]) / df_incid_france_cas_rolling.values[-4-7])*100, 1)
+        croissance = math.trunc(round(((df_incid_france_cas_rolling.values[-4]-df_incid_france_cas_rolling.values[-4-7]) / df_incid_france_cas_rolling.values[-4-7])*100))
         if croissance >= 0:
             croissance="+"+str(abs(croissance))
-        croissance = str(croissance).replace(".", ",")
-        
+
         if i=="log":
             y=math.log(df_incid_france_cas_rolling.values[-4])
         else:
             y=df_incid_france_cas_rolling.values[-4]
             
-        ax=-100
+        ax=-400
         ax2=-400
         if(suffixe=="_recent"):
             ax=-100
@@ -3670,7 +3679,7 @@ for (date_deb, date_fin) in [("2020-03-18", last_day_plot_dashboard), (dates[-60
                 x = df_vue_ensemble["date"].values[-4], y = y, # annotation point
                 xref='x1', 
                 yref='y2',
-                text=" <b>{} {}".format('%s' % nbWithSpaces(df_incid_france_cas_rolling.values[-4]), "cas quotidiens</b><br>en moyenne<br> publiés du {} au {}.<br> {} % en 7 jours".format(datetime.strptime(df_vue_ensemble["date"].values[-7], '%Y-%m-%d').strftime('%d'), datetime.strptime(df_vue_ensemble["date"].values[-1], '%Y-%m-%d').strftime('%d %b'), croissance)),
+                text=" <b>{} {}".format('%d' % df_incid_france_cas_rolling.values[-4], "cas quotidiens</b><br>en moyenne<br> publiés du {} au {}.<br> {} % en 7 jours".format(datetime.strptime(dates_incid[-7], '%Y-%m-%d').strftime('%d'), datetime.strptime(dates_incid[-1], '%Y-%m-%d').strftime('%d %b'), croissance)),
                 xshift=-2,
                 yshift=0,
                 xanchor="center",

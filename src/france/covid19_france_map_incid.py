@@ -50,7 +50,7 @@ with open(PATH+'data/france/dep.geojson') as response:
     depa = json.load(response)
 
 
-# In[4]:
+# In[11]:
 
 
 def build_map(data_df, img_folder, date_val, date_str = "date", dep_str = "departement", color_str = 'indic_synthese', legend_title="legend_title", title="title", subtitle="", subsubtitle="{}<br>{} (données du {})", color_descrete_map={"Risque Faible":"#DAF7A6", "Alerte":"#b8002a", "Alerte Renforcée":"#7c0030", "Alerte Maximale":"#460d37"}):
@@ -120,8 +120,8 @@ def build_map(data_df, img_folder, date_val, date_str = "date", dep_str = "depar
             )
 
             if date == dates_deconf[-1]:
-                fig.write_image((img_folder+"/{}.jpeg").format("latest"), scale=1, width=1200, height=700)
-            fig.write_image((img_folder+"/{}.jpeg").format(date), scale=2, width=1200, height=700)
+                fig.write_image((img_folder+"/{}.jpeg").format("latest"), scale=2, width=1200, height=700)
+            fig.write_image((img_folder+"/{}.jpeg").format(date), scale=1, width=1200, height=700)
         else:
             print("no data")
 
@@ -145,12 +145,12 @@ def build_gif(file_gif, imgs_folder, dates):
                 print("no image for "+str(date))
 
 
-# In[8]:
+# In[12]:
 
 
 dates_deconf = list(dict.fromkeys(list(df_incid["jour"].values)))
 
-date = [dates_deconf[-20]] #dates_deconf[-33:]
+date = [dates_deconf[-1]] #dates_deconf[-33:]
 build_map(df_incid.sort_values(by=['incidence']), PATH+"images/charts/france/dep-map-incid-cat", date_val=date, date_str = "jour", dep_str = "dep", color_str = 'incidence_color', legend_title="", title="Incidence", subtitle="Nombre de cas hebdomadaires pour 100 000 habitants")
 
 
