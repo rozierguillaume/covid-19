@@ -71,7 +71,7 @@ except:
 
 # # Data download and import
 
-# In[22]:
+# In[32]:
 
 
 import time
@@ -96,13 +96,13 @@ while not success:
 
 # ## Data transformations
 
-# In[ ]:
+# In[24]:
 
 
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
 
 
-# In[ ]:
+# In[30]:
 
 
 data.download_data_vue_ensemble()
@@ -111,14 +111,14 @@ df_vue_ensemble = data.import_data_vue_ensemble()
 df_opencovid = data.import_data_opencovid()
 
 
-# In[ ]:
+# In[26]:
 
 
 df_incid_fra_clage = data.import_data_tests_sexe()
 df_incid_fra = df_incid_fra_clage[df_incid_fra_clage["cl_age90"]==0]
 
 
-# In[ ]:
+# In[27]:
 
 
 df_new_france = df_new.groupby(["jour"]).sum().reset_index()
@@ -157,7 +157,7 @@ regions = list(dict.fromkeys(list(df['regionName'].values)))
 departements_noms = list(dict.fromkeys(list(df['departmentName'].values))) 
 
 
-# In[ ]:
+# In[28]:
 
 
 #Calcul sorties de réa
@@ -3533,7 +3533,7 @@ for (date_deb, date_fin) in [("2020-03-18", last_day_plot_dashboard), (dates[-10
         suffixe="_recent"
 
 
-# In[ ]:
+# In[31]:
 
 
 suffixe=""

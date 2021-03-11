@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[88]:
+# In[125]:
 
 
 """
@@ -23,7 +23,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[89]:
+# In[126]:
 
 
 def nbWithSpaces(nb):
@@ -38,7 +38,7 @@ def nbWithSpaces(nb):
         return str_nb
 
 
-# In[107]:
+# In[127]:
 
 
 import pandas as pd
@@ -51,7 +51,7 @@ locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 now = datetime.now()
 
 
-# In[91]:
+# In[128]:
 
 
 data.download_data()
@@ -61,7 +61,7 @@ df_tests["P_rolling"] = df_tests["P"].rolling(window=7).mean()
 df_tests
 
 
-# In[92]:
+# In[129]:
 
 
 data.download_data_variants()
@@ -69,7 +69,7 @@ df_variants = data.import_data_variants()
 df_variants
 
 
-# In[93]:
+# In[130]:
 
 
 df_variants["jour"] = df_variants.semaine.apply(lambda x: x[11:]) 
@@ -77,13 +77,7 @@ df_variants = df_variants[df_variants.cl_age90==0]
 df_variants
 
 
-# In[94]:
-
-
-df_variants.Nb_tests_PCR_TA_crible / (df_variants.Prc_tests_PCR_TA_crible/100)
-
-
-# In[108]:
+# In[131]:
 
 
 fig = go.Figure()
@@ -91,17 +85,17 @@ fig = go.Figure()
 fig.add_trace(
     go.Scatter(
         x=df_variants.jour,
-        y=df_variants.Prc_susp_501Y_V1,
-        name="% variant UK (" + str(df_variants.Prc_susp_501Y_V1.values[-1]).replace(".", ",") + " %)",
+        y=df_variants.Prc_susp_ABS,
+        name="% souche classique (" + str(df_variants.Prc_susp_ABS.values[-1]).replace(".", ",") + " %)",
+        showlegend=True,
     )
 )
 
 fig.add_trace(
     go.Scatter(
         x=df_variants.jour,
-        y=df_variants.Prc_susp_ABS,
-        name="% souche classique (" + str(df_variants.Prc_susp_ABS.values[-1]).replace(".", ",") + " %)",
-        showlegend=True,
+        y=df_variants.Prc_susp_501Y_V1,
+        name="% variant UK (" + str(df_variants.Prc_susp_501Y_V1.values[-1]).replace(".", ",") + " %)",
     )
 )
 
@@ -147,7 +141,7 @@ fig.update_layout(
 fig.write_image(PATH+"images/charts/france/{}.jpeg".format("variants_pourcent"), scale=2, width=1000, height=600)
 
 
-# In[113]:
+# In[132]:
 
 
 fig = go.Figure()
@@ -175,6 +169,16 @@ fig.add_trace(
     )
 )
 
+y=df_tests["P_rolling"].values[-n_days:] * df_variants.Prc_susp_501Y_V1.values/100
+fig.add_trace(
+    go.Scatter(
+        x=df_variants.jour,
+        y=y,
+        name="<b>Variant UK </b><br>" + str(nbWithSpaces(y[-1])).replace(".", ",") + " (" + str(df_variants.Prc_susp_501Y_V1.values[-1]).replace(".", ",") + " %) ",
+        stackgroup='one'
+    )
+)
+
 y=df_tests["P_rolling"].values[-n_days:] * df_variants.Prc_susp_ABS.values/100
 fig.add_trace(
     go.Scatter(
@@ -186,15 +190,6 @@ fig.add_trace(
     )
 )
 
-y=df_tests["P_rolling"].values[-n_days:] * df_variants.Prc_susp_501Y_V1.values/100
-fig.add_trace(
-    go.Scatter(
-        x=df_variants.jour,
-        y=y,
-        name="<b>Variant UK </b><br>" + str(nbWithSpaces(y[-1])).replace(".", ",") + " (" + str(df_variants.Prc_susp_501Y_V1.values[-1]).replace(".", ",") + " %) ",
-        stackgroup='one'
-    )
-)
 
 fig.update_yaxes(ticksuffix="")
 
