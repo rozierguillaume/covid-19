@@ -81,12 +81,6 @@ def update_france():
         push("France")
         print("update France charts: " + str(now.hour) + ":" + str(now.minute))
         
-        try:
-            #subprocess.run(["sudo", "python3", PATH_FRANCE+"tweetbot_france.py"])
-            #print("data tweeted")
-        except:
-            pass
-        
         subprocess.run(["sudo", "python3", PATH_FRANCE+"covid19_france_data_explorer.py"])
         push("Data Explorer")
         print("update data explorer: " + str(now.hour) + ":" + str(now.minute))
@@ -94,12 +88,6 @@ def update_france():
         subprocess.run(["sudo", "python3", PATH_FRANCE+"covid19_france_map_incid.py"])
         push("France map incid")
         print("update France local: " + str(now.hour) + ":" + str(now.minute))
-        
-        try:
-            #subprocess.run(["sudo", "python3", PATH_FRANCE+"tweetbot_france_maps.py"])
-            #print("map tweeted")
-        except:
-            pass
         
         subprocess.run(["sudo", "python3", PATH_FRANCE+"covid19_france_variants.py"])
         push("France variants")
