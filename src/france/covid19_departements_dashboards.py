@@ -96,7 +96,7 @@ lits_reas = pd.read_csv(PATH+'data/france/lits_rea.csv', sep=",")
 df_departements_lits = df_departements.merge(lits_reas, left_on="departmentName", right_on="nom_dpt")
 
 
-# In[21]:
+# In[8]:
 
 
 def cas_journ(departement):
@@ -248,7 +248,7 @@ def cas_journ(departement):
 #cas_journ("Savoie")
 
 
-# In[8]:
+# In[9]:
 
 
 def nombre_variants(departement):
@@ -330,7 +330,7 @@ def nombre_variants(departement):
     fig.write_image(PATH+"images/charts/france/departements_dashboards/{}.jpeg".format("variants_nombre_"+departement), scale=1.5, width=750, height=500)
 
 
-# In[7]:
+# In[10]:
 
 
 """import numpy as np
@@ -600,7 +600,7 @@ def cas_journ_departements_couvre_feu(departements):
 cas_journ_departements_couvre_feu(departements)"""
 
 
-# In[8]:
+# In[11]:
 
 
 """import numpy as np
@@ -834,7 +834,7 @@ def cas_journ_departements_couvre_feu_hosp(departements):
 cas_journ_departements_couvre_feu_hosp(departements)"""
 
 
-# In[9]:
+# In[12]:
 
 
 def incid_dep(departement):
@@ -972,7 +972,7 @@ def incid_dep(departement):
 #incid_dep("Savoie")
 
 
-# In[10]:
+# In[13]:
 
 
 def hosp_journ(departement):   
@@ -1123,7 +1123,7 @@ def hosp_journ(departement):
     print("> " + name_fig)
 
 
-# In[11]:
+# In[14]:
 
 
 def hosp_comparaison_vagues(departement):   
@@ -1285,7 +1285,7 @@ def hosp_comparaison_vagues(departement):
 #hosp_comparaison_vagues("Savoie")
 
 
-# In[12]:
+# In[15]:
 
 
 def hosp_journ_elias(dep):
@@ -1576,7 +1576,7 @@ def hosp_journ_elias(dep):
 #hosp_journ_elias("Savoie")
 
 
-# In[13]:
+# In[16]:
 
 
 def rea_journ(departement):
@@ -1722,7 +1722,7 @@ def rea_journ(departement):
 #rea_journ("Isère")
 
 
-# In[14]:
+# In[17]:
 
 
 def dc_journ(departement): 
@@ -1839,7 +1839,7 @@ def dc_journ(departement):
 #dc_journ("Paris")
 
 
-# In[15]:
+# In[18]:
 
 
 
@@ -1931,7 +1931,7 @@ def saturation_rea_journ(dep):
     return df_saturation.values[-1]
 
 
-# In[16]:
+# In[19]:
 
 
 import cv2
@@ -1978,7 +1978,7 @@ with open(PATH + 'images/charts/france/covidep/stats.json', 'w') as outfile:
     
 
 
-# In[9]:
+# In[ ]:
 
 
 for dep in departements:
@@ -1986,7 +1986,7 @@ for dep in departements:
     nombre_variants(dep)
 
 
-# In[17]:
+# In[ ]:
 
 
 with open(PATH_STATS + 'incidence_departements.json', 'r') as f:
@@ -2000,7 +2000,7 @@ with open(PATH_STATS + 'incidence_departements.json', 'w') as outfile:
     json.dump(incidence_departements, outfile)
 
 
-# In[18]:
+# In[ ]:
 
 
 n_tot=1
@@ -2229,7 +2229,7 @@ for i in range(0, n_tot):
             plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/evolution_deps/evolution_deps_0.html', auto_open=False)
 
 
-# In[19]:
+# In[ ]:
 
 
 #import glob
@@ -2268,7 +2268,7 @@ for (folder, n, fps) in [("evolution_deps", n_tot, 3)]:
         print("error conversion h265")
 
 
-# In[20]:
+# In[ ]:
 
 
 """for idx,dep in enumerate(departements):
@@ -2284,7 +2284,7 @@ for (folder, n, fps) in [("evolution_deps", n_tot, 3)]:
 """
 
 
-# In[21]:
+# In[ ]:
 
 
 """#print("<!-- wp:buttons --><div class=\"wp-block-buttons\">\n")

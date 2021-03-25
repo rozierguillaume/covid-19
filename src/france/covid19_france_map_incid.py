@@ -50,7 +50,7 @@ with open(PATH+'data/france/dep.geojson') as response:
     depa = json.load(response)
 
 
-# In[11]:
+# In[4]:
 
 
 def build_map(data_df, img_folder, date_val, date_str = "date", dep_str = "departement", color_str = 'indic_synthese', legend_title="legend_title", title="title", subtitle="", subsubtitle="{}<br>{} (données du {})", color_descrete_map={"Risque Faible":"#DAF7A6", "Alerte":"#b8002a", "Alerte Renforcée":"#7c0030", "Alerte Maximale":"#460d37"}):
@@ -145,7 +145,7 @@ def build_gif(file_gif, imgs_folder, dates):
                 print("no image for "+str(date))
 
 
-# In[12]:
+# In[6]:
 
 
 dates_deconf = list(dict.fromkeys(list(df_incid["jour"].values)))

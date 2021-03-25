@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
+# In[1]:
 
 
 """
@@ -23,7 +23,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[4]:
+# In[2]:
 
 
 import pandas as pd
@@ -43,7 +43,7 @@ import locale
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
 
-# In[8]:
+# In[3]:
 
 
 def import_df_age():
@@ -136,4 +136,72 @@ fig.update_layout(
                     ]
 )
 fig.show()
+
+
+# In[6]:
+
+
+#locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
+import random
+import numpy as np
+
+n_sain = 20000
+x_sain = np.random.rand(1, n_sain)[0]*100
+values_sain = np.random.rand(1, n_sain)[0]*100
+
+x_az = np.random.rand(1,30)[0]*100
+values_az = np.random.rand(1,30)[0]*100
+
+fig = go.Figure()
+
+for idx in range(len(x_sain)):
+    fig.add_trace(go.Scatter(
+        x=[x_sain[idx]],
+        y=[values_sain[idx]],
+        mode="markers",
+        showlegend=False,
+        marker_color="rgba(14, 201, 4, 0.5)", #"rgba(0, 0, 0, 0.5)",
+        marker_size=2))
+
+fig.add_trace(go.Scatter(
+    x=x_az,
+    y=values_az,
+    mode="markers",
+    showlegend=False,
+    marker_color="rgba(201, 4, 4,0.5)", #"rgba(0, 0, 0, 0.5)",
+    marker_size=2))
+
+
+fig.update_yaxes(range=[0, 100], visible=False)
+fig.update_xaxes(range=[0, 100], nticks=10)
+
+fig.update_layout(
+    plot_bgcolor='rgb(255,255,255)',
+    title={
+                'text': "Admissions en réanimation pour Covid19",
+                'y':0.90,
+                'x':0.5,
+                'xanchor': 'center',
+                'yanchor': 'top'},
+                titlefont = dict(
+                size=20),
+    annotations = [
+                dict(
+                    x=0.5,
+                    y=1.2,
+                    xref='paper',
+                    yref='paper',
+                    text='Auteur : covidtracker.fr.'.format(),
+                    showarrow = False
+                )]
+                 
+)
+fig.write_image(PATH + "images/charts/france/points_astrazeneca.jpeg", scale=4, width=800, height=350)
+
+
+# In[18]:
+
+
+import numpy as np
+np.random.rand(1,20000000)
 

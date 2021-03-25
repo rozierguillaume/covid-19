@@ -25,7 +25,7 @@ now = datetime.now()
 colors = px.colors.qualitative.D3 + plotly.colors.DEFAULT_PLOTLY_COLORS + px.colors.qualitative.Plotly + px.colors.qualitative.Dark24 + px.colors.qualitative.Alphabet
 
 
-# In[19]:
+# In[2]:
 
 
 try:
@@ -39,13 +39,13 @@ except:
 
 # ## Data Import
 
-# In[2]:
+# In[3]:
 
 
 df, df_confirmed, dates, df_new, df_tests, _, df_sursaud, df_incid, df_tests_viro = data.import_data()
 
 
-# In[3]:
+# In[4]:
 
 
 df_incid_all = df_incid
@@ -90,7 +90,7 @@ df_incid_region = df_incid.groupby(["jour", "regionName"]).sum().reset_index()
 df_sursaud_region = df_sursaud.groupby(["date_de_passage", "regionName"]).sum().reset_index()
 
 
-# In[4]:
+# In[5]:
 
 
 with open(PATH+'data/france/dep.geojson') as response:
@@ -189,7 +189,7 @@ def build_map(data_df, img_folder, date = dates_sursaud[-1], subtitle="", legend
 # - nb de réanimations par habitant des régions,
 # et ce pour toutes les régions françaises
 
-# In[5]:
+# In[6]:
 
 
 """
@@ -356,7 +356,7 @@ for val in ["hosp_regpop", "rea_regpop", "dc_new_regpop_rolling7"]: #
     #fig.show()"""
 
 
-# In[6]:
+# In[7]:
 
 
 
@@ -504,7 +504,7 @@ for val in ["hosp_regpop", "rea_regpop", "dc_new_regpop_rolling7"]: #
     #fig.show()
 
 
-# In[7]:
+# In[8]:
 
 
 for age in list(dict.fromkeys(list(df_incid_all['cl_age90'].values))) + [61]: 
@@ -654,7 +654,7 @@ for age in list(dict.fromkeys(list(df_incid_all['cl_age90'].values))) + [61]:
     #fig.show()
 
 
-# In[8]:
+# In[9]:
 
 
 ni, nj = 5, 4
@@ -917,7 +917,7 @@ with open(PATH_STATS + 'reffectif_region.json', 'w') as outfile:
 # - nb d'hospitalisés par habitant des départements,
 # et ce pour toutes les régions françaises
 
-# In[9]:
+# In[10]:
 
 
 regions_ordered = list(dict.fromkeys(list(df_incid_region.sort_values(by=["regionName"], ascending=True)["regionName"].values)))[:]
@@ -1152,13 +1152,13 @@ for (val, range_y) in [("dc_new_deppop_1M", [0, 30]), ("hosp_deppop_1M", [0, 150
     #fig.show()
 
 
-# In[10]:
+# In[11]:
 
 
 data_dep[val].values[-1]
 
 
-# In[11]:
+# In[ ]:
 
 
 
@@ -1359,7 +1359,7 @@ print("> " + name_fig)
 # ## Subplots : départements - classé par régions
 # Idem précédent mais les départements sont rangés dans leurs régions, et les régions classées par ordre décroissant du nb de personnes
 
-# In[12]:
+# In[ ]:
 
 
 """
@@ -1581,7 +1581,7 @@ for val in ["hosp_deppop"]: #, "hosp", "rea", "rea_pop"
     #fig.show()"""
 
 
-# In[13]:
+# In[ ]:
 
 
 #TODO A CORRIGER
@@ -1839,14 +1839,14 @@ for val in ["hosp_deppop"]: #, "hosp", "rea", "rea_pop"
     #fig.show()
 
 
-# In[14]:
+# In[ ]:
 
 
 #TODO A CORRIGER
 """build_map(df_sursaud, date_str="date_de_passage", legend_str="Rouge : > 10%<br>Orange : 6 à 10%<br>Vert : < 10%", dep_str="dep", color_str="indic1_clr", img_folder="images/charts/france/indic1/{}.png", title="Indicateur 1 : circulation du virus (par département)", subtitle="taux de suspicion Covid19 aux urgences")"""
 
 
-# In[15]:
+# In[ ]:
 
 
 """
@@ -1858,7 +1858,7 @@ fig.add_trace(go.Bar(x = dta["date_de_passage"], y = dta["taux_covid"]*100, mark
 fig.show()"""
 
 
-# In[16]:
+# In[ ]:
 
 
 

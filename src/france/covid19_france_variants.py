@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[125]:
+# In[1]:
 
 
 """
@@ -23,7 +23,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[126]:
+# In[2]:
 
 
 def nbWithSpaces(nb):
@@ -38,7 +38,7 @@ def nbWithSpaces(nb):
         return str_nb
 
 
-# In[127]:
+# In[3]:
 
 
 import pandas as pd
@@ -51,7 +51,7 @@ locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 now = datetime.now()
 
 
-# In[128]:
+# In[4]:
 
 
 data.download_data()
@@ -61,7 +61,7 @@ df_tests["P_rolling"] = df_tests["P"].rolling(window=7).mean()
 df_tests
 
 
-# In[129]:
+# In[5]:
 
 
 data.download_data_variants()
@@ -69,7 +69,7 @@ df_variants = data.import_data_variants()
 df_variants
 
 
-# In[130]:
+# In[6]:
 
 
 df_variants["jour"] = df_variants.semaine.apply(lambda x: x[11:]) 
@@ -77,7 +77,7 @@ df_variants = df_variants[df_variants.cl_age90==0]
 df_variants
 
 
-# In[131]:
+# In[7]:
 
 
 fig = go.Figure()
@@ -141,7 +141,7 @@ fig.update_layout(
 fig.write_image(PATH+"images/charts/france/{}.jpeg".format("variants_pourcent"), scale=2, width=1000, height=600)
 
 
-# In[132]:
+# In[8]:
 
 
 fig = go.Figure()

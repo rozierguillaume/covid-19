@@ -24,6 +24,8 @@ def download_data():
     url_deconf = "https://www.data.gouv.fr/fr/datasets/r/f2d0f955-f9c4-43a8-b588-a03733a38921"
     url_opencovid = "https://raw.githubusercontent.com/opencovid19-fr/data/master/dist/chiffres-cles.csv"
     url_vacsi_a_fra = "https://www.data.gouv.fr/fr/datasets/r/54dd5f8d-1e2e-4ccb-8fb8-eac68245befd"
+    url_vacsi_a_reg = "https://www.data.gouv.fr/fr/datasets/r/2dadbaa7-02ae-43df-92bb-53a82e790cb2"
+    url_vacsi_a_dep = "https://www.data.gouv.fr/fr/datasets/r/2dadbaa7-02ae-43df-92bb-53a82e790cb2"
     
     pbar.update(1)
     metadata = requests.get(url_metadata)
@@ -64,6 +66,8 @@ def download_data():
     data_incidence = requests.get(url_incidence)
     data_opencovid = requests.get(url_opencovid)
     data_vacsi_a_fra = requests.get(url_vacsi_a_fra)
+    data_vacsi_a_reg = requests.get(url_vacsi_a_reg)
+    data_vacsi_a_dep = requests.get(url_vacsi_a_dep)
     
     data_tests_viro = requests.get(url_tests_viro)
     data_clage = requests.get(url_data_clage)
@@ -105,6 +109,12 @@ def download_data():
         
     with open(PATH + 'data/france/donnees-vacsi-a-fra.csv', 'wb') as f:
         f.write(data_vacsi_a_fra.content)
+        
+    with open(PATH + 'data/france/donnees-vacsi-a-reg.csv', 'wb') as f:
+        f.write(data_vacsi_a_reg.content)
+        
+    with open(PATH + 'data/france/donnees-vacsi-a-dep.csv', 'wb') as f:
+        f.write(data_vacsi_a_dep.content)
         
     pbar.update(8)
 
@@ -317,6 +327,16 @@ def import_data_opencovid():
 
 def import_data_vacsi_a_fra():
     df = pd.read_csv(PATH + 'data/france/donnees-vacsi-a-fra.csv', sep=";")
+    df = df[df.clage_vacsi != 0]
+    return df
+
+def import_data_vacsi_a_reg():
+    df = pd.read_csv(PATH + 'data/france/donnees-vacsi-a-reg.csv', sep=";")
+    df = df[df.clage_vacsi != 0]
+    return df
+
+def import_data_vacsi_a_dep():
+    df = pd.read_csv(PATH + 'data/france/donnees-vacsi-a-dep.csv', sep=";")
     df = df[df.clage_vacsi != 0]
     return df
 
