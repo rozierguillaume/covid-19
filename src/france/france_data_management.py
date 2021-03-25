@@ -24,8 +24,8 @@ def download_data():
     url_deconf = "https://www.data.gouv.fr/fr/datasets/r/f2d0f955-f9c4-43a8-b588-a03733a38921"
     url_opencovid = "https://raw.githubusercontent.com/opencovid19-fr/data/master/dist/chiffres-cles.csv"
     url_vacsi_a_fra = "https://www.data.gouv.fr/fr/datasets/r/54dd5f8d-1e2e-4ccb-8fb8-eac68245befd"
-    url_vacsi_a_reg = "https://www.data.gouv.fr/fr/datasets/r/2dadbaa7-02ae-43df-92bb-53a82e790cb2"
-    url_vacsi_a_dep = "https://www.data.gouv.fr/fr/datasets/r/de4b356b-8cd9-4b9a-8878-459a62646107"
+    url_vacsi_a_reg = "https://www.data.gouv.fr/fr/datasets/r/c3ccc72a-a945-494b-b98d-09f48aa25337"
+    url_vacsi_a_dep = "https://www.data.gouv.fr/fr/datasets/r/83cbbdb9-23cb-455e-8231-69fc25d58111"
     
     pbar.update(1)
     metadata = requests.get(url_metadata)
