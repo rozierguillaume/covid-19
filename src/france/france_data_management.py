@@ -292,6 +292,10 @@ def import_data_new():
     df_new = pd.read_csv(PATH + 'data/france/donnes-hospitalieres-covid19-nouveaux.csv', sep=";")
     return df_new
 
+def import_data_df():
+    df = pd.read_csv(PATH + 'data/france/donnes-hospitalieres-covid19.csv', sep=";")
+    return df
+
 def import_data_variants():
     df_variants = pd.read_csv(PATH + 'data/france/donnees-variants.csv', sep=";")
     df_variants["jour"] = df_variants.semaine.apply(lambda x: x[11:]) 

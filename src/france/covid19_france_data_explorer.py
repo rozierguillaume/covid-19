@@ -143,7 +143,7 @@ zone_c = ["zone_c", "09", "11", "12", "30", "31", "32", "34", "46", "48", "65", 
 confines_mars_2021 = ["confines_mars_2021", "02", "06", "27", "59", "60", "62", "75", "76", "77", "78", "80", "91", "92", "93", "94", "95"]
 
 
-# In[31]:
+# In[14]:
 
 
 def generate_data(data_incid=pd.DataFrame(), data_hosp=pd.DataFrame(), data_sursaud=pd.DataFrame(), data_new=pd.DataFrame(), data_vue_ensemble=pd.DataFrame(), data_metropole=pd.DataFrame(), data_vacsi=pd.DataFrame(), mode="", export_jour=False):## Incidence
@@ -159,7 +159,6 @@ def generate_data(data_incid=pd.DataFrame(), data_hosp=pd.DataFrame(), data_surs
         dict_data["jour_vacsi"] = list(data_vacsi.jour)
         
     if(len(data_vacsi)>0):
-        print("lol")
         n_cum_dose1 = data_vacsi["n_cum_dose1"].fillna(0)
         dict_data["n_cum_dose1"] = {"jour_nom": "jour_vacsi", "valeur": list(n_cum_dose1)}
     
@@ -227,7 +226,7 @@ def generate_data(data_incid=pd.DataFrame(), data_hosp=pd.DataFrame(), data_surs
  
 
 
-# In[16]:
+# In[15]:
 
 
 def generate_data_age(data_incid, data_hosp, export_jour=False):## Incidence
@@ -282,7 +281,7 @@ def generate_data_age(data_incid, data_hosp, export_jour=False):## Incidence
  
 
 
-# In[17]:
+# In[16]:
 
 
 def export_data(data, suffix=""):
@@ -290,7 +289,7 @@ def export_data(data, suffix=""):
         json.dump(data, outfile)
 
 
-# In[32]:
+# In[20]:
 
 
 def dataexplorer():
@@ -322,16 +321,18 @@ def dataexplorer():
         df_zone = df[df.dep.isin(zone)].groupby("jour").sum().reset_index()
         df_sursaud_zone = df_sursaud[df_sursaud.dep.isin(zone)].groupby("date_de_passage").sum().reset_index()
         df_new_zone = df_new[df_new.dep.isin(zone)].groupby("jour").sum().reset_index()
+        df_vacsi_zone = df_vacsi_dep[df_vacsi_dep.dep.isin(zone)].groupby("jour").sum().reset_index()
         
-        dict_data[zone[0]] = generate_data(df_incid_zone, df_zone, df_sursaud_zone, df_new_zone)
+        dict_data[zone[0]] = generate_data(df_incid_zone, df_zone, df_sursaud_zone, df_new_zone, data_vacsi=df_vacsi_zone)
     
     # Confinés mars 2021
     df_incid_zone = df_incid[df_incid.dep.isin(confines_mars_2021)].groupby("jour").sum().reset_index()
     df_zone = df[df.dep.isin(confines_mars_2021)].groupby("jour").sum().reset_index()
     df_sursaud_zone = df_sursaud[df_sursaud.dep.isin(confines_mars_2021)].groupby("date_de_passage").sum().reset_index()
     df_new_zone = df_new[df_new.dep.isin(confines_mars_2021)].groupby("jour").sum().reset_index()
-
-    dict_data["confines_mars_2021"] = generate_data(df_incid_zone, df_zone, df_sursaud_zone, df_new_zone)
+    df_vacsi_zone = df_vacsi_dep[df_vacsi_dep.dep.isin(confines_mars_2021)].groupby("jour").sum().reset_index()
+    
+    dict_data["confines_mars_2021"] = generate_data(df_incid_zone, df_zone, df_sursaud_zone, df_new_zone, data_vacsi=df_vacsi_zone)
         
     for metropole in metropoles:
         print(metropole)
@@ -343,7 +344,7 @@ def dataexplorer():
     export_data(dict_data, suffix="_compr")
 
 
-# In[19]:
+# In[21]:
 
 
 import math
@@ -377,7 +378,7 @@ def dataexplorer_age():
     return dict_data
 
 
-# In[33]:
+# In[22]:
 
 
 dataexplorer()
