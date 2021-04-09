@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[10]:
 
 
 # Guillaume Rozier - 2020 - MIT License
@@ -37,11 +37,16 @@ api = tweepy.API(auth)
     
 def tweet_france():
     #data.download_data()
-    _, _, dates, df_new, _, _, _, df_incid, _ = data.import_data()
-    df_incid = df_incid[df_incid["cl_age90"] == 0]
     
-    df_new_france = df_new.groupby(["jour"]).sum().reset_index()
-    df_incid_france = df_incid.groupby(["jour"]).sum().reset_index()
+    df_incid_fra_clage = data.import_data_tests_sexe()
+    df_incid_france = df_incid_fra_clage[df_incid_fra_clage["cl_age90"]==0]
+    
+    df_new = data.import_data_new()
+    df_new_france = df_new.groupby("jour").sum().reset_index()
+    
+    df = data.import_data_df()
+    dates = sorted(list(dict.fromkeys(list(df['jour'].values))))
+    ###
     
     lastday_df_new = datetime.strptime(df_new_france['jour'].max(), '%Y-%m-%d')
     
@@ -55,8 +60,12 @@ def tweet_france():
     
     lastday_df_incid = datetime.strptime(df_incid_france['jour'].max(), '%Y-%m-%d')
     tests = df_incid_france[df_incid_france['jour']==lastday_df_incid.strftime('%Y-%m-%d')]['P'].values[-1]
+    depistage = df_incid_france[df_incid_france['jour']==lastday_df_incid.strftime('%Y-%m-%d')]['T'].values[-1]
+    
     date_j7_incid = (lastday_df_incid - timedelta(days=7)).strftime("%Y-%m-%d")
     tests_j7 = df_incid_france[df_incid_france['jour'] == date_j7_incid]['P'].values[-1]
+    
+    depistage_j7 = df_incid_france[df_incid_france['jour'] == date_j7_incid]['T'].values[-1]
     
     date = datetime.strptime(dates[-1], '%Y-%m-%d').strftime('%d %B')
     
@@ -90,7 +99,9 @@ def tweet_france():
 
     # to attach the media file 
     api.update_status(status=tweet, media_ids=media_ids)
-    #print(tweet)
+    print(tweet)
+    print(tests)
+    print(depistage_j7)
     
 tweet_france()
 

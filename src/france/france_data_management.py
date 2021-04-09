@@ -319,6 +319,7 @@ def import_data_vue_ensemble():
     with open(PATH_STATS + 'vue-ensemble.json', 'w') as outfile:
         dict_data = {"cas":  int(df["total_cas_confirmes"].diff().values[-1]), "update": df.date.values[-1][-2:] + "/" + df.date.values[-1][-5:-3]}
         json.dump(dict_data, outfile)
+        
     return df
 
 def import_data_opencovid():

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[43]:
+# In[1]:
 
 
 import pandas as pd
@@ -12,20 +12,20 @@ from datetime import datetime
 PATH = "../../"
 
 
-# In[44]:
+# In[2]:
 
 
 df_mortalite = pd.read_csv(PATH+'data/france/deces_quotidiens_departement_csv.csv', sep=";", encoding="'windows-1252'")
 df_mortalite_2018 = pd.read_csv(PATH+'data/france/deces_quotidiens_departement_csv_avec_2018.csv', sep=";", encoding="'windows-1252'")
 
 
-# In[45]:
+# In[3]:
 
 
 #df_mortalite = df_mortalite.merge(df_mortalite_2018[["Date_evenement", "Total_deces_2018"]], left_on="Date_evenement", right_on="Date_evenement", how="left")
 
 
-# In[46]:
+# In[4]:
 
 
 
@@ -40,13 +40,13 @@ df_mortalite_france.loc[:,"Total_deces_2020_diff"] = df_mortalite_france["Total_
 df_mortalite_france.loc[:,"Total_deces_2021_diff"] = df_mortalite_france["Total_deces_2021"].diff().rolling(window=window, center=True).mean()
 
 
-# In[47]:
+# In[5]:
 
 
 df_mortalite_france_2018
 
 
-# In[48]:
+# In[6]:
 
 
 #### Construction du graphique
@@ -114,7 +114,7 @@ fig.update_layout(
         ),
     legend_orientation="h",
     title={
-                'text': "<b>Mortalité en France</b><br><sub>Moyenne mobile de {} jours pour lisser les irrégularités".format(window),
+                'text': "<b>Mortalité en France</b><br><sub>Moyenne mobile de {} jours pour lisser les irrégularités. Derniers jours non consolidés.".format(window),
                 'y':0.95,
                 'x':0.5,
                 'xanchor': 'center',

@@ -1978,7 +1978,7 @@ with open(PATH + 'images/charts/france/covidep/stats.json', 'w') as outfile:
     
 
 
-# In[ ]:
+# In[20]:
 
 
 for dep in departements:
@@ -1986,7 +1986,7 @@ for dep in departements:
     nombre_variants(dep)
 
 
-# In[ ]:
+# In[21]:
 
 
 with open(PATH_STATS + 'incidence_departements.json', 'r') as f:
@@ -2000,7 +2000,7 @@ with open(PATH_STATS + 'incidence_departements.json', 'w') as outfile:
     json.dump(incidence_departements, outfile)
 
 
-# In[ ]:
+# In[22]:
 
 
 n_tot=1
@@ -2229,7 +2229,7 @@ for i in range(0, n_tot):
             plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/evolution_deps/evolution_deps_0.html', auto_open=False)
 
 
-# In[ ]:
+# In[23]:
 
 
 #import glob
