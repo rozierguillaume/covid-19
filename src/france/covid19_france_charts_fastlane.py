@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[25]:
+# In[46]:
 
 
 """
@@ -23,7 +23,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[26]:
+# In[1]:
 
 
 from multiprocessing import Pool
@@ -53,13 +53,14 @@ PATH = "../../"
 now = datetime.now()
 
 
-# In[27]:
+# In[3]:
 
 
 #time.sleep(300)
+data.download_data()
 
 
-# In[28]:
+# In[49]:
 
 
 import time
@@ -82,7 +83,7 @@ while not success:
         continue
 
 
-# In[29]:
+# In[ ]:
 
 
 df_incid_fra_clage = data.import_data_tests_sexe()
@@ -92,7 +93,7 @@ df_incid_fra = df_incid_fra_clage[df_incid_fra_clage["cl_age90"]==0]
 dates_incid = list(dict.fromkeys(list(df_incid_fra['jour'].values))) 
 
 
-# In[30]:
+# In[ ]:
 
 
 df_new = data.import_data_new()
@@ -101,7 +102,7 @@ df_new_france = df_new.groupby("jour").sum().reset_index()
 dates_new = sorted(list(dict.fromkeys(list(df_new_france['jour'].values))))
 
 
-# In[31]:
+# In[ ]:
 
 
 df = data.import_data_df()
@@ -110,14 +111,14 @@ dates = sorted(list(dict.fromkeys(list(df['jour'].values))))
 df_france = df.groupby("jour").sum().reset_index()
 
 
-# In[32]:
+# In[ ]:
 
 
 last_day_plot_dashboard = (datetime.strptime(max(dates), '%Y-%m-%d') + timedelta(days=7)).strftime("%Y-%m-%d")
 last_day_plot = (datetime.strptime(max(dates), '%Y-%m-%d') + timedelta(days=1)).strftime("%Y-%m-%d")
 
 
-# In[33]:
+# In[ ]:
 
 
 def nbWithSpaces(nb):
@@ -132,7 +133,7 @@ def nbWithSpaces(nb):
         return str_nb
 
 
-# In[34]:
+# In[ ]:
 
 
 suffixe=""
@@ -432,7 +433,7 @@ for (date_deb, date_fin) in [("2020-03-18", last_day_plot_dashboard), (dates[-10
         suffixe="_recent"
 
 
-# In[35]:
+# In[ ]:
 
 
 #Comparaison J-7
@@ -480,7 +481,7 @@ fig.write_image(PATH + "images/charts/france/{}.jpeg".format(name_fig), scale=2,
 plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
 
 
-# In[36]:
+# In[ ]:
 
 
 
@@ -499,7 +500,7 @@ for i in ("", "log"):
     fig.add_trace(go.Bar(
         x = df_new_france["jour"],
         y = df_new_france["incid_hosp"],
-        name = "Admissions réanimation",
+        name = "Admissions soins critiques",
         marker_color='rgba(209, 102, 21, 0.5)',
         opacity=0.8,
         showlegend=False
@@ -690,7 +691,7 @@ for i in ("", "log"):
         fig.show()
 
 
-# In[37]:
+# In[ ]:
 
 
 range_x, name_fig, range_y = ["2020-03-29", last_day_plot], "hosp_journ", [0, df_france["hosp"].max()*1.2]
@@ -1018,7 +1019,7 @@ for i in ("", "log"):
         fig.show()
 
 
-# In[38]:
+# In[ ]:
 
 
 range_x, name_fig, range_y = ["2020-03-29", last_day_plot], "dc_journ", [0, df_new_france["incid_dc"].max()]
@@ -1238,12 +1239,12 @@ for i in ("", "log"):
         fig.show()
 
 
-# In[39]:
+# In[ ]:
 
 
 
 
-title = "<b>Admissions en réanimation</b> pour Covid19"
+title = "<b>Admissions en soins critiques</b> pour Covid19"
 incid_rea_rolling = df_new_france["incid_rea"].rolling(window=7, center=True).mean()
 
 range_x, name_fig, range_y = ["2020-09-29", last_day_plot], "rea_journ_adm", [0, incid_rea_rolling[-200:].max()*1.2]
@@ -1257,7 +1258,7 @@ for i in ("", "log"):
     fig.add_trace(go.Bar(
         x = df_new_france["jour"],
         y = df_new_france["incid_rea"],
-        name = "Admissions réanimation",
+        name = "Admissions soins critiques",
         marker_color='rgba(201, 4, 4, 0.5)',
         opacity=0.8,
         showlegend=False
@@ -1266,7 +1267,7 @@ for i in ("", "log"):
     fig.add_trace(go.Scatter(
         x = df_new_france["jour"],
         y = incid_rea_rolling,
-        name = "Admissions réanimation",
+        name = "Admissions soins critiques",
         marker_color='rgb(201, 4, 4)',
         marker_size=5,
         line_width=6,
@@ -1376,7 +1377,7 @@ for i in ("", "log"):
             x = dates[-4], y = incid_rea_rolling.values[-4], # annotation point
             xref='x1', 
             yref='y1',
-            text=" <b>{} {}".format('%d' % incid_rea_rolling.values[-4], "admissions quotidiennes<br>en réanimation</b><br>en moyenne du {} au {},<br>{} % en 7 jours".format(date_deb, date_fin, croissance)),
+            text=" <b>{} {}".format('%d' % incid_rea_rolling.values[-4], "admissions quotidiennes<br>en soins critiques</b><br>en moyenne du {} au {},<br>{} % en 7 jours".format(date_deb, date_fin, croissance)),
             xshift=-2,
             yshift=0,
             xanchor="center",
@@ -1448,12 +1449,12 @@ for i in ("", "log"):
         fig.show()
 
 
-# In[40]:
+# In[ ]:
 
 
 
 range_x, name_fig, range_y = ["2020-03-29", last_day_plot], "rea_journ", [0, df_france["rea"].max()*1.2]
-title = "<b>Personnes en réanimation</b> pour Covid19"
+title = "<b>Personnes en soins critiques (dont réa.)</b> pour Covid19"
 
 for i in ("", "log"):
     if i=="log":
@@ -1464,7 +1465,7 @@ for i in ("", "log"):
     fig.add_trace(go.Scatter(
         x = dates,
         y = df_france["rea"],
-        name = "Réanimations",
+        name = "Soins critiques (dont réanimations)",
         marker_color='rgb(201, 4, 4)',
         line_width=6,
         opacity=0.8,
@@ -1476,7 +1477,7 @@ for i in ("", "log"):
     fig.add_trace(go.Bar(
         x = df_new_france["jour"],
         y = df_new_france["incid_rea"],
-        name = "Admissions réanimation",
+        name = "Admissions soins critiques",
         marker_color='rgb(201, 4, 4)',
         opacity=0.8,
         showlegend=False
@@ -1485,7 +1486,7 @@ for i in ("", "log"):
     fig.add_trace(go.Scatter(
         x = df_new_france["jour"],
         y = df_new_france["incid_rea"].rolling(window=7).mean(),
-        name = "Admissions réanimation",
+        name = "Admissions soins critiques",
         marker_color='rgb(201, 4, 4)',
         marker_size=2,
         opacity=0.8,
@@ -1628,7 +1629,7 @@ for i in ("", "log"):
             x = dates[-1], y = df_france["rea"].values[-1], # annotation point
             xref='x1', 
             yref='y1',
-            text=" <b>{} {}".format('%s' % nbWithSpaces(df_france["rea"].values[-1]), "personnes<br>en réanimation</b><br>le {}.<br>{} % en 7 jours".format(datetime.strptime(dates[-1], '%Y-%m-%d').strftime('%d %b'), croissance)),
+            text=" <b>{} {}".format('%s' % nbWithSpaces(df_france["rea"].values[-1]), "personnes<br>en soins critiques</b><br>le {}.<br>{} % en 7 jours".format(datetime.strptime(dates[-1], '%Y-%m-%d').strftime('%d %b'), croissance)),
             xshift=-2,
             yshift=0,
             xanchor="center",
@@ -1740,7 +1741,7 @@ for i in ("", "log"):
         fig.show()
 
 
-# In[41]:
+# In[ ]:
 
 
 range_x, name_fig, range_y = ["2020-03-29", last_day_plot], "dc_journ", [0, df_new_france["incid_dc"].max()]
@@ -1989,7 +1990,7 @@ for i in ("", "log"):
         fig.show()
 
 
-# In[42]:
+# In[ ]:
 
 
 
@@ -2008,7 +2009,7 @@ for croiss in [""]:
     
 
 
-# In[43]:
+# In[ ]:
 
 
 data.download_data_vue_ensemble()
@@ -2016,13 +2017,13 @@ df_vue_ensemble = data.import_data_vue_ensemble()
 #df_vue_ensemble=df_vue_ensemble.append({"date": "2021-03-30", "total_cas_confirmes": 4554683}, ignore_index=True)
 
 
-# In[44]:
+# In[ ]:
 
 
 df_vue_ensemble["total_cas_confirmes"].diff()
 
 
-# In[45]:
+# In[ ]:
 
 
 suffixe=""
