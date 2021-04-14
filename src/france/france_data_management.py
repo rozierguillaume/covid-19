@@ -43,8 +43,8 @@ def download_data():
     pbar.update(5)
     df_metadata = pd.read_csv(PATH + 'data/france/metadata.csv', sep=";")
     
-    url_data = df_metadata[df_metadata['url'].str.contains("/donnees-hospitalieres-covid19")]["url"].values[0] #donnees-hospitalieres-classe-age-covid19-2020-10-14-19h00.csv 
-    url_data_new = "https://www.data.gouv.fr/fr/datasets/r/08c18e08-6780-452d-9b8c-ae244ad529b3" #df_metadata[df_metadata['url'].str.contains("/donnees-hospitalieres-nouveaux")]["url"].values[0]
+    url_data = "https://www.data.gouv.fr/fr/datasets/r/63352e38-d353-4b54-bfd1-f1b3ee1cabd7" #df_metadata[df_metadata['url'].str.contains("/donnees-hospitalieres-covid19")]["url"].values[0] #donnees-hospitalieres-classe-age-covid19-2020-10-14-19h00.csv 
+    url_data_new = "https://www.data.gouv.fr/fr/datasets/r/6fadff46-9efd-4c53-942a-54aca783c30c" #df_metadata[df_metadata['url'].str.contains("/donnees-hospitalieres-nouveaux")]["url"].values[0]
     url_tests = df_metadata[df_metadata['url'].str.contains("/donnees-tests-covid19-labo-quotidien")]["url"].values[0]
     url_metropoles = df_metadata[df_metadata['url'].str.contains("/sg-metro-opendata")]["url"].max()
     url_incidence = df_metadata[df_metadata['url'].str.contains("/sp-pe-tb-quot")]["url"].values[0]

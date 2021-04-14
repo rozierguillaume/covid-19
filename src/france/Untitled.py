@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[ ]:
 
 
 """
@@ -23,7 +23,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[2]:
+# In[ ]:
 
 
 import pandas as pd
@@ -43,12 +43,30 @@ import locale
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
 
-# In[3]:
+# In[ ]:
+
+
+print("h")
+
+
+# In[ ]:
 
 
 def import_df_age():
     df = pd.read_csv(PATH+"data/france/vaccin/vacsi-a-fra.csv", sep=";")
     return df
+
+
+# In[ ]:
+
+
+df = pd.read_csv(PATH+"data/france/donnes-hospitalieres-covid19-nouveaux.csv", sep=";")
+
+
+# In[ ]:
+
+
+df
 
 
 # In[66]:
