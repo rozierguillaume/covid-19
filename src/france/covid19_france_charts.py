@@ -4,7 +4,7 @@
 # # COVID-19 French Charts
 # Guillaume Rozier, 2020
 
-# In[159]:
+# In[1]:
 
 
 """
@@ -26,7 +26,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[160]:
+# In[2]:
 
 
 from multiprocessing import Pool
@@ -55,7 +55,7 @@ PATH = "../../"
 now = datetime.now()
 
 
-# In[161]:
+# In[3]:
 
 
 try:
@@ -71,7 +71,7 @@ except:
 
 # # Data download and import
 
-# In[162]:
+# In[5]:
 
 
 import time
@@ -96,13 +96,13 @@ while not success:
 
 # ## Data transformations
 
-# In[163]:
+# In[6]:
 
 
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
 
 
-# In[164]:
+# In[7]:
 
 
 data.download_data_vue_ensemble()
@@ -111,14 +111,14 @@ df_vue_ensemble = data.import_data_vue_ensemble()
 df_opencovid = data.import_data_opencovid()
 
 
-# In[165]:
+# In[8]:
 
 
 df_incid_fra_clage = data.import_data_tests_sexe()
 df_incid_fra = df_incid_fra_clage[df_incid_fra_clage["cl_age90"]==0]
 
 
-# In[166]:
+# In[9]:
 
 
 df_new_france = df_new.groupby(["jour"]).sum().reset_index()
@@ -157,7 +157,7 @@ regions = list(dict.fromkeys(list(df['regionName'].values)))
 departements_noms = list(dict.fromkeys(list(df['departmentName'].values))) 
 
 
-# In[167]:
+# In[10]:
 
 
 #Calcul sorties de réa
@@ -399,12 +399,12 @@ def stats_immunite_collective():
 pop_immun_france, pop_immun_deps = stats_immunite_collective()
 
 
-# In[80]:
+# In[12]:
 
 
 import random
 df_temp = pd.DataFrame()
-df_new_france["incid_rea"]
+df_new_france["incid_dc"]
 
 values_temp = []
 dates_temp = []
@@ -415,7 +415,7 @@ for idx, death in enumerate(df_new_france["incid_dc"].rolling(window=7).mean().d
     
 
 
-# In[81]:
+# In[16]:
 
 
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
@@ -427,7 +427,7 @@ fig.add_trace(go.Scatter(
     y=values_temp,
     mode="markers",
     showlegend=False,
-    marker_color="rgba(201, 4, 4,0.5)", #"rgba(0, 0, 0, 0.5)",
+    marker_color="rgba(0, 0, 0, 0.5)", #"rgba(201, 4, 4,0.5)",
     marker_size=1.8))
 
 fig.update_yaxes(range=[0, 100], visible=False)
@@ -436,7 +436,7 @@ fig.update_xaxes(tickformat="%d/%m", nticks=10)
 fig.update_layout(
     plot_bgcolor='rgb(255,255,255)',
     title={
-                'text': "Admissions en réanimation pour Covid19",
+                'text': "Décès hospitaliers pour Covid19",
                 'y':0.90,
                 'x':0.5,
                 'xanchor': 'center',

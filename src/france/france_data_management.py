@@ -52,8 +52,8 @@ def download_data():
     url_tests_viro = df_metadata[df_metadata['url'].str.contains("/sp-pos-quot-dep")]["url"].values[0]
     
     url_sursaud = df_metadata[df_metadata['url'].str.contains("sursaud.*quot.*dep")]["url"].values[0]
-    #url_data_clage = df_metadata[df_metadata['url'].str.contains("/donnees-hospitalieres-classe-age-covid19")]["url"].values[0]
-    #url_data_sexe = df_metadata[df_metadata['url'].str.contains("/sp-pos-quot-fra")]["url"].values[0]
+    url_data_clage = df_metadata[df_metadata['url'].str.contains("/donnees-hospitalieres-classe-age-covid19")]["url"].values[0]
+    url_data_sexe = "https://www.data.gouv.fr/fr/datasets/r/dd0de5d9-b5a5-4503-930a-7b08dc0adc7c" #df_metadata[df_metadata['url'].str.contains("/sp-pos-quot-fra")]["url"].values[0]
 
         
     pbar.update(6)
@@ -70,8 +70,8 @@ def download_data():
     data_vacsi_a_dep = requests.get(url_vacsi_a_dep)
     
     data_tests_viro = requests.get(url_tests_viro)
-    #data_clage = requests.get(url_data_clage)
-    #data_sexe = requests.get(url_data_sexe)
+    data_clage = requests.get(url_data_clage)
+    data_sexe = requests.get(url_data_sexe)
     
     pbar.update(7)
     with open(PATH + 'data/france/donnes-hospitalieres-covid19.csv', 'wb') as f:
@@ -98,11 +98,11 @@ def download_data():
     with open(PATH + 'data/france/tests_viro-dep-quot.csv', 'wb') as f:
         f.write(data_tests_viro.content)
         
-    #with open(PATH + 'data/france/donnes-hospitalieres-clage-covid19.csv', 'wb') as f:
-        #f.write(data_clage.content)
+    with open(PATH + 'data/france/donnes-hospitalieres-clage-covid19.csv', 'wb') as f:
+        f.write(data_clage.content)
         
-    #with open(PATH + 'data/france/tests_viro-fra-covid19.csv', 'wb') as f:
-        #f.write(data_sexe.content)
+    with open(PATH + 'data/france/tests_viro-fra-covid19.csv', 'wb') as f:
+        f.write(data_sexe.content)
         
     with open(PATH + 'data/france/donnees-opencovid.csv', 'wb') as f:
         f.write(data_opencovid.content)

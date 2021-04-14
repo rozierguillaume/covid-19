@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[10]:
+# In[1]:
 
 
 # Guillaume Rozier - 2020 - MIT License
@@ -36,7 +36,7 @@ auth.set_access_token(s.access_token, s.access_token_secret)
 api = tweepy.API(auth) 
     
 def tweet_france():
-    #data.download_data()
+    data.download_data()
     
     df_incid_fra_clage = data.import_data_tests_sexe()
     df_incid_france = df_incid_fra_clage[df_incid_fra_clage["cl_age90"]==0]

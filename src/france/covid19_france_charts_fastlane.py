@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[4]:
+# In[3]:
 
 
 """
@@ -23,7 +23,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[5]:
+# In[4]:
 
 
 from multiprocessing import Pool
@@ -53,14 +53,14 @@ PATH = "../../"
 now = datetime.now()
 
 
-# In[6]:
+# In[ ]:
 
 
 #time.sleep(300)
 data.download_data()
 
 
-# In[7]:
+# In[ ]:
 
 
 import time
@@ -83,7 +83,8 @@ while not success:
         continue
 
 
-# In[8]:
+# In[ ]:
+
 
 
 df_incid_fra_clage = data.import_data_tests_sexe()
@@ -93,7 +94,7 @@ df_incid_fra = df_incid_fra_clage[df_incid_fra_clage["cl_age90"]==0]
 dates_incid = list(dict.fromkeys(list(df_incid_fra['jour'].values))) 
 
 
-# In[9]:
+# In[ ]:
 
 
 df_new = data.import_data_new()
@@ -102,7 +103,7 @@ df_new_france = df_new.groupby("jour").sum().reset_index()
 dates_new = sorted(list(dict.fromkeys(list(df_new_france['jour'].values))))
 
 
-# In[10]:
+# In[ ]:
 
 
 df = data.import_data_df()
@@ -111,14 +112,14 @@ dates = sorted(list(dict.fromkeys(list(df['jour'].values))))
 df_france = df.groupby("jour").sum().reset_index()
 
 
-# In[11]:
+# In[ ]:
 
 
 last_day_plot_dashboard = (datetime.strptime(max(dates), '%Y-%m-%d') + timedelta(days=7)).strftime("%Y-%m-%d")
 last_day_plot = (datetime.strptime(max(dates), '%Y-%m-%d') + timedelta(days=1)).strftime("%Y-%m-%d")
 
 
-# In[12]:
+# In[ ]:
 
 
 def nbWithSpaces(nb):
@@ -133,7 +134,7 @@ def nbWithSpaces(nb):
         return str_nb
 
 
-# In[13]:
+# In[ ]:
 
 
 suffixe=""
@@ -433,7 +434,7 @@ for (date_deb, date_fin) in [("2020-03-18", last_day_plot_dashboard), (dates[-10
         suffixe="_recent"
 
 
-# In[14]:
+# In[ ]:
 
 
 #Comparaison J-7
@@ -481,13 +482,13 @@ fig.write_image(PATH + "images/charts/france/{}.jpeg".format(name_fig), scale=2,
 plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
 
 
-# In[17]:
+# In[ ]:
 
 
 
 
 
-# In[15]:
+# In[5]:
 
 
 
