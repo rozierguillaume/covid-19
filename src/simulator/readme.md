@@ -27,6 +27,8 @@ Modèle épidémilogique à compartiments (états) à calcul discret (journalier
 * M : malade à la maison
 * F : fantome (les anomalies)
 
+---
+
 ![schéma du circuit du patient covid](schemaPatientCovidSimulateur.jpg)
 
 ---
