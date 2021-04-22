@@ -14,7 +14,7 @@ Modèle épidémilogique à compartiments (états) à calcul discret (journalier
 * S : susceptible d'être infecté
 * E : exposé au virus, le virus a pénétré l'organisme
 * I : infectieux donc contagieux
-* A : asymptomatique, au sens où l'individu est exposé mais il ne développera pas la maladie et ne sera pas contagieux
+* A : asymptomatique, au sens où l'individu est exposé mais il ne développera pas la maladie __et__ ne sera pas contagieux
 * P : positif au dépistage et infectieux (remarque : les personnes non infectieuses sont rapidement sorties du process de calcul)
 * H : hospitalisé
 * C : critique, hospitalisation en réanimation
@@ -26,6 +26,8 @@ Modèle épidémilogique à compartiments (états) à calcul discret (journalier
 * W : pentionnaire EHPAD ou EMS décédé
 * M : malade à la maison
 * F : fantome (les anomalies)
+
+![schéma du circuit du patient covid](schemaPatientCovidSimulateur.jpg)
 
 ---
 
@@ -53,33 +55,33 @@ Une consonne minuscule = un calcul
 
 Variable	Description	Ligne de calcul
 
-* qEI	% exposed vers infectious	S1-03
+* qEI	% exposé vers infectieux	S1-03
 * dI	Durée de contagiosité jours (ce n’est pas un changement d’état)	S1-04
-* dEI	Délai Exposed vers Infectious jours	S1-05
-* dEP	Délai Exposed vers Tested jours	S1-06
-* dIP	Délai Infectious vers Tested jours	S1-07
+* dEI	Délai Exposé vers Infectieux jours	S1-05
+* dEP	Délai Exposé vers Positifs au test jours	S1-06
+* dIP	Délai Infectioeux vers Positif au test jours	S1-07
 * dPH	Délai entrée hôpital	S2-03
-* qPH	% positif vers hôpital	S2-04
-* qPX	% positifs scénario EXT	S2-05
-* dHC	délai hôpital vers réanimation jours	S2-06
-* qHC	% hôpital vers réanimation	S2-07
-* dHO	délai hôpital vers SSR	S2-08
-* qHO	% hôpital vers SSR	S2-09
-* dHR	Délai hôpital vers sortie jours	S2-10
-* dCD	Délai réanimation vers décès jours	S2-11
-* qCD	% réanimation vers décès	S2-12
-* dCO	Délai réanimation vers SSR jours	S2-13
-* dOR	Délai SSR vers sortie hôpital jours	S2-14
-* qXR2	% sortie effective hôp RàD scénario EXT	S2-19
-* dXD	délai positifs vers décès Scénario EXT	S2-20
-* qMV	% nv guéris seuls vers nv tests pos. EHPAD	S2-21
-* dMV	délai contamin. ext. vers positifs EHP. en jours	S2-22
-* qHD	% hôpital vers décès sans passage réanimation	S2-23
-* dHD	délai hôpi. vers décès sans passage réanimat.	S2-24
-* qVD	% positifs vers décès en EHPAD et EMS	S2-25
-* dVD	délai positifs vers décès en EHPAD et EMS	S2-26
-* dXR	délai posit. vers sortie hôp scénar EXT (max 45)	S2-27
-* qXR	% sortie hôp guérison scénario EXT	S2-28
+* qPH	% Positif vers hôpital	S2-04
+* qPX	% Positifs scénario eXtrange	S2-05
+* dHC	délai Hôpital vers réanimation (Critique) jours	S2-06
+* qHC	% Hôpital vers réanimation	S2-07
+* dHO	délai Hôpital vers sOins	S2-08
+* qHO	% Hôpital vers sOins	S2-09
+* dHR	Délai Hôpital vers retour à domicile	S2-10
+* dCD	Délai réanimation vers Décès jours	S2-11
+* qCD	% réanimation vers Décès	S2-12
+* dCO	Délai réanimation vers sOins jours	S2-13
+* dOR	Délai sOins vers Retour à domicile jours	S2-14
+* qXR2	% sortie effective hôp RàD scénario eXtrange	S2-19
+* dXD	délai Positifs vers Décès Scénario eXtrange	S2-20
+* qMV	% nouvelles guérisons seuls (M) vers nouveaux tests positifs en EHPAD et EMS  S2-21
+* dMV	délai contamination vers positifs EHPAD et EMS jours	S2-22
+* qHD	% Hôpital vers Décès sans passage réanimation	S2-23
+* dHD	délai Hôpital vers Décès sans passage réanimation	S2-24
+* qVD	% Positifs vers Décès en EHPAD et EMS	S2-25
+* dVD	délai Positifs vers Décès en EHPAD et EMS	S2-26
+* dXR	délai Positifs vers retour à domicile scénario eXtrange (max 45) jours	S2-27
+* qXR	% sortie Hôpital vers retour à domicile scénario eXtrange	S2-28
 
 ---
 
