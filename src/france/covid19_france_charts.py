@@ -71,7 +71,7 @@ except:
 
 # # Data download and import
 
-# In[5]:
+# In[4]:
 
 
 import time
@@ -96,13 +96,13 @@ while not success:
 
 # ## Data transformations
 
-# In[6]:
+# In[5]:
 
 
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
 
 
-# In[7]:
+# In[6]:
 
 
 data.download_data_vue_ensemble()
@@ -111,14 +111,14 @@ df_vue_ensemble = data.import_data_vue_ensemble()
 df_opencovid = data.import_data_opencovid()
 
 
-# In[8]:
+# In[7]:
 
 
 df_incid_fra_clage = data.import_data_tests_sexe()
 df_incid_fra = df_incid_fra_clage[df_incid_fra_clage["cl_age90"]==0]
 
 
-# In[9]:
+# In[8]:
 
 
 df_new_france = df_new.groupby(["jour"]).sum().reset_index()
@@ -157,7 +157,7 @@ regions = list(dict.fromkeys(list(df['regionName'].values)))
 departements_noms = list(dict.fromkeys(list(df['departmentName'].values))) 
 
 
-# In[10]:
+# In[9]:
 
 
 #Calcul sorties de réa
@@ -176,7 +176,7 @@ df_france_last15 = df_france[ df_france["jour"].isin(dates[-19:]) ]
 df_tests_tot_last15 = df_tests_tot[ df_tests_tot["jour"].isin(dates[-19:]) ]
 
 
-# In[168]:
+# In[10]:
 
 
 """y = np.array(np.log([3.3, 14.7, 22.5, 41])).reshape(-1, 1)
@@ -283,7 +283,7 @@ fig.write_image(PATH + "images/charts/france/proportion_variants.jpeg", scale=2,
 """
 
 
-# In[76]:
+# In[11]:
 
 
 def nbWithSpaces(nb):
@@ -298,7 +298,7 @@ def nbWithSpaces(nb):
         return str_nb
 
 
-# In[77]:
+# In[12]:
 
 
 departements_name = {}
@@ -312,7 +312,7 @@ for dep in departements:
         departements_name[dep] = "St-Pierre-et-Miquelon"
 
 
-# In[78]:
+# In[13]:
 
 
 def objectif_deconfinement():
@@ -361,7 +361,7 @@ def objectif_deconfinement():
 objectif_deconfinement()
 
 
-# In[79]:
+# In[14]:
 
 
 def stats_immunite_collective(): 
@@ -399,7 +399,7 @@ def stats_immunite_collective():
 pop_immun_france, pop_immun_deps = stats_immunite_collective()
 
 
-# In[12]:
+# In[15]:
 
 
 import random
@@ -456,7 +456,7 @@ fig.update_layout(
 fig.write_image(PATH + "images/charts/france/points_deces.jpeg", scale=4, width=800, height=350)
 
 
-# In[82]:
+# In[17]:
 
 
 """clrs_sun_ref = ["#3c0000", "#4c0000", "#6a0000", "#840000", "#a00000", "#c40001", "#d50100", "#e20001", "#f50e07", "#f95228", "#fb9449", "#98ac3b", "#118408"]
@@ -489,7 +489,7 @@ fig.update_layout(margin = dict(t=0, l=0, r=0, b=0))
 """
 
 
-# In[83]:
+# In[18]:
 
 
 fig = go.Figure()
@@ -566,7 +566,7 @@ fig.write_image(PATH + "images/charts/france/immunite.jpeg", scale=2, width=800,
 #fig.show()
 
 
-# In[84]:
+# In[19]:
 
 
 def stats_dep_vague(nb_first_values):
@@ -620,7 +620,7 @@ def stats_dep_vague(nb_first_values):
 stats_dep_vague(len(dates)-1)
 
 
-# In[169]:
+# In[20]:
 
 
 def caracterisation_valeur(valeur, valeur_j1, seuils=[1, 2, 3]):
@@ -647,7 +647,7 @@ def caracterisation_valeur(valeur, valeur_j1, seuils=[1, 2, 3]):
     return caract
 
 
-# In[170]:
+# In[21]:
 
 
 
@@ -658,14 +658,14 @@ df_dep_tests = df_tests_viros_departements[df_tests_viros_departements["departme
 df_dep_tests["P"].values[-7:].sum()/df_dep_tests["pop"].values[0]*100000
 
 
-# In[171]:
+# In[22]:
 
 
 data.download_data_variants_deps()
 df_variants = data.import_data_variants_deps()
 
 
-# In[172]:
+# In[24]:
 
 
 df_tests_viros_france = df_tests_viros.groupby(['jour', 'cl_age90']).sum().reset_index()
@@ -702,8 +702,9 @@ def incidence_deps_data():
         
         dep_num = df_dep.dep.values[0]
         df_variants_dep = df_variants[df_variants.dep == dep_num]
-        data_json["var_uk"] = df_variants_dep.Prc_susp_501Y_V1.values[-1]
-        data_json["var_sa_bz"] = df_variants_dep.Prc_susp_501Y_V2_3.values[-1]
+        if(len(df_variants_dep)>0):
+            data_json["var_uk"] = df_variants_dep.Prc_susp_501Y_V1.values[-1]
+            data_json["var_sa_bz"] = df_variants_dep.Prc_susp_501Y_V2_3.values[-1]
         
         data_json["incidence_hosp"] = round(df_dep["incid_hosp"].values[-7:].sum()/df_dep["departmentPopulation"].values[0]*100000, 3)
         data_json["lits_hosp"] = round(df_dep_lits["hosp"].values[-1]/df_dep["departmentPopulation"].values[0]*100000, 2)
@@ -749,7 +750,7 @@ def incidence_deps_data():
 incidence_deps_data()
 
 
-# In[173]:
+# In[ ]:
 
 
 df_tests_viros_france = df_tests_viros.groupby(['jour', 'cl_age90']).sum().reset_index()
@@ -814,7 +815,7 @@ def incidence_regs_data():
 incidence_regs_data()
 
 
-# In[90]:
+# In[ ]:
 
 
 """values = []
@@ -832,7 +833,7 @@ dates_temp
 values"""
 
 
-# In[91]:
+# In[ ]:
 
 
 """fig = go.Figure()
@@ -853,7 +854,7 @@ fig.show()"""
 
 # ## Variation journée
 
-# In[92]:
+# In[ ]:
 
 
 fig = go.Figure()
@@ -943,7 +944,7 @@ if show_charts:
 
 # ## Var jour lines
 
-# In[93]:
+# In[ ]:
 
 
 
@@ -1191,7 +1192,7 @@ for (range_x, name_fig) in [(["2020-03-22", last_day_plot], "var_journ_lines")]:
         fig.show()
 
 
-# In[94]:
+# In[ ]:
 
 
 """range_x, name_fig, range_y = ["2020-03-29", last_day_plot], "dc_journ", [0, df_new_france["incid_dc"].max()]
@@ -1440,7 +1441,7 @@ for i in ("", "log"):
         fig.show()"""
 
 
-# In[95]:
+# In[ ]:
 
 
 range_x, name_fig, range_y = ["2020-03-10", last_day_plot], "dc_journ_croissance", [-100, 150]
@@ -1534,7 +1535,7 @@ if show_charts:
     fig.show()
 
 
-# In[96]:
+# In[ ]:
 
 
 df_world_confirmed, df_world_deaths = pd.read_csv(PATH+'data/data_confirmed.csv'), pd.read_csv(PATH+'data/data_deaths.csv')
@@ -1546,7 +1547,7 @@ df_world_confirmed, df_world_deaths = pd.read_csv(PATH+'data/data_confirmed.csv'
 
 
 
-# In[97]:
+# In[ ]:
 
 
 range_x, name_fig, range_y = ["2020-03-29", last_day_plot], "cas_est_journ", [0, df_world_deaths["France"].diff().max()/0.002*0.7]
@@ -1732,7 +1733,7 @@ if show_charts:
     fig.show()
 
 
-# In[98]:
+# In[ ]:
 
 
 """
@@ -2024,7 +2025,7 @@ for i in ("", "log"):
         fig.show()"""
 
 
-# In[99]:
+# In[ ]:
 
 
 """
@@ -2232,7 +2233,7 @@ for i in ("", "log"):
         fig.show()"""
 
 
-# In[100]:
+# In[ ]:
 
 
 """
@@ -2440,7 +2441,7 @@ for i in ("", "log"):
         fig.show()"""
 
 
-# In[101]:
+# In[ ]:
 
 
 range_x, name_fig = ["2020-03-10", last_day_plot], "rea_journ_croissance"
@@ -2533,7 +2534,7 @@ if show_charts:
     fig.show()
 
 
-# In[102]:
+# In[ ]:
 
 
 df_temp = pd.read_csv(PATH+'data/france/data_stocks.csv', sep=";")
@@ -2541,13 +2542,13 @@ df_temp["jour"] = df_temp["jour"].replace("19-mars", "2020-03-19").replace("20-m
 df_temp.groupby("jour").sum()
 
 
-# In[103]:
+# In[ ]:
 
 
 df_france
 
 
-# In[104]:
+# In[ ]:
 
 
 """range_x, name_fig, range_y = ["2020-03-29", last_day_plot], "hosp_journ", [0, df_france["hosp"].max()*1.2]
@@ -2826,7 +2827,7 @@ for i in ("", "log"):
         fig.show()"""
 
 
-# In[105]:
+# In[ ]:
 
 
 range_x, name_fig, range_y = ["2020-03-29", last_day_plot], "hosp_journ_flux", [0, df_new_france["incid_hosp"].max()*0.9]
@@ -3116,7 +3117,7 @@ for i in [""]:
         fig.show()
 
 
-# In[106]:
+# In[ ]:
 
 
 range_x, name_fig = ["2020-03-10", last_day_plot], "hosp_journ_croissance"
@@ -3214,14 +3215,14 @@ if show_charts:
 
 
 
-# In[108]:
+# In[ ]:
 
 
 #df_vue_ensemble=df_vue_ensemble.append({"date": "2021-03-20", "total_cas_confirmes": 4252022}, ignore_index=True)
 #df_vue_ensemble=df_vue_ensemble.append({"date": "2021-03-21", "total_cas_confirmes": 4282603}, ignore_index=True)
 
 
-# In[109]:
+# In[ ]:
 
 
 suffixe=""
@@ -3436,7 +3437,7 @@ for (date_deb, date_fin) in [("2020-01-18", datetime.strptime(df_vue_ensemble.da
         suffixe="_recent"
 
 
-# In[110]:
+# In[ ]:
 
 
 """fig = go.Figure()
@@ -3449,7 +3450,7 @@ fig.update_layout(
 )"""
 
 
-# In[111]:
+# In[ ]:
 
 
 """#Comparaison J-7
@@ -3488,7 +3489,7 @@ fig.write_image(PATH + "images/charts/france/{}.jpeg".format(name_fig), scale=2,
 plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)"""
 
 
-# In[112]:
+# In[ ]:
 
 
 
@@ -3587,7 +3588,7 @@ if show_charts:
     fig.show()
 
 
-# In[113]:
+# In[ ]:
 
 
 """range_x, name_fig, range_y = ["2020-03-29", last_day_plot], "cas_rea_hosp_dc_journ", [0, df_incid_france["P"].max()]
@@ -3697,7 +3698,7 @@ if show_charts:
     fig.show()"""
 
 
-# In[114]:
+# In[ ]:
 
 
 
@@ -3716,7 +3717,7 @@ for croiss in ["", "_croissance", "log"]:
     
 
 
-# In[115]:
+# In[ ]:
 
 
 """
@@ -3752,7 +3753,7 @@ fig.append([plot1, plot2, plot3, plot4])
 fig.save(PATH+"images/charts/france/dashboard_jour.svg")"""
 
 
-# In[116]:
+# In[ ]:
 
 
 # Comparaison vague
@@ -3930,7 +3931,7 @@ for (range_x, name_fig, title, x_title) in [(["2020-03-12", "2020-05-12"], "rea_
     print("> " + name_fig)
 
 
-# In[117]:
+# In[ ]:
 
 
 for (range_x, name_fig, title, x_title) in [(["2020-03-12", "2020-05-12"], "hosp_journ_v1", "<b>Printemps</b> 2020", 0.8), (["2020-10-25", "2020-12-25"], "hosp_journ_v2", "<b>Automne</b> 2020", 0.2)]:
@@ -4110,7 +4111,7 @@ for (range_x, name_fig, title, x_title) in [(["2020-03-12", "2020-05-12"], "hosp
         fig.show()
 
 
-# In[118]:
+# In[ ]:
 
 
 for (range_x, name_fig, title, x_title) in [(["2020-03-12", "2020-05-12"], "dc_journ_v1", "<b>Printemps</b> 2020", 0.8), (["2020-10-25", "2020-12-25"], "dc_journ_v2", "<b>Automne</b> 2020", 0.2)]:
@@ -4301,7 +4302,7 @@ for (range_x, name_fig, title, x_title) in [(["2020-03-12", "2020-05-12"], "dc_j
 
 # ## Evolution jorunée
 
-# In[119]:
+# In[ ]:
 
 
 #EVOL JOURN
@@ -4401,7 +4402,7 @@ if show_charts:
 
 # ## Tests Covid
 
-# In[120]:
+# In[ ]:
 
 
 # TESTS
@@ -4479,7 +4480,7 @@ if show_charts:
 
 # ## Entrées/Sortires hosp et réa
 
-# In[121]:
+# In[ ]:
 
 
 """fig = go.Figure()
@@ -4599,7 +4600,7 @@ if show_charts:
 # ## Entrées/Sorties hosp et réa - rolling mean (7 days)
 # La moyenne glissante sur 4 jours permet de lisser les effets liés aux week-ends (moins de saisies de données, donc il y a un trou) et d'évaluer la tendance.
 
-# In[122]:
+# In[ ]:
 
 
 """try:
@@ -4817,7 +4818,7 @@ except Exception as e:
 
 # ## Hospitalisations (bar chart)
 
-# In[123]:
+# In[ ]:
 
 
 """fig = go.Figure()
@@ -4884,7 +4885,7 @@ if show_charts:
     fig.show()"""
 
 
-# In[124]:
+# In[ ]:
 
 
 date_plus_6 = (datetime.strptime(dates_incid[-1], '%Y-%m-%d') + timedelta(days=6)).strftime('%Y-%m-%d')
@@ -5112,7 +5113,7 @@ for (data_type, data_type_title, marker_color, fillcolor, descr) in [("hosp", "N
 
 # ## Hospitalisations et réanimations (bar charts subplot)
 
-# In[125]:
+# In[ ]:
 
 
 fig = make_subplots(rows=2, cols=1, shared_yaxes=True, subplot_titles=["Nombre de personnes<b> hospitalisées</b>", "Nombre de personnes en <b>réanimation</b>"], vertical_spacing = 0.15, horizontal_spacing = 0.1)
@@ -5217,7 +5218,7 @@ print("> " + name_fig)
 
 # ## Indicateur 1 - France
 
-# In[126]:
+# In[ ]:
 
 
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
@@ -5471,7 +5472,7 @@ print("> " + name_fig)
 #fig.show()
 
 
-# In[127]:
+# In[ ]:
 
 
 """
@@ -5617,7 +5618,7 @@ locale.setlocale(locale.LC_ALL, '')
 
 # ## Tests France
 
-# In[128]:
+# In[ ]:
 
 
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
@@ -5788,7 +5789,7 @@ locale.setlocale(locale.LC_ALL, '')
 
 # ## Titre composition tests
 
-# In[129]:
+# In[ ]:
 
 
 fig = go.Figure()
@@ -5876,7 +5877,7 @@ fig.write_image(PATH + "images/charts/france/{}.jpeg".format(name_fig), scale=2,
 
 # ## R_effectif
 
-# In[130]:
+# In[ ]:
 
 
 #### Calcul du R_effectif
@@ -6079,7 +6080,7 @@ if show_charts:
     fig.show()
 
 
-# In[131]:
+# In[ ]:
 
 
 def traitement_val(valeur, plus_sign=False):
@@ -6174,13 +6175,13 @@ with open(PATH_STATS + 'stats.json', 'w') as outfile:
     json.dump(data_json, outfile)
 
 
-# In[132]:
+# In[ ]:
 
 
 df_incid_fra["P"].rolling(window=7).mean().values[-7:]
 
 
-# In[133]:
+# In[ ]:
 
 
 
@@ -6189,7 +6190,7 @@ with open(PATH_STATS + 'cas_sidep.json', 'w') as outfile:
         json.dump(dict_data, outfile)
 
 
-# In[134]:
+# In[ ]:
 
 
 df_tests_viros_france = df_tests_viros.groupby(['jour', 'cl_age90']).sum().reset_index()
@@ -6229,13 +6230,13 @@ dates_heatmap_lastday = tranche.index + timedelta(days=6)
 dates_heatmap = [str(dates_heatmap_firstday[i])[8:10] + "/" + str(dates_heatmap_firstday[i])[5:7] + "<br>" + str(dates_heatmap_lastday[i])[8:10] + "/" + str(dates_heatmap_lastday[i])[5:7] for i, val in enumerate(dates_heatmap_firstday)]
 
 
-# In[135]:
+# In[ ]:
 
 
 temp = df_tests_viros_france.groupby(["jour"]).sum().reset_index()
 
 
-# In[136]:
+# In[ ]:
 
 
 for (val, valname) in [('P', 'positifs'), ('T', '')]:
@@ -6354,7 +6355,7 @@ for (val, valname) in [('P', 'positifs'), ('T', '')]:
     plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
 
 
-# In[137]:
+# In[ ]:
 
 
 import plotly.figure_factory as ff
@@ -6456,7 +6457,7 @@ for (name, array, title, scale_txt, data_example, digits) in [("cas", array_posi
     plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
 
 
-# In[138]:
+# In[ ]:
 
 
 """#OLD HEATMAP
@@ -6551,7 +6552,7 @@ for (name, data, title, scale_txt, data_example, digits) in [("cas", 'P', "Nombr
     plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)"""
 
 
-# In[139]:
+# In[ ]:
 
 
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
@@ -6722,7 +6723,7 @@ locale.setlocale(locale.LC_ALL, '')
 #fig.show()
 
 
-# In[140]:
+# In[ ]:
 
 
 """
@@ -6828,7 +6829,7 @@ print("> " + name_fig)
 #fig.show()"""
 
 
-# In[141]:
+# In[91]:
 
 
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
@@ -6996,7 +6997,7 @@ print("> " + name_fig)
 #fig.show()
 
 
-# In[142]:
+# In[92]:
 
 
 
@@ -7075,7 +7076,7 @@ print("> " + name_fig)
 # ## Situation cas (bar chart)
 # Où en sont les personnes atteintes du Covid (retour à domicile, décédées, en réa, hosp ou autre)
 
-# In[143]:
+# In[93]:
 
 
 
@@ -7163,7 +7164,7 @@ if show_charts:
 
 # ## Décès hospitalisations et réanimations (line chart)
 
-# In[144]:
+# In[94]:
 
 
 df_france = df.groupby('jour').sum().reset_index()
@@ -7229,7 +7230,7 @@ print("> " + name_fig)
 
 # ## Décès cumulés (line chart)
 
-# In[145]:
+# In[95]:
 
 
 
@@ -7265,7 +7266,7 @@ if show_charts:
     fig.show()
 
 
-# In[146]:
+# In[96]:
 
 
 
@@ -7303,7 +7304,7 @@ if show_charts:
 
 # ## Hospitalisations
 
-# In[147]:
+# In[97]:
 
 
 
@@ -7341,7 +7342,7 @@ if show_charts:
 
 # ## Hospitalisations (entrées - sorties) (line chart)
 
-# In[148]:
+# In[98]:
 
 
 
@@ -7379,7 +7380,7 @@ if show_charts:
 
 # ## Admissions en hospitalisation (line chart)
 
-# In[149]:
+# In[99]:
 
 
 
@@ -7416,7 +7417,7 @@ if show_charts:
     fig.show()
 
 
-# In[150]:
+# In[100]:
 
 
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
@@ -7500,7 +7501,7 @@ for graph, data_name in [("", "cas"), ("pop", "cas pour 100 k. hab.")]:
         fig.show()
 
 
-# In[151]:
+# In[101]:
 
 
 def prep_course():
@@ -7517,7 +7518,7 @@ def prep_course():
     """(df_incid_reg, "incidence_rolling", dates_incid, "Incidence", "course_incidence", "regionName"),    (df_incid_reg, "P_rolling", dates_incid, "Cas de Covid19", "course_cas", "regionName"),    (df_region, "dc_pop_new_rolling", dates, "Décès pour 1M hab.", "course_dc", "regionName")]:"""
 
 
-# In[152]:
+# In[102]:
 
 
 #COURSE
@@ -7609,7 +7610,7 @@ for (dataset, column, dates_to_use, title, folder) in [    (df_incid_reg, "incid
             fig.write_image(PATH + "images/charts/france/{}/{}.jpeg".format(folder, i), scale=2, width=650, height=450)
 
 
-# In[153]:
+# In[103]:
 
 
 #COURSE REA
@@ -7689,7 +7690,7 @@ for (dataset, column, dates_to_use, title, folder) in [    (df_clage_france, "re
             fig.write_image(PATH + "images/charts/france/{}/{}.jpeg".format(folder, i), scale=2, width=650, height=450)
 
 
-# In[154]:
+# In[104]:
 
 
 """
@@ -7709,7 +7710,7 @@ with imageio.get_writer(PATH + "images/charts/france/course_incidence/course.gif
 """
 
 
-# In[155]:
+# In[105]:
 
 
 #import glob
@@ -7752,7 +7753,7 @@ for (folder, n, fps) in [("course_rea_clage_rolling", n2, 7), ("course_hosp_clag
         print("error conversion h265")
 
 
-# In[156]:
+# In[106]:
 
 
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
@@ -7811,7 +7812,7 @@ if show_charts:
 
 # ## Réanimations par région (line chart)
 
-# In[157]:
+# In[107]:
 
 
 fig = px.line(x=df_region['jour'], y=df_region['rea'], color=df_region["regionName"], color_discrete_sequence=colors).update_traces(mode='lines+markers', marker_size=7.5, line=dict(width=2.5))
@@ -7847,7 +7848,7 @@ if show_charts:
 
 # ## Réanimations par département (line chart)
 
-# In[158]:
+# In[108]:
 
 
 df_last_d = df[df['jour'] == dates[-1]]

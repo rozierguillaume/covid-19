@@ -258,6 +258,17 @@ def download_data_variants_deps():
     with open(PATH + 'data/france/donnees-variants-deps.csv', 'wb') as f:
         f.write(data.content)
 
+def download_data_obepine():
+    data = requests.get("https://www.data.gouv.fr/fr/datasets/r/32ca2969-ba4e-45f7-9cf7-56c1c3188aee")        
+    with open(PATH + 'data/france/donnees_obepine_regions.csv', 'wb') as f:
+        f.write(data.content)
+
+def import_data_obepine():
+    df = pd.read_csv(PATH + 'data/france/donnees_obepine_regions.csv', sep=None)
+    df_reg_pop = pd.read_csv(PATH + 'data/france/population_grandes_regions.csv', sep=",")
+    df = df.merge(right=df_reg_pop, left_on="Code_Region", right_on="code")
+    return df
+
 def import_data_metropoles():
     df_metro = pd.read_csv(PATH + 'data/france/donnes-incidence-metropoles.csv', sep=",")
     epci = pd.read_csv(PATH + 'data/france/metropole-epci.csv', sep=";", encoding="'windows-1252'")

@@ -248,7 +248,7 @@ def cas_journ(departement):
 #cas_journ("Savoie")
 
 
-# In[9]:
+# In[47]:
 
 
 def nombre_variants(departement):
@@ -323,7 +323,7 @@ def nombre_variants(departement):
                             y=1.1,
                             xref='paper',
                             yref='paper',
-                            text='Date : 08/03/21. Données : Santé publique France. Auteur : @guillaumerozier - covidtracker.fr.',
+                            text='Date : {}. Données : Santé publique France. Auteur : @guillaumerozier - covidtracker.fr.'.format(datetime.strptime(max(dates), '%Y-%m-%d').strftime('%d %B %Y')),
                             showarrow = False
                         )]
     )
@@ -834,7 +834,7 @@ def cas_journ_departements_couvre_feu_hosp(departements):
 cas_journ_departements_couvre_feu_hosp(departements)"""
 
 
-# In[12]:
+# In[30]:
 
 
 def incid_dep(departement):
@@ -964,7 +964,7 @@ def incid_dep(departement):
             
     folder = "covidep/"+class_dep
     
-    fig.write_image(PATH+"images/charts/france/{}/{}.svg".format(folder, name_fig), scale=1.5, width=750, height=500)
+    #fig.write_image(PATH+"images/charts/france/{}/{}.svg".format(folder, name_fig), scale=1.5, width=750, height=500)
 
     print("> " + name_fig)
     
@@ -972,7 +972,7 @@ def incid_dep(departement):
 #incid_dep("Savoie")
 
 
-# In[13]:
+# In[31]:
 
 
 def hosp_journ(departement):   
@@ -1123,7 +1123,7 @@ def hosp_journ(departement):
     print("> " + name_fig)
 
 
-# In[14]:
+# In[32]:
 
 
 def hosp_comparaison_vagues(departement):   
@@ -1285,7 +1285,7 @@ def hosp_comparaison_vagues(departement):
 #hosp_comparaison_vagues("Savoie")
 
 
-# In[15]:
+# In[33]:
 
 
 def hosp_journ_elias(dep):
@@ -1576,7 +1576,7 @@ def hosp_journ_elias(dep):
 #hosp_journ_elias("Savoie")
 
 
-# In[16]:
+# In[34]:
 
 
 def rea_journ(departement):
@@ -1722,7 +1722,7 @@ def rea_journ(departement):
 #rea_journ("Isère")
 
 
-# In[17]:
+# In[35]:
 
 
 def dc_journ(departement): 
@@ -1839,7 +1839,7 @@ def dc_journ(departement):
 #dc_journ("Paris")
 
 
-# In[18]:
+# In[36]:
 
 
 
@@ -1931,7 +1931,7 @@ def saturation_rea_journ(dep):
     return df_saturation.values[-1]
 
 
-# In[19]:
+# In[37]:
 
 
 import cv2
@@ -1978,7 +1978,7 @@ with open(PATH + 'images/charts/france/covidep/stats.json', 'w') as outfile:
     
 
 
-# In[20]:
+# In[48]:
 
 
 for dep in departements:
@@ -1986,7 +1986,7 @@ for dep in departements:
     nombre_variants(dep)
 
 
-# In[21]:
+# In[39]:
 
 
 with open(PATH_STATS + 'incidence_departements.json', 'r') as f:
@@ -2000,7 +2000,7 @@ with open(PATH_STATS + 'incidence_departements.json', 'w') as outfile:
     json.dump(incidence_departements, outfile)
 
 
-# In[22]:
+# In[40]:
 
 
 n_tot=1
@@ -2229,7 +2229,7 @@ for i in range(0, n_tot):
             plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/evolution_deps/evolution_deps_0.html', auto_open=False)
 
 
-# In[23]:
+# In[49]:
 
 
 #import glob
@@ -2240,18 +2240,21 @@ for (folder, n, fps) in [("evolution_deps", n_tot, 3)]:
     img_array = []
     for i in range(n-1, 0-1, -1):
         print(i)
-        img = cv2.imread((PATH + "images/charts/france/{}/evolution_deps_{}.jpeg").format(folder, dates_incid[-(i+1)]))
-        height, width, layers = img.shape
-        size = (width,height)
-        img_array.append(img)
+        try:
+            img = cv2.imread((PATH + "images/charts/france/{}/evolution_deps_{}.jpeg").format(folder, dates_incid[-(i+1)]))
+            height, width, layers = img.shape
+            size = (width,height)
+            img_array.append(img)
 
-        if i==-n:
-            for k in range(4):
-                img_array.append(img)
+            if i==-n:
+                for k in range(4):
+                    img_array.append(img)
 
-        if i==-1:
-            for k in range(12):
-                img_array.append(img)
+            if i==-1:
+                for k in range(12):
+                    img_array.append(img)
+        except:
+            print("image manquante")
 
     out = cv2.VideoWriter(PATH + 'images/charts/france/{}/evolution_deps.mp4'.format(folder),cv2.VideoWriter_fourcc(*'MP4V'), fps, size)
 
