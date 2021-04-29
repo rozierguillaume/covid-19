@@ -38,7 +38,7 @@ def nbWithSpaces(nb):
         return str_nb
 
 
-# In[3]:
+# In[1]:
 
 
 import pandas as pd
@@ -64,7 +64,7 @@ locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
 
 
-# In[5]:
+# In[2]:
 
 
 data.download_data_variants_deps()
