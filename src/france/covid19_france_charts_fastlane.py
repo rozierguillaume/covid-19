@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[3]:
+# In[54]:
 
 
 """
@@ -23,7 +23,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[4]:
+# In[55]:
 
 
 from multiprocessing import Pool
@@ -53,14 +53,14 @@ PATH = "../../"
 now = datetime.now()
 
 
-# In[ ]:
+# In[56]:
 
 
 #time.sleep(300)
 data.download_data()
 
 
-# In[ ]:
+# In[57]:
 
 
 import time
@@ -83,18 +83,18 @@ while not success:
         continue
 
 
-# In[ ]:
+# In[58]:
 
 
 
 df_incid_fra_clage = data.import_data_tests_sexe()
 df_incid_fra = df_incid_fra_clage[df_incid_fra_clage["cl_age90"]==0]
-
+#df_incid_fra.jour = pd.to_datetime(df_incid_fra.jour).astype('str')
 
 dates_incid = list(dict.fromkeys(list(df_incid_fra['jour'].values))) 
 
 
-# In[ ]:
+# In[59]:
 
 
 df_new = data.import_data_new()
@@ -103,7 +103,7 @@ df_new_france = df_new.groupby("jour").sum().reset_index()
 dates_new = sorted(list(dict.fromkeys(list(df_new_france['jour'].values))))
 
 
-# In[ ]:
+# In[60]:
 
 
 df = data.import_data_df()
@@ -112,14 +112,14 @@ dates = sorted(list(dict.fromkeys(list(df['jour'].values))))
 df_france = df.groupby("jour").sum().reset_index()
 
 
-# In[ ]:
+# In[61]:
 
 
-last_day_plot_dashboard = (datetime.strptime(max(dates), '%Y-%m-%d') + timedelta(days=7)).strftime("%Y-%m-%d")
+last_day_plot_dashboard = (datetime.strptime(max(dates), '%Y-%m-%d') + timedelta(days=3)).strftime("%Y-%m-%d")
 last_day_plot = (datetime.strptime(max(dates), '%Y-%m-%d') + timedelta(days=1)).strftime("%Y-%m-%d")
 
 
-# In[ ]:
+# In[62]:
 
 
 def nbWithSpaces(nb):
@@ -134,11 +134,32 @@ def nbWithSpaces(nb):
         return str_nb
 
 
+# In[63]:
+
+
+#df_incid_fra.loc[df_incid_fra.jour == "2021-04-05", "P"] = 45000
+
+
+# In[64]:
+
+
+df_incid_fra_corrige = df_incid_fra.copy()
+df_incid_fra_corrige.loc[df_incid_fra.jour == "2020-12-25", "P"] = 18000
+df_incid_fra_corrige.loc[df_incid_fra.jour == "2021-01-01", "P"] = 18000
+df_incid_fra_corrige.loc[df_incid_fra.jour == "2021-04-05", "P"] = 47000
+
+
 # In[ ]:
 
 
+
+
+
+# In[65]:
+
+
 suffixe=""
-for (date_deb, date_fin) in [("2020-03-18", last_day_plot_dashboard), (dates[-100], last_day_plot)]:
+for (date_deb, date_fin) in [("2020-09-18", last_day_plot_dashboard), (dates[-100], last_day_plot)]:
     range_x, name_fig, range_y = [date_deb, date_fin], "cas_journ"+suffixe, [0, df_incid_fra["P"].max()*0.7]
     
     title = "<b>Cas positifs</b> au Covid19"
@@ -152,8 +173,20 @@ for (date_deb, date_fin) in [("2020-03-18", last_day_plot_dashboard), (dates[-10
         fig = make_subplots(rows=1, cols=1, shared_yaxes=True, subplot_titles=[""], vertical_spacing = 0.08, horizontal_spacing = 0.1, specs=[[{"secondary_y": True}]])
 
         df_incid_france_cas_rolling = df_incid_fra["P"].rolling(window=7, center=True).mean()#df_incid_france["P"].rolling(window=7, center=True).mean()
+        df_incid_france_cas_rolling_corrige = df_incid_fra_corrige["P"].rolling(window=7, center=True).mean()#df_incid_france["P"].rolling(window=7, center=True).mean()
         df_incid_france_tests_rolling = df_incid_fra["T"].rolling(window=7, center=True).mean()
-
+        
+        fig.add_trace(go.Scatter(
+            x = df_incid_fra["jour"],
+            y = df_incid_france_cas_rolling_corrige,
+            name = "Cas positifs (correction jours fériés)",
+            marker_color='red',
+            line_width=2,
+            opacity=1,
+            line=dict(dash="dot"),
+            showlegend=True
+        ), secondary_y=True)
+        
         fig.add_trace(go.Scatter(
             x = df_incid_fra["jour"],
             y = df_incid_france_cas_rolling,
@@ -165,8 +198,9 @@ for (date_deb, date_fin) in [("2020-03-18", last_day_plot_dashboard), (dates[-10
             fillcolor="rgba(8, 115, 191, 0.3)",
             showlegend=True
         ), secondary_y=True)
-
-        fig.add_trace(go.Bar(
+        
+        
+        """fig.add_trace(go.Bar(
             x = df_incid_fra["jour"],
             y = df_incid_france_tests_rolling,
             name = "Tests réalisés",
@@ -174,39 +208,12 @@ for (date_deb, date_fin) in [("2020-03-18", last_day_plot_dashboard), (dates[-10
             opacity=0.8,
             showlegend=True,
 
-        ), secondary_y=False)
-
-        """fig.add_shape(type="line",
-        x0="2020-03-17", y0=0, x1="2020-03-17", y1=300000,
-        line=dict(color="Red",width=0.5, dash="dot")
-        )
-
-        fig.add_shape(type="line",
-        x0="2020-05-11", y0=0, x1="2020-05-11", y1=30000000,
-        line=dict(color="Green",width=0.5, dash="dot")
-        )
-
-        fig.add_shape(type="line",
-        x0="2020-10-30", y0=0, x1="2020-10-30", y1=30000000,
-        line=dict(color="Red",width=0.5, dash="dot")
-        )
-
-        fig.add_shape(type="line",
-        x0="2020-11-28", y0=0, x1="2020-11-28", y1=30000000,
-        line=dict(color="Orange",width=0.5, dash="dot")
-        )
-        fig.add_shape(type="line",
-        x0="2020-12-15", y0=0, x1="2020-12-15", y1=30000000,
-        line=dict(color="green",width=0.5, dash="dot")
-        )
-        """
+        ), secondary_y=False)"""
 
         fig.add_shape(type="line",
         x0="2019-12-15", y0=5000, x1="2021-12-15", y1=5000,
         line=dict(color="green",width=2, dash="dot"), xref='x1', yref='y2'
         )
-
-        
 
         try:
             nope
@@ -262,10 +269,10 @@ for (date_deb, date_fin) in [("2020-03-18", last_day_plot_dashboard), (dates[-10
         ###
         if i=="log":
             fig.update_yaxes(zerolinecolor='Grey', range=range_y, tickfont=dict(size=13), type="log", secondary_y=True)
-            fig.update_yaxes(zerolinecolor='Grey', range=range_y, tickfont=dict(size=13), type="log", secondary_y=False)
+            #fig.update_yaxes(zerolinecolor='Grey', range=range_y, tickfont=dict(size=13), type="log", secondary_y=False)
         else:
             fig.update_yaxes(zerolinecolor='Grey', range=range_y, tickfont=dict(size=13, color="rgba(8, 115, 191, 1)"), secondary_y=True,)
-            fig.update_yaxes(zerolinecolor='blue', tickfont=dict(size=13, color="Grey"), secondary_y=False)
+            #fig.update_yaxes(zerolinecolor='blue', tickfont=dict(size=13, color="Grey"), secondary_y=False)
 
         fig.update_xaxes(nticks=10, ticks='inside', tickangle=0, tickfont=dict(size=16), range=range_x)
 
@@ -331,35 +338,13 @@ for (date_deb, date_fin) in [("2020-03-18", last_day_plot_dashboard), (dates[-10
         else:
             y=df_incid_france_cas_rolling.values[-4]
             
-        ax=-150
+        ax=-250
         ax2=-100
         if(suffixe=="_recent"):
             ax=-100
             ax2=0
             
         fig['layout']['annotations'] += (
-            dict(
-                x = dates_incid[-4], y = df_incid_france_tests_rolling.values[-4], # annotation point
-                xref='x1', 
-                yref='y1',
-                text=" <b>{} {}".format('%s' % nbWithSpaces(df_incid_france_tests_rolling.values[-4]), "tests quotidiens<br></b>en moyenne du {} au {}.<br> {} % en 7 jours".format(datetime.strptime(dates_incid[-7], '%Y-%m-%d').strftime('%d'), datetime.strptime(dates_incid[-1], '%Y-%m-%d').strftime('%d %b'), croissance_tests)),
-                xshift=-2,
-                yshift=0,
-                xanchor="center",
-                align='center',
-                font=dict(
-                    color="grey",
-                    size=12
-                    ),
-                opacity=1,
-                ax=ax2,
-                ay=-100,
-                arrowcolor="grey",
-                arrowsize=1.5,
-                arrowwidth=1,
-                arrowhead=0,
-                showarrow=True
-            ),
             dict(
                 x = dates_incid[-4], y = y, # annotation point
                 xref='x1', 
@@ -434,7 +419,7 @@ for (date_deb, date_fin) in [("2020-03-18", last_day_plot_dashboard), (dates[-10
         suffixe="_recent"
 
 
-# In[ ]:
+# In[66]:
 
 
 #Comparaison J-7
@@ -488,7 +473,7 @@ plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/{}.html'.
 
 
 
-# In[5]:
+# In[67]:
 
 
 
@@ -698,7 +683,7 @@ for i in ("", "log"):
         fig.show()
 
 
-# In[ ]:
+# In[68]:
 
 
 range_x, name_fig, range_y = ["2020-03-29", last_day_plot], "hosp_journ", [0, df_france["hosp"].max()*1.2]
@@ -1026,7 +1011,7 @@ for i in ("", "log"):
         fig.show()
 
 
-# In[ ]:
+# In[69]:
 
 
 range_x, name_fig, range_y = ["2020-03-29", last_day_plot], "dc_journ", [0, df_new_france["incid_dc"].max()]
@@ -1246,7 +1231,7 @@ for i in ("", "log"):
         fig.show()
 
 
-# In[ ]:
+# In[70]:
 
 
 
@@ -1456,7 +1441,7 @@ for i in ("", "log"):
         fig.show()
 
 
-# In[ ]:
+# In[71]:
 
 
 
@@ -1748,7 +1733,7 @@ for i in ("", "log"):
         fig.show()
 
 
-# In[ ]:
+# In[72]:
 
 
 range_x, name_fig, range_y = ["2020-03-29", last_day_plot], "dc_journ", [0, df_new_france["incid_dc"].max()]
@@ -1997,7 +1982,7 @@ for i in ("", "log"):
         fig.show()
 
 
-# In[ ]:
+# In[73]:
 
 
 
@@ -2016,7 +2001,7 @@ for croiss in [""]:
     
 
 
-# In[ ]:
+# In[74]:
 
 
 data.download_data_vue_ensemble()
@@ -2024,13 +2009,13 @@ df_vue_ensemble = data.import_data_vue_ensemble()
 #df_vue_ensemble=df_vue_ensemble.append({"date": "2021-03-30", "total_cas_confirmes": 4554683}, ignore_index=True)
 
 
-# In[ ]:
+# In[75]:
 
 
 df_vue_ensemble["total_cas_confirmes"].diff()
 
 
-# In[ ]:
+# In[76]:
 
 
 suffixe=""
@@ -2243,10 +2228,4 @@ for (date_deb, date_fin) in [("2020-01-18", datetime.strptime(df_vue_ensemble.da
         if show_charts:
             fig.show()
         suffixe="_recent"
-
-
-# In[ ]:
-
-
-
 

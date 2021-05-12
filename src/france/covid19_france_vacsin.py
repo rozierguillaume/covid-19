@@ -337,7 +337,7 @@ plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/dc_vacsi_
 
 
 
-# In[62]:
+# In[68]:
 
 
 def dc_hosp_clage(df_hosp_fra_clage, lastday="", minday=""):    
@@ -359,16 +359,19 @@ def dc_hosp_clage(df_hosp_fra_clage, lastday="", minday=""):
         name=minday,
         showlegend=False
     ))
-    
+    x=df_hosp_fra_clage_lastday["hosp"]/sum_hosp*100
     fig.add_trace(go.Bar(
         y=[str(age-9) + " - " + str(age) +" ans" for age in df_hosp_fra_clage_lastday["cl_age90"].values[:-1]] + ["+ 90 ans"],
-        x=df_hosp_fra_clage_lastday["hosp"]/sum_hosp*100,
+        x=x,
         orientation='h',
         marker_line_width=1.5,
         marker_color="red",
         marker_line_color="red",
+        text=[str(int(val)) + " %" for val in round(x)],
+        textposition='auto',
         name=lastday
     ))
+    value_90 = int(round((df_hosp_fra_clage_lastday["hosp"]/sum_hosp*100).values[-1]))
     
     fig.add_trace(go.Bar(
         y=[str(age-9) + " - " + str(age) +" ans" for age in df_hosp_fra_clage_lastday["cl_age90"].values[:-1]] + ["+ 90 ans"],
@@ -381,6 +384,17 @@ def dc_hosp_clage(df_hosp_fra_clage, lastday="", minday=""):
     ))
     
     fig.update_layout(
+        annotations=[
+                    dict(
+                        x=0.5,
+                        y=1.12,
+                        xref='paper',
+                        yref='paper',
+                        font=dict(size=11),
+                        text="Lecture : les plus de 90 ans représentent {}% des personnes hospitalisées".format(value_90),
+                        showarrow=False
+                    ),
+        ],
         legend_orientation="h",
         barmode='overlay',
         xaxis=dict(ticksuffix=" %"),
@@ -390,11 +404,11 @@ def dc_hosp_clage(df_hosp_fra_clage, lastday="", minday=""):
         ),
         bargap=0.2
     )
-    fig.write_image(PATH + "images/charts/france/dc_hosp_clage/{}.jpeg".format(lastday), scale=2, width=500, height=500)
     
+    fig.write_image(PATH + "images/charts/france/dc_hosp_clage/{}.jpeg".format(lastday), scale=2, width=500, height=500)
 
 
-# In[64]:
+# In[69]:
 
 
 def vacsi_clage(df_a_vacsi_a_france, lastday=""):
@@ -404,13 +418,28 @@ def vacsi_clage(df_a_vacsi_a_france, lastday=""):
     sum_hosp = df_a_vacsi_a_france_lastday["n_cum_dose1"].sum()
 
     fig = go.Figure()
+    x=df_a_vacsi_a_france_lastday["n_cum_dose1"]/df_a_vacsi_a_france_lastday["population"]*100
     fig.add_trace(go.Bar(
         #y=[str(age) + " ans" for age in df_a_vacsi_a_france.clage_vacsi],
         y=df_a_vacsi_a_france_lastday.categorie_fine,
-        x=df_a_vacsi_a_france_lastday["n_cum_dose1"]/df_a_vacsi_a_france_lastday["population"]*100,
+        x=x,
+        text=[str(int(val)) + " %" for val in round(x)],
+        textposition='auto',
         orientation='h',
     ))
+    value_80 = int(round((x.values[-1])))
     fig.update_layout(
+         annotations=[
+                    dict(
+                        x=0.5,
+                        y=1.12,
+                        xref='paper',
+                        yref='paper',
+                        font=dict(size=11),
+                        text="Lecture : {}% des plus de 80 ans ont reçu une dose de vaccin".format(value_80),
+                        showarrow=False
+                    ),
+        ],
         title=dict(
             text="Couverture vaccinale {}".format(lastday),
             x=0.5
@@ -437,7 +466,7 @@ def assemble_images(date):
     cv2.imwrite(PATH+'images/charts/france/vacsi_hosp_comp/{}.jpeg'.format(date), im_h)
 
 
-# In[69]:
+# In[13]:
 
 
 def build_video(dates):
@@ -474,7 +503,7 @@ def build_video(dates):
             print("error conversion h265")
 
 
-# In[66]:
+# In[70]:
 
 
 days = sorted(df_a_vacsi_a_france.jour.unique())[-80:]

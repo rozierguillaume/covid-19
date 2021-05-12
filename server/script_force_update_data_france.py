@@ -60,6 +60,7 @@ def get_datetime_spf():
     return datetime_object
 
 def update_france():
+    now = dt.datetime.now()
     datetime_spf = get_datetime_spf()
     print("try update, now: "+ str(dt.datetime.now()))
     print("datetime_spf: " + str(datetime_spf))
@@ -77,17 +78,22 @@ def update_france():
         
         os.chdir(PATH_FRANCE)
         # Mise à jour des graphiques
-        subprocess.run(["sudo", "python3", PATH_FRANCE+"covid19_france_charts.py"])
-        push("France")
+        subprocess.run(["sudo", "python3", PATH_FRANCE+"covid19_france_charts_fastlane.py"])
+        push("France fastlane")
         print("update France charts: " + str(now.hour) + ":" + str(now.minute))
         
         subprocess.run(["sudo", "python3", PATH_FRANCE+"covid19_france_data_explorer.py"])
         push("Data Explorer")
         print("update data explorer: " + str(now.hour) + ":" + str(now.minute))
         
+        subprocess.run(["sudo", "python3", PATH_FRANCE+"covid19_france_charts.py"])
+        push("France")
+        print("update France charts: " + str(now.hour) + ":" + str(now.minute))
+        
         subprocess.run(["sudo", "python3", PATH_FRANCE+"covid19_france_map_incid.py"])
         push("France map incid")
         print("update France local: " + str(now.hour) + ":" + str(now.minute))
+    
         
         subprocess.run(["sudo", "python3", PATH_FRANCE+"covid19_france_variants.py"])
         push("France variants")

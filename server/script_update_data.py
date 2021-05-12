@@ -76,16 +76,21 @@ def try_update_france():
         update_repo()
         
         os.chdir(PATH_FRANCE)
-        # Mise à jour des graphiques
-        subprocess.run(["sudo", "python3", PATH_FRANCE+"covid19_france_charts.py"])
-        push("France")
-        print("update France charts: " + str(now.hour) + ":" + str(now.minute))
+        
+        subprocess.run(["sudo", "python3", PATH_FRANCE+"covid19_france_charts_fastlane.py"])
+        push("France fastlane")
+        print("update France charts fastlane: " + str(now.hour) + ":" + str(now.minute))
         
         try:
             subprocess.run(["sudo", "python3", PATH_FRANCE+"tweetbot_france.py"])
             print("data tweeted")
         except:
             pass
+        
+        # Mise à jour des graphiques
+        subprocess.run(["sudo", "python3", PATH_FRANCE+"covid19_france_charts.py"])
+        push("France")
+        print("update France charts: " + str(now.hour) + ":" + str(now.minute))
         
         subprocess.run(["sudo", "python3", PATH_FRANCE+"covid19_france_map_incid.py"])
         push("France map incid")
@@ -94,6 +99,10 @@ def try_update_france():
         subprocess.run(["sudo", "python3", PATH_FRANCE+"covid19_france_data_explorer.py"])
         push("Data Explorer")
         print("update data explorer: " + str(now.hour) + ":" + str(now.minute))
+        
+        subprocess.run(["sudo", "python3", PATH_FRANCE+"covid19_france_charts_fastlane.py"])
+        push("France fastlane")
+        print("update France charts fastlane: " + str(now.hour) + ":" + str(now.minute))
         
         try:
             subprocess.run(["sudo", "python3", PATH_FRANCE+"tweetbot_france_maps.py"])

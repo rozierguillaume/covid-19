@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[2]:
+# In[3]:
 
 
 import requests
@@ -249,14 +249,28 @@ def download_data_vue_ensemble():
         f.write(data.content)
 
 def download_data_variants():
-    data = requests.get("https://www.data.gouv.fr/fr/datasets/r/c43d7f3f-c9f5-436b-9b26-728f80e0fd52")        
+    data = requests.get("https://www.data.gouv.fr/fr/datasets/r/c43d7f3f-c9f5-436b-9b26-728f80e0fd52")
+    data_reg = requests.get("https://www.data.gouv.fr/fr/datasets/r/73e8851a-d851-43f8-89e4-6178b35b7127")
     with open(PATH + 'data/france/donnees-variants.csv', 'wb') as f:
+        f.write(data.content)
+    with open(PATH + 'data/france/donnees-variants-reg.csv', 'wb') as f:
         f.write(data.content)
         
 def download_data_variants_deps():
     data = requests.get("https://www.data.gouv.fr/fr/datasets/r/16f4fd03-797f-4616-bca9-78ff212d06e8")        
     with open(PATH + 'data/france/donnees-variants-deps.csv', 'wb') as f:
         f.write(data.content)
+
+def download_data_obepine():
+    data = requests.get("https://www.data.gouv.fr/fr/datasets/r/ba71be57-5932-4298-81ea-aff3a12a440c")        
+    with open(PATH + 'data/france/donnees_obepine_regions.csv', 'wb') as f:
+        f.write(data.content)
+
+def import_data_obepine():
+    df = pd.read_csv(PATH + 'data/france/donnees_obepine_regions.csv', sep=None)
+    df_reg_pop = pd.read_csv(PATH + 'data/france/population_grandes_regions.csv', sep=",")
+    df = df.merge(right=df_reg_pop, left_on="Code_Region", right_on="code")
+    return df
 
 def import_data_metropoles():
     df_metro = pd.read_csv(PATH + 'data/france/donnes-incidence-metropoles.csv', sep=",")
@@ -306,6 +320,14 @@ def import_data_variants_deps():
     df_variants = pd.read_csv(PATH + 'data/france/donnees-variants-deps.csv', sep=";")
     df_variants["jour"] = df_variants.semaine.apply(lambda x: x[11:]) 
     df_variants = df_variants[df_variants.cl_age90==0]
+    return df_variants
+
+def import_data_variants_regs():
+    df_variants = pd.read_csv(PATH + 'data/france/donnees-variants-regs.csv', sep=";")
+    df_variants["jour"] = df_variants.semaine.apply(lambda x: x[11:]) 
+    df_variants = df_variants[df_variants.cl_age90==0]
+    df_reg_pop = pd.read_csv(PATH + 'data/france/population_grandes_regions.csv', sep=",")
+    df_variants = df_variants.merge(df_reg_pop, left_on="reg", right_on="code")
     return df_variants
 
 def import_data_tests_sexe():
