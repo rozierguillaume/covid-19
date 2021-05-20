@@ -59,7 +59,7 @@ clage_spf = pd.read_csv(PATH+"data/france/clage_spf.csv", sep=";")
 df_a_vacsi_a_france = df_a_vacsi_a_france.merge(clage_spf, left_on="clage_vacsi", right_on="code_spf")
 
 
-# In[6]:
+# In[17]:
 
 
 df_a_vacsi_a_france_80 = df_a_vacsi_a_france[df_a_vacsi_a_france.clage_vacsi==80]
@@ -75,7 +75,7 @@ fig.add_trace(go.Scatter(
 
 fig.add_trace(go.Scatter(
     x=df_a_vacsi_a_france_80.jour,
-    y=df_a_vacsi_a_france_80.n_cum_dose1/4156974*100,
+    y=df_a_vacsi_a_france_80.n_cum_dose2/4156974*100,
     line=dict(width=4, color="#1f77b4"),
     showlegend=False,
     yaxis="y2"
@@ -86,7 +86,7 @@ fig.update_layout(
         y=0.90, x=0.5,
         font = dict(
                 size=20, color="black"),
-        text="<b>[+ de 80 ans] <span style='color:red;'>personnes hospitalisées</span> et <span style='color:#1f77b4;'>vaccinations</span></b>"),
+        text="<b>[+ de 80 ans] <span style='color:red;'>personnes hospitalisées</span> et <span style='color:#1f77b4;'>vaccinées</span></b>"),
     
     yaxis=dict(
         title="<b>Personnes hospitalisées</b>",
@@ -99,7 +99,7 @@ fig.update_layout(
     ),
     yaxis2=dict(
             range=[0, 100],
-            title="<b>% vaccinés</b> (au moins 1 dose)",
+            title="<b>% vaccinés</b> (2 doses)",
             titlefont=dict(
                 color="#1f77b4"
             ),
@@ -127,7 +127,7 @@ fig.write_image(PATH + "images/charts/france/hosp_vacsi_p80.jpeg", scale=2, widt
 plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/dc_vacsi_p80.html', auto_open=False)
 
 
-# In[7]:
+# In[18]:
 
 
 df_a_vacsi_a_france_80 = df_a_vacsi_a_france[df_a_vacsi_a_france.clage_vacsi!=80].groupby(["jour"]).sum().reset_index()
@@ -143,7 +143,7 @@ fig.add_trace(go.Scatter(
 
 fig.add_trace(go.Scatter(
     x=df_a_vacsi_a_france_80.jour,
-    y=df_a_vacsi_a_france_80.n_cum_dose1/(66990000-4156974)*100,
+    y=df_a_vacsi_a_france_80.n_cum_dose2/(66990000-4156974)*100,
     line=dict(width=4, color="#1f77b4"),
     showlegend=False,
     yaxis="y2"
@@ -154,7 +154,7 @@ fig.update_layout(
         y=0.90, x=0.5,
         font = dict(
                 size=20, color="black"),
-        text="<b>[0 - 79 ans] <span style='color:red;'>personnes hospitalisées</span> et <span style='color:#1f77b4;'>vaccinations</span></b>"),
+        text="<b>[0 - 79 ans] <span style='color:red;'>personnes hospitalisées</span> et <span style='color:#1f77b4;'>vaccinées</span></b>"),
     
     yaxis=dict(
         title="<b>Personnes hospitalisées</b>",
@@ -167,7 +167,7 @@ fig.update_layout(
     ),
     yaxis2=dict(
             range=[0, 100],
-            title="<b>% vaccinés</b> (au moins 1 dose)",
+            title="<b>% vaccinés</b> (2 doses)",
             titlefont=dict(
                 color="#1f77b4"
             ),
@@ -337,7 +337,7 @@ plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/dc_vacsi_
 
 
 
-# In[68]:
+# In[10]:
 
 
 def dc_hosp_clage(df_hosp_fra_clage, lastday="", minday=""):    
@@ -408,7 +408,7 @@ def dc_hosp_clage(df_hosp_fra_clage, lastday="", minday=""):
     fig.write_image(PATH + "images/charts/france/dc_hosp_clage/{}.jpeg".format(lastday), scale=2, width=500, height=500)
 
 
-# In[69]:
+# In[11]:
 
 
 def vacsi_clage(df_a_vacsi_a_france, lastday=""):
@@ -503,7 +503,7 @@ def build_video(dates):
             print("error conversion h265")
 
 
-# In[70]:
+# In[14]:
 
 
 days = sorted(df_a_vacsi_a_france.jour.unique())[-80:]

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[2]:
 
 
 """
@@ -23,7 +23,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[2]:
+# In[3]:
 
 
 import pandas as pd
@@ -44,13 +44,13 @@ import locale
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
 
-# In[3]:
+# In[4]:
 
 
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
 
 
-# In[4]:
+# In[5]:
 
 
 df_regions = df.groupby(["jour", "regionName"]).sum().reset_index()
@@ -62,13 +62,13 @@ last_day_plot = (datetime.strptime(max(dates), '%Y-%m-%d') + timedelta(days=1)).
 df_new_regions = df_new.groupby(["jour", "regionName"]).sum().reset_index()
 
 
-# In[5]:
+# In[6]:
 
 
 lits_reas = pd.read_csv(PATH+'data/france/lits_rea.csv', sep=",")
 
 
-# In[6]:
+# In[7]:
 
 
 regions_deps = df.groupby(["departmentName", "regionName"]).sum().reset_index().loc[:,["departmentName", "regionName"]]
@@ -77,17 +77,17 @@ lits_reas_regs = lits_reas.groupby(["regionName"]).sum().reset_index()
 df_regions = df_regions.merge(lits_reas_regs, left_on="regionName", right_on="regionName")
 
 
-# In[7]:
+# In[9]:
 
 
-data.download_data_variants_regs()
-df_variants = data.import_data_variants_regs()
+#data.download_data_variants_regs()
+#df_variants = data.import_data_variants_regs()
 
 
-# In[ ]:
+# In[10]:
 
 
-def nombre_variants(region):
+"""def nombre_variants(region):
     df_incid_reg = df_incid_regions[df_incid_regions["regionName"] == region]
     df_incid_reg["P_rolling"] = df_incid_reg["P"].rolling(window=7).mean()
     
@@ -164,9 +164,10 @@ def nombre_variants(region):
                         )]
     )
     fig.write_image(PATH+"images/charts/france/departements_dashboards/{}.jpeg".format("variants_nombre_"+departement), scale=1.5, width=750, height=500)
+"""
 
 
-# In[26]:
+# In[11]:
 
 
 def cas_journ(region):
@@ -318,7 +319,7 @@ def cas_journ(region):
 #cas_journ("Auvergne-Rhône-Alpes")
 
 
-# In[27]:
+# In[12]:
 
 
 def hosp_journ(region):   
@@ -469,7 +470,7 @@ def hosp_journ(region):
     print("> " + name_fig)
 
 
-# In[28]:
+# In[13]:
 
 
 def hosp_journ_elias(reg):
@@ -760,7 +761,7 @@ def hosp_journ_elias(reg):
 #hosp_journ_elias("Nouvelle-Aquitaine")
 
 
-# In[29]:
+# In[14]:
 
 
 def rea_journ(region):
@@ -905,7 +906,7 @@ def rea_journ(region):
 #rea_journ("Auvergne-Rhône-Alpes")
 
 
-# In[30]:
+# In[15]:
 
 
 def dc_journ(region): 
@@ -1020,7 +1021,7 @@ def dc_journ(region):
     print("> " + name_fig)
 
 
-# In[31]:
+# In[16]:
 
 
 
@@ -1125,7 +1126,7 @@ def saturation_rea_journ(region):
     return df_saturation.values[-1]
 
 
-# In[32]:
+# In[17]:
 
 
 import cv2
@@ -1161,7 +1162,7 @@ with open(PATH_STATS + 'saturation_rea_regions.json', 'w') as outfile:
     json.dump(dict_saturation, outfile)
 
 
-# In[ ]:
+# In[18]:
 
 
 n_tot=4
@@ -1314,7 +1315,7 @@ for i in range(0, n_tot):
     fig.write_image(PATH+"images/charts/france/evolution_regs/{}_{}.jpeg".format("evolution_regs", i), scale=3, width=1000, height=900)
 
 
-# In[ ]:
+# In[19]:
 
 
 """for reg in regions:
@@ -1329,7 +1330,7 @@ for i in range(0, n_tot):
 """
 
 
-# In[ ]:
+# In[20]:
 
 
 """print("<!-- wp:buttons --><div class=\"wp-block-buttons\">\n")
