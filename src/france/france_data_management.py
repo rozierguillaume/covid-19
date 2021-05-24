@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[3]:
+# In[1]:
 
 
 import requests
@@ -12,7 +12,7 @@ PATH = '../../'
 PATH_STATS = "../../data/france/stats/"
 
 
-# In[1]:
+# In[9]:
 
 
 # Download data from Santé publique France and export it to local files
@@ -124,7 +124,7 @@ def import_data():
     pbar = tqdm(total=8)
     pbar.update(1)
     df = pd.read_csv(PATH + 'data/france/donnes-hospitalieres-covid19.csv', sep=";")
-    
+    df.dep = df.dep.astype(str)
     df_sursaud = pd.read_csv(PATH + 'data/france/sursaud-covid19-departement.csv', sep=";")
     df_sursaud["dep"] = df_sursaud["dep"].astype('str').str.replace(r"^([1-9])$", lambda m: "0"+m.group(0), regex=True)
     
@@ -147,7 +147,6 @@ def import_data():
     df_regions = pd.read_csv(PATH + 'data/france/departments_regions_france_2016.csv', sep=",")
     df_reg_pop = pd.read_csv(PATH + 'data/france/population_grandes_regions.csv', sep=",")
     df_dep_pop = pd.read_csv(PATH + 'data/france/dep-pop.csv', sep=";")
-    
     ###
     df = df.merge(df_regions, left_on='dep', right_on='departmentCode')
     df = df.merge(df_reg_pop, left_on='regionName', right_on='regionName')
@@ -155,7 +154,6 @@ def import_data():
     df = df[df["sexe"] == 0]
     df['hosp_nonrea'] = df['hosp'] - df['rea']
     df = df.merge(lits_reas, left_on="departmentName", right_on="nom_dpt")
-    
     #df_tests_viro = df_tests_viro[df_tests_viro["cl_age90"] == 0]
     
     df_incid = df_incid.merge(df_regions, left_on='dep', right_on='departmentCode')
@@ -373,7 +371,7 @@ def import_data_hosp_fra_clage():
     return df
 
 
-# In[3]:
+# In[10]:
 
 
 #import_data_opencovid()
@@ -381,10 +379,11 @@ def import_data_hosp_fra_clage():
 #df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viro = import_data()
 
 
-# In[4]:
+# In[11]:
 
 
-#import_data_opencovid()
+#df = pd.read_csv(PATH + 'data/france/donnes-hospitalieres-covid19.csv', sep=";")
+#df[df.dep=="59"]
 
 
 # In[35]:

@@ -47,7 +47,7 @@ now = datetime.now()
 PATH = "../../"
 
 
-# In[3]:
+# In[11]:
 
 
 df_metro = data.import_data_metropoles()
@@ -56,7 +56,7 @@ df_metro_0 = df_metro[df_metro["clage_65"] == 0]
 nb_last_days=40
 
 
-# In[4]:
+# In[14]:
 
 
 metropoles = df_metro_0[df_metro_0["semaine_glissante"]==df_metro_0["semaine_glissante"].max()].sort_values(by=["ti"], ascending=False)["Metropole"].values
@@ -64,7 +64,7 @@ metropoles_couvre_feu = ["Paris", "Saint Etienne", "Grenoble", "Montpellier", "R
 metropoles_couvre_feu_sorted = [m for m in metropoles if m in metropoles_couvre_feu]
 
 
-# In[5]:
+# In[15]:
 
 
 
@@ -104,7 +104,7 @@ fig.write_image(PATH+"images/charts/france/{}.jpeg".format(name_fig), scale=2, w
 plotly.offline.plot(fig, filename = PATH+'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
 
 
-# In[6]:
+# In[16]:
 
 
 
@@ -147,7 +147,7 @@ fig.write_image(PATH+"images/charts/france/{}.jpeg".format(name_fig), scale=2, w
 plotly.offline.plot(fig, filename = PATH+'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
 
 
-# In[7]:
+# In[17]:
 
 
 im1 = cv2.imread(PATH+'images/charts/france/line_metropole_avec_couvre_feu.jpeg')
@@ -158,7 +158,7 @@ im3 = cv2.hconcat([im1, im2])
 cv2.imwrite(PATH+'images/charts/france/line_metropoles_comp_couvre_feu.jpeg', im3)
 
 
-# In[8]:
+# In[18]:
 
 
 nb_last_days=25
