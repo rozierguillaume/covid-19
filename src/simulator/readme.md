@@ -1,5 +1,5 @@
 # SIMULATOR CT
-In this folder you will find explanations about source code of covid-19 simulator for CovidTracker. Texts will be in French for the moment. 
+Le simulateur CT CovidTracker a pour objectif de reproduire les courbes de la situation sanitaire pour la gestion de la covid-19 en France, en s'appuyant sur les données de Santé publique France (valeurs à atteindre par le calcul).
 
 ## Présentation du simulateur CT 
 
@@ -11,21 +11,21 @@ Description du modèle de calcul sur tableur
 
 Modèle épidémilogique à compartiments (états) à calcul discret (journalier), une lettre capitale = un état
 
-* S : susceptible d'être infecté
-* E : exposé au virus, le virus a pénétré l'organisme
-* I : infectieux donc contagieux
-* A : asymptomatique, au sens où l'individu est exposé mais il ne développera pas la maladie __et__ ne sera pas contagieux
-* P : positif au dépistage et infectieux (remarque : les personnes non infectieuses sont rapidement sorties du process de calcul)
-* H : hospitalisé
-* C : critique, hospitalisation en réanimation
-* O : en sOins de suite, la maladie est vaincue (EN : to Overcome) mais le patient n'est pas totalement guéri.
-* R : retour à domicile donc guéri
-* D : décédé
-* X : en stituation eXtrange, individu qui ne rentre plus dans les calculs
-* V : vielle personne contaminée (EN : vintage), pensionnaire en EHPAD et EMS
+* S : __s__usceptible d'être infecté
+* E : __e__xposé au virus, le virus a pénétré l'organisme
+* I : __i__nfectieux donc contagieux
+* A : __a__symptomatique, au sens où l'individu est exposé mais il ne développera pas la maladie _et_ ne sera pas contagieux
+* P : __p__ositif au dépistage et infectieux (remarque : les personnes non infectieuses sont rapidement sorties du process de calcul)
+* H : __h__ospitalisé
+* C : __c__ritique, hospitalisation en réanimation
+* O : en s__o__ins de suite, la maladie est vaincue (EN : to Overcome) mais le patient n'est pas totalement guéri.
+* R : __r__etour à domicile donc guéri
+* D : __d__écédé
+* B : en __b__oucle de réhospitalisation
+* V : __v__ielle personne contaminée (EN : vintage), pensionnaire en EHPAD et EMS
 * W : pentionnaire EHPAD ou EMS décédé
-* M : malade à la maison
-* F : fantome (les anomalies)
+* M : __m__alade à la maison
+* F : __f__ausse sortie, des patients qui sortent de l'hospitalisation covid vers une autre hospitalisation
 
 ---
 
