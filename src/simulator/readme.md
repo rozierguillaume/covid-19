@@ -11,25 +11,27 @@ Description du modèle de calcul sur tableur
 
 Modèle épidémilogique à compartiments (états) à calcul discret (journalier), une lettre capitale = un état
 
-* S : __s__usceptible d'être infecté
-* E : __e__xposé au virus, le virus a pénétré l'organisme
-* I : __i__nfectieux donc contagieux
-* A : __a__symptomatique, au sens où l'individu est exposé mais il ne développera pas la maladie _et_ ne sera pas contagieux
-* P : __p__ositif au dépistage et infectieux (remarque : les personnes non infectieuses sont rapidement sorties du process de calcul)
-* H : __h__ospitalisé
-* C : __c__ritique, hospitalisation en réanimation
-* O : en s__o__ins de suite, la maladie est vaincue (EN : to Overcome) mais le patient n'est pas totalement guéri.
-* R : __r__etour à domicile donc guéri
-* D : __d__écédé
-* B : en __b__oucle de réhospitalisation
-* V : __v__ielle personne contaminée (EN : vintage), pensionnaire en EHPAD et EMS
+* S : (s)usceptible d'être infecté
+* E : (e)xposé au virus, le virus a pénétré l'organisme
+* I : (i)nfectieux donc contagieux
+* A : (a)symptomatique, au sens où l'individu est exposé mais il ne développera pas la maladie _et_ ne sera pas contagieux
+* P : (p)ositif au dépistage et infectieux (remarque : les personnes non infectieuses sont rapidement sorties du process de calcul)
+* H : (h)ospitalisé
+* C : (c)ritique, hospitalisation en réanimation
+* O : en s(o)ins de suite, la maladie est vaincue (EN : to Overcome) mais le patient n'est pas totalement guéri.
+* R : (r)etour à domicile donc guéri
+* D : (d)écédé
+* B : en (b)oucle de réhospitalisation
+* V : (v)ielle personne contaminée (EN : vintage), pensionnaire en EHPAD et EMS
 * W : pentionnaire EHPAD ou EMS décédé
-* M : __m__alade à la maison
-* F : __f__ausse sortie, des patients qui sortent de l'hospitalisation covid vers une autre hospitalisation
+* M : (m)alade à la maison
+* F : (f)ausse sortie, des patients qui sortent de l'hospitalisation covid vers une autre hospitalisation
 
 ---
 
 ![schéma du circuit du patient covid](schemaPatientCovidSimulateur.jpg)
+
+Remarque sur la sortie F: elle n'est modélisée que sur la branche Boucle. En réalité elle existe certainement sans passer par la boucle, mais jusqu'à présent dans le modèle numérique cette simplication ne pose pas de problème.
 
 ---
 
@@ -64,7 +66,7 @@ Variable	Description	Ligne de calcul
 * dIP	Délai Infectioeux vers Positif au test jours	S1-07
 * dPH	Délai entrée hôpital	S2-03
 * qPH	% Positif vers hôpital	S2-04
-* qPX	% Positifs scénario eXtrange	S2-05
+* qOB	% sOins vers réhospitalisation Boucle	S2-05
 * dHC	délai Hôpital vers réanimation (Critique) jours	S2-06
 * qHC	% Hôpital vers réanimation	S2-07
 * dHO	délai Hôpital vers sOins	S2-08
@@ -74,16 +76,18 @@ Variable	Description	Ligne de calcul
 * qCD	% réanimation vers Décès	S2-12
 * dCO	Délai réanimation vers sOins jours	S2-13
 * dOR	Délai sOins vers Retour à domicile jours	S2-14
-* qXR2	% sortie effective hôp RàD scénario eXtrange	S2-19
-* dXD	délai Positifs vers Décès Scénario eXtrange	S2-20
+* dOB Délai sOins vers réhospitalisation Boucle S2-15
+* dBF Délai réhospitalisation Boucle vers Fausse sortie S2-18
+* qBD	% réhospitalisation Boucle vers Décès	S2-19
+* dBD	délai réhospitalisation Boucle vers Décès	S2-20
 * qMV	% nouvelles guérisons seuls (M) vers nouveaux tests positifs en EHPAD et EMS  S2-21
 * dMV	délai contamination vers positifs EHPAD et EMS jours	S2-22
 * qHD	% Hôpital vers Décès sans passage réanimation	S2-23
 * dHD	délai Hôpital vers Décès sans passage réanimation	S2-24
 * qVD	% Positifs vers Décès en EHPAD et EMS	S2-25
 * dVD	délai Positifs vers Décès en EHPAD et EMS	S2-26
-* dXR	délai Positifs vers retour à domicile scénario eXtrange (max 45) jours	S2-27
-* qXR	% sortie Hôpital vers retour à domicile scénario eXtrange	S2-28
+* dBR	délai réhospitalisation Boucle vers retour à domicile jours	S2-27
+* qBR	% sortie réhospitalisation Boucle vers retour à domicile scénario eXtrange	S2-28
 
 ---
 
