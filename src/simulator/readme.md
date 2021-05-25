@@ -124,7 +124,7 @@ Sheet2 - S2
 * S2-P, Ci : incidence quotidienne de nouvelles entrées en réanimation, dépend des nouvelles entrées en hospitalisation selon un délai, Ci = Hi(j-dHC)*qHC
 * S2-Q, Cis : somme de toutes les entrées en réanimation, Cis = Cis(j-1)+Ci
 * S2-S, CDi : incidence quotidienne des nouveaux décès en services de réanimation, dépend des nouvelle entrées en réanimation selon un quota de décès et un délai, CDi = Ci(j-dCD)*qCD
-* S2-T, HDi : incidence quotidienne des nouveaux décès en hospitalisation conventionnelle, dépend des nouvelles entrées en hospitalisation, selon un délai et un quota, HDi = Hi(j-dHD)*qHD
+* S2-T, HDi : incidence quotidienne des nouveaux décès en hospitalisation conventionnelle, dépend des nouvelles entrées en hospitalisation, selon un délai et un quota, HDi = (Hi(j-dHD)-Ci(j-dHD))*qHD
 * S2-U, HDs : somme des patients décédés en hospitalisation conventionnelle, HDs = HDs(j-1)+HDi
 * S2-V, Di : incidence quotidienne des nouveaux décès, somme des décès quotidiens en réanimation et en hospitalisation conventionnelle, Di = CDi+HDi
 * S2-W, D : somme des décès hospitaliers, Ds = Ds(j-1) + Di
@@ -132,22 +132,23 @@ Sheet2 - S2
 * S2-Y, C2Os : somme des patients en réanimation qui iront en SSR (ils ne vont pas décéder), C2Os = Cis-CDs
 * S2-Z, COis : somme des patients entrés en SSR, c'est un décalage dans le temps de C2Os, COis = C2Os(j-dCO)
 * S2-AA, COi : incidence quotidienne des nouvelles entrées en SSR, COi = COis-COis(j-1)
+* S2-AB, OBs : cumul des entrées en réhospitalisation, OBs = OB(j-1)+HOi(j-dOB)*qOB
 * S2-AC, Cos : cumul des sorties des services de réanimation, soit sute à décès, soit suite à passage en SSR, Cos = Cos(j-1)+CDi+COi
 * S2-AD, HOi : incidence quotidienne des arrivées en SSR directement depuis l'hospitalisation conventionelle, dépend des nouvelles arrivées en hospitalisation selon un quota et un délai, HOi = Hi(j-dHO)*qHO
 * S2-AE, HOis : somme des entrées en SSR de la part de personnes arrivant depuis l'hospitalisation conventionnelle, HOis = HOis(j-1)+HOi
 * S2-AF, Ois : somme de toutes les entrées en SSR, les entrées depuis les services de réanimation et depuis l'hospitalisation conventionelle, Ois = Ois(j-1)+COi+HOi
 * S2-AG, Oi : incidence quotidienne des entrées en SSR, Oi = Ois-Ois(j-1)
-* S2-AH, Oos : somme de toutes les sorties de service SSR, dépend de toutes les entrées en SSR avec un décalage dans le temps, Oss = Ois(j-dOR)
+* S2-AH, Oos : somme de toutes les sorties de service SSR, dépend de toutes les entrées en SSR avec un décalage dans le temps et de ceux qui sortent de SSR sans passer par la Boucle, Oss = Ois(j-dOR)+(OBs-OBs(j-dOR))
 * S2-AI, Oo : sorties quotitiennes des services de SSR, Oo = Oos - Oos(j-1)
 * S2-AJ, O : nombre de patients en SSR, différence entre la somme des entrées et la somme des sorties, O = Ois-Oos
 * S2-AK, H2Rs : nombre de patients qui pourront sortir de l'hôpital sans passer par un service de réanimation ou de SSR, vu comme le reste des patients qui étant entrés à l'hôpital n'ont pas été dirigés vers un service SSR ou réa, H2Rs = His - (HDs+Cis+HOis)
 * S2-AL, HRs : somme des sorties de l'hôpital pour les patients ne passant pas par des services de réa ou SSR, vu comme un décalage dans le temps de H2Rs, HRs = H2Rs(j-dHR)
 * S2-AM, HRi : nombre d'entrées quotidiennes à l'état R (qui en en fait une sortie de l'hôpital), de la part des patients en hospitalisation conventionnelle (ni en Rea ni en SSR), HRi = HRs-HRs(j-1)
 * S2-AN, Ri : nombre d'entrées quotidiennes à l'état R, c'est à dire toutes les sorties quotidiennes de l'hôpital, Ri = Oo+HRi
-* S2-AO, Hos : somme de toutes les sorties de l'hôpital, toutes causes confondues, Hos = Hos(j-1)+Ri+Di
+* S2-AO, Hos : somme de toutes les sorties de l'hôpital, toutes causes confondues, enlever les entrées en réhospitalisation, Hos = Hos(j-1)+HRi+Di+Oo-Bi+BRi+BFi
 * S2-AP, H : nombre de patients hospitalisés, H = His-Hos
 * S2-AQ, D : nombre de patients décédés, rappel de S2-W.
-* S2-AR, R : nombre de patients retournés à domicile, R = Oos + HRs
+* S2-AR, R : nombre de patients retournés à domicile, enlever les entrées en réhospitalisation Boucle, R = Oos + HRs - OBs + BRs + BFs
 * S2-AS, C : nombre de patients en soins critiques, C = Cis-Cos
 * S2-AT, Mi : incidence quotidienne des nouvelles personnes positives qui ne vont pas être prise en charge l'hôpital, Mi = Pi-Hi
 * S2-AU, M : personnes positives qui se sont soignées à domicile, M = M(j-1)+Mi
