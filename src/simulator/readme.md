@@ -167,25 +167,24 @@ Sheet2 - S2
 * S2-BH, Csref : somme des incidences de référence des entrées en réanimation, Csref = Csref(j-1)+Ciref
 * S2-BI, Rsref : somme des incidences de référence des sorties hospitalières, Rsref = Rsref(j-1)+Riref
 * S2-BJ, Dsref : somme des incidences de référence des décès hospirtaliers, Dsref = Dsref(j-1)+Diref
-* S2-BK, Tous : somme des états des personnes passées par l'état P, vu comme toutes les personnes qui se sont soignées à domicile plus tous les patients en cours d'hospitalisation plus tous les patients décédés à l'hôpital plus tous les patients retournés à domicile plus tous les asymptomatiques, Tous = M + H + D + R + A
-* S2-BL, dTous : écart delta de Tous avec le nombre de personnes détectées positives, vérification générale, dTous = (P(tous) - Tous)/P(tous)
+* S2-BK, Tous : somme des états des personnes passées par l'état P, vu comme toutes les personnes qui se sont soignées à domicile plus tous les patients en cours d'hospitalisation plus tous les patients décédés à l'hôpital plus tous les patients retournés à domicile plus tous les asymptomatiques, Tous = M+H+D+R+A
+* S2-BL, dTous : écart delta de Tous avec le nombre de personnes détectées positives, vérification générale, dTous = (P(tous)-Tous)/P(tous)
 * S2-BP, Vi : incidence nouveaux cas de contaminations en EHPAD et EMS, vu comme un quota avec un délai du nombre des nouvelles personnes qui se soignent sans passer par l'hôpital, Vi = Mi(j-dMV)*qMV
 * S2-BQ, Vs : cumul du nombre de cas de contamination en EHPAD et EMS, Vs = Vs(j-1)+Vi
 * S2-BR, VDi : incidence quotidienne des décès de pensionnaires EHPAD et EMS, vu comme un décalage avec un quota sur le nombre des nouveaux cas positifs, VDi = Vi(j-dVD)*qVD
 * S2-BS, VD : cumul des décès de pensionnaires EHPAD et EMS, VD = VD(j-1)+VDi
-* S2-BT, Xi : incidence quotidienne de nouvelles personnes dirigées vers le scénario hospitalier eXtrange, et ne rentrant plus dans les calculs hospitaliers standard, vu comme une partie des nouveaux cas détectés positifs, Xi = Pi*qPX
-* S2-BU, Xis : cumul de personnes comptabilisées dans le scénario hospitalier eXtrange, X = X(j-1)+Xi
-* S2-BV, HXis : somme des entrées dans les deux scénario hospitaliers, HXis = His+Xis
-* S2-BW, XDs : cumul des décès dans le scénario hospitalier eXtrange, vu comme un déclage et un quota des entrées dans ce scénario, XDs = XDs(j-1)+Xi(j-dXD)*(1-qXR)
-* S2-BX, XRs : cumul des retours à domicile possibles avec le scénario eXtrange, vu comme un décalage temporel des pensionnaires positifs qui ne sont pas décédés, XRs = Xis(j-dXR)-XDs(dXR-dXD)
-* S2-BY, XRi : nouvelles sorties quotidiennes effectives pour retour à domicile avec le scénario hospitalier eXtrange, vu comme un différentiel quotidien de XRs mais diminé d'un quota qXY, XRi = XRs-XRs(j-1)*qXR2
-* S2-BZ, XR2s : cumul des retours à domiciles effectifs avec le scénario eXtrange, XR2s = XR2s(j-1)+XRi
-* S2-CA, Fi : nouvelles entrées dans la situation très eXtrange F, des personnes du scénario eXtrange qui ne sont ni décédées ni hospitalisées ni sorties, Fi = XRs-XRs(j-1)*(1-qXR2)
-* S2-CB, F : somme des patients du scénario hospitalier eXtrange passés à l'état F, F = F(j-1)+Fi
-* S2-CC, RR : somme des retours à domicile avec les deux scénarios, RR = R + XR2s
-* S2-CD, DD : somme des décès avec les deux scénarios, DD = D+XDs
-* S2-CE, Xio : calcul du nombre de patients en hospitalisation avec le scénario eXtrange, vu comme la différence entre toutes les entrées et toutes les sorties, Xio = Xis-(XDs+XRs)
-* S2-CF, gDelta : grand écart de calcul vérification toutes hospitalisations
+* S2-BT, Bi : incidence quotidienne de nouvelles personnes réhospitalisées dans la Boucle, Bi = OBs-OBs(j-1)
+* S2-BU, BDi : incidence quotidienne des nouveaux décès dans la branche Boucle, vu comme un déclage et un quota des entrées dans ce scénario, Bdi = Bi(j-dBD)*qBD
+* S2-BV, HsBs : somme des entrées dans les deux hospitalisations, HsBs = His+OBs
+* S2-BW, BDs : cumul des décès dans la boucle hospitalière, BDs = BDs(j-1)+BDi
+* S2-BX, BFi : incidence quotidienne des fausses sorties (puisées dans la boucle) vers autre hospitalisation, vu comme un décalage dans le temps des personnes entrées dans la boucle mais qui ne sortent ni pour cause de décès, ni pour cause de retour à domicile, BFi = Bi(j-dBF)*(1-qBD-qBR)
+* S2-BY, F : somme des personnes sorties vers autres hospitalisations, F = F(j-1)+BFi
+* S2-BZ, BRstemp : calcul intermédiaire du cumul des patients de la boucle qui pourront retourner à domicile, vu comme la somme des entrées en réhospitalisations selon un décalage dans le temps moins la somme des autres sorties que celle pour le retour à domicile c'est à dire moins les sorties déjà constatés pour décès ou autre hospitalisation, BRstemp = OBs(j-dBR)-BDs-BFs
+* S2-CA, BRs : cumul des patients retournés à domicile depuis la réhospitalisation Boucle, vu comme l'évolution de l'indicateur précédent sachant qu'il ne peut qu'augmenter, BRs = max(BRs(j-1);BRstemp)
+* S2-CB, BRi : incidence quotidienne des nouveaux retours à domicile depuis la réhospitalisation Boucle, BRi = BRs-BRs(j-1)
+* S2-CC, FR : somme des sorties pour retour à domicile ou hospitalisation autre que covid, FR = F+R
+* S2-CD, DD : somme des décès avec les deux scénarios, DD = D+BDs
+* S2-CE, Bio : calcul du nombre de patients en hospitalisation dans la branche Boucle, vu comme la différence entre toutes les entrées et toutes les sorties, Bio = OBs-(BDs+BFs+BRs)
 
 
 
