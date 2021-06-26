@@ -59,7 +59,7 @@ clage_spf = pd.read_csv(PATH+"data/france/clage_spf.csv", sep=";")
 df_a_vacsi_a_france = df_a_vacsi_a_france.merge(clage_spf, left_on="clage_vacsi", right_on="code_spf")
 
 
-# In[17]:
+# In[8]:
 
 
 df_a_vacsi_a_france_80 = df_a_vacsi_a_france[df_a_vacsi_a_france.clage_vacsi==80]
@@ -75,7 +75,7 @@ fig.add_trace(go.Scatter(
 
 fig.add_trace(go.Scatter(
     x=df_a_vacsi_a_france_80.jour,
-    y=df_a_vacsi_a_france_80.n_cum_dose2/4156974*100,
+    y=df_a_vacsi_a_france_80.n_cum_complet/4156974*100,
     line=dict(width=4, color="#1f77b4"),
     showlegend=False,
     yaxis="y2"
@@ -127,7 +127,7 @@ fig.write_image(PATH + "images/charts/france/hosp_vacsi_p80.jpeg", scale=2, widt
 plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/dc_vacsi_p80.html', auto_open=False)
 
 
-# In[18]:
+# In[9]:
 
 
 df_a_vacsi_a_france_80 = df_a_vacsi_a_france[df_a_vacsi_a_france.clage_vacsi!=80].groupby(["jour"]).sum().reset_index()
@@ -143,7 +143,7 @@ fig.add_trace(go.Scatter(
 
 fig.add_trace(go.Scatter(
     x=df_a_vacsi_a_france_80.jour,
-    y=df_a_vacsi_a_france_80.n_cum_dose2/(66990000-4156974)*100,
+    y=df_a_vacsi_a_france_80.n_cum_complet/(66990000-4156974)*100,
     line=dict(width=4, color="#1f77b4"),
     showlegend=False,
     yaxis="y2"
@@ -195,7 +195,7 @@ fig.write_image(PATH + "images/charts/france/hosp_vacsi_m80.jpeg", scale=2, widt
 plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/dc_vacsi_m80.html', auto_open=False)
 
 
-# In[8]:
+# In[10]:
 
 
 df_a_vacsi_a_france_80 = df_a_vacsi_a_france[df_a_vacsi_a_france.clage_vacsi==80]
@@ -263,7 +263,7 @@ fig.write_image(PATH + "images/charts/france/dc_vacsi_p80.jpeg", scale=2, width=
 plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/dc_vacsi_p80.html', auto_open=False)
 
 
-# In[9]:
+# In[11]:
 
 
 df_a_vacsi_a_france_80 = df_a_vacsi_a_france[df_a_vacsi_a_france.clage_vacsi!=80].groupby(["jour"]).sum().reset_index()
@@ -331,13 +331,78 @@ fig.write_image(PATH + "images/charts/france/dc_vacsi_m80.jpeg", scale=2, width=
 plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/dc_vacsi_m80.html', auto_open=False)
 
 
-# In[ ]:
+# In[25]:
 
 
+df_a_vacsi_a_france_80 = df_a_vacsi_a_france[df_a_vacsi_a_france.clage_vacsi!=80].groupby(["jour"]).sum().reset_index()
+df_hosp_fra_clage_80 = df_hosp_fra_clage[df_hosp_fra_clage.cl_age90 < 89].groupby(["jour"]).sum().reset_index()
+
+fig = go.Figure()
+fig.add_trace(go.Scatter(
+    x=df_hosp_fra_clage_80.jour,
+    y=df_hosp_fra_clage_80.dc.diff().rolling(window=7).mean(),
+    showlegend=False,
+    line=dict(color="red", width=4)
+))
 
 
+df_a_vacsi_a_france_80 = df_a_vacsi_a_france[df_a_vacsi_a_france.clage_vacsi==80]
+df_hosp_fra_clage_80 = df_hosp_fra_clage[df_hosp_fra_clage.cl_age90 >= 89].groupby(["jour"]).sum().reset_index()
 
-# In[10]:
+fig.add_trace(go.Scatter(
+    x=df_hosp_fra_clage_80.jour,
+    y=df_hosp_fra_clage_80.dc.diff().rolling(window=7).mean(),
+    showlegend=False,
+    line=dict(color="#1f77b4", width=4)
+))
+
+fig.update_layout(
+    title=dict(
+        y=0.90, x=0.5,
+        font = dict(
+                size=20, color="black"),
+        text="<b>Décès hospitaliers des <span style='color:#1f77b4;'>+ de 80 ans</span> et des <span style='color:red;'>- de 80 ans</span></b>"),
+    
+    yaxis=dict(
+        title="<b>Décès hospitaliers</b>",
+        titlefont=dict(
+            color="red"
+        ),
+        tickfont=dict(
+            color="red"
+        )
+    ),
+    yaxis2=dict(
+            range=[0, 100],
+            title="<b>% vaccinés</b> (au moins 1 dose)",
+            titlefont=dict(
+                color="#1f77b4"
+            ),
+            ticksuffix=" %",
+            tickfont=dict(
+                color="#1f77b4"
+            ),
+            anchor="free",
+            overlaying="y",
+            side="right",
+            position=1
+        ),
+    annotations = [
+                dict(
+                    x=0.5,
+                    y=1.07,
+                    xref='paper',
+                    yref='paper',
+                    font=dict(color="black"),
+                    text='Date : {}. Données : Santé publique France. Auteur : @guillaumerozier covidtracker.fr.'.format(datetime.strptime(max(df_hosp_fra_clage_80.jour), '%Y-%m-%d').strftime('%d %B %Y')),
+                    showarrow = False
+                )]
+)
+fig.write_image(PATH + "images/charts/france/dc_vacsi_m80.jpeg", scale=2, width=800, height=500)
+plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/dc_vacsi_m80_p80.html', auto_open=False)
+
+
+# In[12]:
 
 
 def dc_hosp_clage(df_hosp_fra_clage, lastday="", minday=""):    
@@ -408,7 +473,7 @@ def dc_hosp_clage(df_hosp_fra_clage, lastday="", minday=""):
     fig.write_image(PATH + "images/charts/france/dc_hosp_clage/{}.jpeg".format(lastday), scale=2, width=500, height=500)
 
 
-# In[11]:
+# In[13]:
 
 
 def vacsi_clage(df_a_vacsi_a_france, lastday=""):
@@ -450,7 +515,7 @@ def vacsi_clage(df_a_vacsi_a_france, lastday=""):
     fig.write_image(PATH + "images/charts/france/vacsi_clage/{}.jpeg".format(lastday), scale=2, width=500, height=500)
 
 
-# In[12]:
+# In[14]:
 
 
 def assemble_images(date):
@@ -466,7 +531,7 @@ def assemble_images(date):
     cv2.imwrite(PATH+'images/charts/france/vacsi_hosp_comp/{}.jpeg'.format(date), im_h)
 
 
-# In[13]:
+# In[15]:
 
 
 def build_video(dates):
@@ -503,7 +568,7 @@ def build_video(dates):
             print("error conversion h265")
 
 
-# In[14]:
+# In[16]:
 
 
 days = sorted(df_a_vacsi_a_france.jour.unique())[-80:]

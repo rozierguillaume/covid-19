@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[2]:
+# In[1]:
 
 
 """
@@ -23,7 +23,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[3]:
+# In[2]:
 
 
 import pandas as pd
@@ -44,13 +44,13 @@ import locale
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
 
-# In[4]:
+# In[3]:
 
 
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
 
 
-# In[5]:
+# In[4]:
 
 
 df_regions = df.groupby(["jour", "regionName"]).sum().reset_index()
@@ -62,13 +62,13 @@ last_day_plot = (datetime.strptime(max(dates), '%Y-%m-%d') + timedelta(days=1)).
 df_new_regions = df_new.groupby(["jour", "regionName"]).sum().reset_index()
 
 
-# In[6]:
+# In[5]:
 
 
 lits_reas = pd.read_csv(PATH+'data/france/lits_rea.csv', sep=",")
 
 
-# In[7]:
+# In[6]:
 
 
 regions_deps = df.groupby(["departmentName", "regionName"]).sum().reset_index().loc[:,["departmentName", "regionName"]]
@@ -77,14 +77,14 @@ lits_reas_regs = lits_reas.groupby(["regionName"]).sum().reset_index()
 df_regions = df_regions.merge(lits_reas_regs, left_on="regionName", right_on="regionName")
 
 
-# In[9]:
+# In[7]:
 
 
 #data.download_data_variants_regs()
 #df_variants = data.import_data_variants_regs()
 
 
-# In[10]:
+# In[8]:
 
 
 """def nombre_variants(region):
@@ -167,7 +167,7 @@ df_regions = df_regions.merge(lits_reas_regs, left_on="regionName", right_on="re
 """
 
 
-# In[11]:
+# In[9]:
 
 
 def cas_journ(region):
@@ -319,7 +319,7 @@ def cas_journ(region):
 #cas_journ("Auvergne-Rhône-Alpes")
 
 
-# In[12]:
+# In[10]:
 
 
 def hosp_journ(region):   
@@ -470,7 +470,7 @@ def hosp_journ(region):
     print("> " + name_fig)
 
 
-# In[13]:
+# In[11]:
 
 
 def hosp_journ_elias(reg):
@@ -761,7 +761,7 @@ def hosp_journ_elias(reg):
 #hosp_journ_elias("Nouvelle-Aquitaine")
 
 
-# In[14]:
+# In[12]:
 
 
 def rea_journ(region):
@@ -906,7 +906,7 @@ def rea_journ(region):
 #rea_journ("Auvergne-Rhône-Alpes")
 
 
-# In[15]:
+# In[13]:
 
 
 def dc_journ(region): 
@@ -1021,7 +1021,7 @@ def dc_journ(region):
     print("> " + name_fig)
 
 
-# In[16]:
+# In[14]:
 
 
 
@@ -1126,7 +1126,7 @@ def saturation_rea_journ(region):
     return df_saturation.values[-1]
 
 
-# In[17]:
+# In[15]:
 
 
 import cv2
@@ -1162,7 +1162,7 @@ with open(PATH_STATS + 'saturation_rea_regions.json', 'w') as outfile:
     json.dump(dict_saturation, outfile)
 
 
-# In[18]:
+# In[16]:
 
 
 n_tot=4
@@ -1315,7 +1315,7 @@ for i in range(0, n_tot):
     fig.write_image(PATH+"images/charts/france/evolution_regs/{}_{}.jpeg".format("evolution_regs", i), scale=3, width=1000, height=900)
 
 
-# In[19]:
+# In[17]:
 
 
 """for reg in regions:
@@ -1330,7 +1330,7 @@ for i in range(0, n_tot):
 """
 
 
-# In[20]:
+# In[18]:
 
 
 """print("<!-- wp:buttons --><div class=\"wp-block-buttons\">\n")

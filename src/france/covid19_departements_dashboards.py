@@ -38,7 +38,7 @@ def nbWithSpaces(nb):
         return str_nb
 
 
-# In[1]:
+# In[3]:
 
 
 import pandas as pd
@@ -64,7 +64,7 @@ locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
 
 
-# In[2]:
+# In[5]:
 
 
 data.download_data_variants_deps()
@@ -248,7 +248,7 @@ def cas_journ(departement):
 #cas_journ("Savoie")
 
 
-# In[47]:
+# In[9]:
 
 
 def nombre_variants(departement):
@@ -834,7 +834,7 @@ def cas_journ_departements_couvre_feu_hosp(departements):
 cas_journ_departements_couvre_feu_hosp(departements)"""
 
 
-# In[30]:
+# In[12]:
 
 
 def incid_dep(departement):
@@ -972,7 +972,7 @@ def incid_dep(departement):
 #incid_dep("Savoie")
 
 
-# In[31]:
+# In[13]:
 
 
 def hosp_journ(departement):   
@@ -1123,7 +1123,7 @@ def hosp_journ(departement):
     print("> " + name_fig)
 
 
-# In[32]:
+# In[14]:
 
 
 def hosp_comparaison_vagues(departement):   
@@ -1285,7 +1285,7 @@ def hosp_comparaison_vagues(departement):
 #hosp_comparaison_vagues("Savoie")
 
 
-# In[33]:
+# In[15]:
 
 
 def hosp_journ_elias(dep):
@@ -1576,7 +1576,7 @@ def hosp_journ_elias(dep):
 #hosp_journ_elias("Savoie")
 
 
-# In[34]:
+# In[16]:
 
 
 def rea_journ(departement):
@@ -1722,7 +1722,7 @@ def rea_journ(departement):
 #rea_journ("Isère")
 
 
-# In[35]:
+# In[17]:
 
 
 def dc_journ(departement): 
@@ -1839,7 +1839,7 @@ def dc_journ(departement):
 #dc_journ("Paris")
 
 
-# In[36]:
+# In[18]:
 
 
 
@@ -1931,7 +1931,7 @@ def saturation_rea_journ(dep):
     return df_saturation.values[-1]
 
 
-# In[37]:
+# In[19]:
 
 
 import cv2
@@ -1978,7 +1978,7 @@ with open(PATH + 'images/charts/france/covidep/stats.json', 'w') as outfile:
     
 
 
-# In[48]:
+# In[20]:
 
 
 for dep in departements:
@@ -1986,7 +1986,7 @@ for dep in departements:
     nombre_variants(dep)
 
 
-# In[39]:
+# In[21]:
 
 
 with open(PATH_STATS + 'incidence_departements.json', 'r') as f:
@@ -2000,7 +2000,7 @@ with open(PATH_STATS + 'incidence_departements.json', 'w') as outfile:
     json.dump(incidence_departements, outfile)
 
 
-# In[40]:
+# In[22]:
 
 
 n_tot=1
@@ -2229,7 +2229,7 @@ for i in range(0, n_tot):
             plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/evolution_deps/evolution_deps_0.html', auto_open=False)
 
 
-# In[49]:
+# In[23]:
 
 
 #import glob
@@ -2271,7 +2271,7 @@ for (folder, n, fps) in [("evolution_deps", n_tot, 3)]:
         print("error conversion h265")
 
 
-# In[ ]:
+# In[24]:
 
 
 """for idx,dep in enumerate(departements):
@@ -2287,7 +2287,7 @@ for (folder, n, fps) in [("evolution_deps", n_tot, 3)]:
 """
 
 
-# In[ ]:
+# In[25]:
 
 
 """#print("<!-- wp:buttons --><div class=\"wp-block-buttons\">\n")

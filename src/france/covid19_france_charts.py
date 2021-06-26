@@ -714,18 +714,18 @@ def incidence_deps_data():
             data_json["var_uk"] = df_variants_dep.Prc_susp_501Y_V1.values[-1]
             data_json["var_sa_bz"] = df_variants_dep.Prc_susp_501Y_V2_3.values[-1]
         
-        data_json["incidence_hosp"] = round(df_dep["incid_hosp"].values[-7:].sum()/df_dep["departmentPopulation"].values[0]*100000, 3)
-        data_json["lits_hosp"] = round(df_dep_lits["hosp"].values[-1]/df_dep["departmentPopulation"].values[0]*100000, 2)
+        data_json["incidence_hosp"] = round((df_dep["incid_hosp"].values[-7:].sum()/df_dep["departmentPopulation"]).fillna(0).values[0]*100000, 3)
+        data_json["lits_hosp"] = round((df_dep_lits["hosp"].values[-1]/df_dep["departmentPopulation"]).fillna(0).values[0]*100000, 2)
         print(dep)
         print(df_dep_lits["hosp"])
         data_json["lits_hosp_evol"] = np.nan_to_num(round((df_dep_lits["hosp"].values[-1]-df_dep_lits["hosp"].values[-8])/df_dep_lits["hosp"].values[-8]*100, 2))
         
-        data_json["incidence_rea"] = round(df_dep["incid_rea"].values[-7:].sum()/df_dep["departmentPopulation"].values[0]*100000, 3)
-        data_json["lits_rea"] = round(df_dep_lits["rea"].values[-1]/df_dep["departmentPopulation"].values[0]*100000, 2)
-        data_json["lits_rea_evol"] = np.nan_to_num(round((df_dep_lits["rea"].values[-1]-df_dep_lits["rea"].values[-8])/df_dep_lits["rea"].values[-8]*100, 2))
+        data_json["incidence_rea"] = round((df_dep["incid_rea"].values[-7:].sum()/df_dep["departmentPopulation"]).fillna(0).values[0]*100000, 3)
+        data_json["lits_rea"] = round((df_dep_lits["rea"].values[-1]/df_dep["departmentPopulation"]).fillna(0).values[0]*100000, 2)
+        data_json["lits_rea_evol"] = np.nan_to_num(round(((df_dep_lits["rea"].values[-1]-df_dep_lits["rea"]).fillna(0).values[-8])/df_dep_lits["rea"].values[-8]*100, 2))
             
-        data_json["incidence_dc"] = round(df_dep["incid_dc"].values[-7:].sum()/df_dep["departmentPopulation"].values[0]*100000, 3)
-        incidence_dc_j7 = round(df_dep["incid_dc"].values[-14:-7].sum()/df_dep["departmentPopulation"].values[0]*100000, 3)
+        data_json["incidence_dc"] = round((df_dep["incid_dc"].values[-7:].sum()/df_dep["departmentPopulation"]).fillna(0).values[0]*100000, 3)
+        incidence_dc_j7 = round((df_dep["incid_dc"].values[-14:-7].sum()/df_dep["departmentPopulation"]).fillna(0).values[0]*100000, 3)
         data_json["incidence_dc_evol"] = np.nan_to_num(round((data_json["incidence_dc"]-incidence_dc_j7)/incidence_dc_j7*100, 2))
         
         data_json["population"] = int(df_dep["departmentPopulation"].values[0])
@@ -7535,7 +7535,7 @@ def prep_course():
 
 
 #COURSE
-n1 = 80/2
+n1 = 40
 df_incid_reg = df_incid.groupby(['jour', 'regionName']).sum().reset_index()
 df_incid_reg["P_pop"] = df_incid_reg["P"]*100000/df_incid_reg["pop"]
 
@@ -7627,7 +7627,7 @@ for (dataset, column, dates_to_use, title, folder) in [    (df_incid_reg, "incid
 
 
 #COURSE REA
-n2 = len(dates_clage)/2
+n2 = int(len(dates_clage)/2)
 
 for (dataset, column, dates_to_use, title, folder) in [    (df_clage_france, "rea", dates_clage, "Personnes en réanimation pour Covid19", "course_rea_clage_rolling"),    (df_clage_france, "hosp", dates_clage, "Personnes hospitalisées pour Covid19", "course_hosp_clage_rolling"),    (df_clage_france, "dc", dates_clage, "Décès hospitaliers pour Covid19", "course_dc_clage_rolling")]:
         
@@ -7861,7 +7861,7 @@ if show_charts:
 
 # ## Réanimations par département (line chart)
 
-# In[ ]:
+# In[93]:
 
 
 df_last_d = df[df['jour'] == dates[-1]]
