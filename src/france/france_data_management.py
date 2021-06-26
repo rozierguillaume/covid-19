@@ -157,12 +157,10 @@ def import_data_vacsi_a_fra():
 
 def import_data_vacsi_reg():
     df = pd.read_csv(PATH + 'data/france/donnees-vacsi-reg.csv', sep=";")
-    df = df[df.clage_vacsi != 0]
     return df
 
 def import_data_vacsi_dep():
     df = pd.read_csv(PATH + 'data/france/donnees-vacsi-dep.csv', sep=";")
-    df = df[df.clage_vacsi != 0]
     return df
 
 def import_data_vacsi_fra():

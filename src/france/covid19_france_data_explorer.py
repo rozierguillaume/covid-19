@@ -49,32 +49,33 @@ df_obepine = data.import_data_obepine()
 df_obepine_france = df_obepine.groupby("Date").mean().reset_index()
 
 
-# In[ ]:
+# In[5]:
 
 
 data.download_data()
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
 
 
-# In[ ]:
+# In[6]:
 
 
 data.download_data_vue_ensemble()
 df_vue_ensemble = data.import_data_vue_ensemble()
 
 
-# In[ ]:
+# In[7]:
 
 
-df_vacsi_a = data.import_data_vacsi_a_fra()
-df_vacsi_a_reg = data.import_data_vacsi_a_reg()
-df_vacsi_a_dep = data.import_data_vacsi_a_dep()
+#df_vacsi_a = data.import_data_vacsi_a_fra()
+#df_vacsi_a_reg = data.import_data_vacsi_a_reg()
+#df_vacsi_a_dep = data.import_data_vacsi_a_dep()
 
 df_vacsi = data.import_data_vacsi_fra() #df_vacsi_a.groupby("jour").sum().reset_index()
-df_vacsi_reg = df_vacsi_a_reg.groupby(["jour", "reg"]).sum().reset_index()
+df_vacsi_reg = data.import_data_vacsi_reg() #df_vacsi_a_reg.groupby(["jour", "reg"]).sum().reset_index()
 df_vacsi_reg = df_vacsi_reg.merge(df_regions_meta, left_on="reg", right_on="code").rename({"n_tot_dose1": "n_cum_dose1"}, axis=1)
 
-df_vacsi_dep = df_vacsi_a_dep.groupby(["jour", "dep"]).sum().reset_index().rename({"n_tot_dose1": "n_cum_dose1"}, axis=1)
+df_vacsi_dep = data.import_data_vacsi_dep().rename({"n_tot_dose1": "n_cum_dose1"}, axis=1)
+#df_vacsi_a_dep.groupby(["jour", "dep"]).sum().reset_index().rename({"n_tot_dose1": "n_cum_dose1"}, axis=1)
 
 
 # In[ ]:
@@ -367,12 +368,6 @@ def dataexplorer():
     dict_data["zones_vacances"] = ["zone_a", "zone_b", "zone_c"]
     
     export_data(dict_data, suffix="_compr")
-
-
-# In[ ]:
-
-
-df_obepine[df_obepine.regionName=="Auvergne-Rhône-Alpes"]
 
 
 # In[ ]:
