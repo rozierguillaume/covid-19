@@ -32,15 +32,15 @@ def download_data_vue_ensemble():
         f.write(data.content)
 
 def download_data_variants():
-    data = requests.get("https://www.data.gouv.fr/fr/datasets/r/c43d7f3f-c9f5-436b-9b26-728f80e0fd52")
-    data_reg = requests.get("https://www.data.gouv.fr/fr/datasets/r/73e8851a-d851-43f8-89e4-6178b35b7127")
+    data = requests.get("https://www.data.gouv.fr/fr/datasets/r/848debc4-0e42-4e3b-a176-afc285ed5401") #https://www.data.gouv.fr/fr/datasets/r/c43d7f3f-c9f5-436b-9b26-728f80e0fd52
+    data_reg = requests.get("https://www.data.gouv.fr/fr/datasets/r/5ff0cad6-f150-47ea-a4e0-57e354c1b2a4") #https://www.data.gouv.fr/fr/datasets/r/73e8851a-d851-43f8-89e4-6178b35b7127
     with open(PATH + 'data/france/donnees-variants.csv', 'wb') as f:
         f.write(data.content)
     with open(PATH + 'data/france/donnees-variants-reg.csv', 'wb') as f:
         f.write(data.content)
         
 def download_data_variants_deps():
-    data = requests.get("https://www.data.gouv.fr/fr/datasets/r/16f4fd03-797f-4616-bca9-78ff212d06e8")        
+    data = requests.get("https://www.data.gouv.fr/fr/datasets/r/4d3e5a8b-9649-4c41-86ec-5420eb6b530c") #https://www.data.gouv.fr/fr/datasets/r/16f4fd03-797f-4616-bca9-78ff212d06e8        
     with open(PATH + 'data/france/donnees-variants-deps.csv', 'wb') as f:
         f.write(data.content)
 
@@ -111,13 +111,13 @@ def import_data_df():
 def import_data_variants():
     df_variants = pd.read_csv(PATH + 'data/france/donnees-variants.csv', sep=";")
     df_variants["jour"] = df_variants.semaine.apply(lambda x: x[11:]) 
-    df_variants = df_variants[df_variants.cl_age90==0]
+    #df_variants = df_variants[df_variants.cl_age90==0]
     return df_variants
 
 def import_data_variants_deps():
     df_variants = pd.read_csv(PATH + 'data/france/donnees-variants-deps.csv', sep=";")
     df_variants["jour"] = df_variants.semaine.apply(lambda x: x[11:]) 
-    df_variants = df_variants[df_variants.cl_age90==0]
+    #df_variants = df_variants[df_variants.cl_age90==0]
     return df_variants
 
 def import_data_variants_regs():

@@ -78,7 +78,7 @@ df_vacsi_dep = data.import_data_vacsi_dep().rename({"n_tot_dose1": "n_cum_dose1"
 #df_vacsi_a_dep.groupby(["jour", "dep"]).sum().reset_index().rename({"n_tot_dose1": "n_cum_dose1"}, axis=1)
 
 
-# In[ ]:
+# In[8]:
 
 
 df_metro = data.import_data_metropoles()
@@ -89,14 +89,14 @@ df_metro_0 = df_metro[df_metro["clage_65"] == 0]
 metropoles = list(dict.fromkeys(list(df_metro['Metropole'].dropna().values))) 
 
 
-# In[ ]:
+# In[9]:
 
 
 df_tests_viros_enrichi = data.import_data_tests_viros()
 df_tests_viros_enrichi = df_tests_viros_enrichi.drop("regionName_y", axis=1).rename({"regionName_x": "regionName"}, axis=1)
 
 
-# In[ ]:
+# In[10]:
 
 
 df_incid_clage = df_incid.copy()
@@ -113,20 +113,20 @@ df_new_france = df_new.groupby(["jour"]).sum().reset_index()
 df_new_regions = df_new.groupby(["jour", "regionName"]).sum().reset_index()
 
 
-# In[ ]:
+# In[11]:
 
 
 df_incid_clage_regions = df_incid_clage.groupby(["regionName", "jour", "cl_age90"]).sum().reset_index()
 
 
-# In[ ]:
+# In[12]:
 
 
 df_tests_viros_regions = df_tests_viros_enrichi.groupby(["regionName", "jour", "cl_age90"]).sum().reset_index()
 df_tests_viros_france = df_tests_viros_enrichi.groupby(["jour", "cl_age90"]).sum().reset_index()
 
 
-# In[ ]:
+# In[13]:
 
 
 df_hosp_clage = data.import_data_hosp_clage()
@@ -134,7 +134,7 @@ df_hosp_clage_france = df_hosp_clage.groupby(["jour", "cl_age90"]).sum().reset_i
 df_hosp_clage_regions = df_hosp_clage.groupby(["regionName", "jour", "cl_age90"]).sum().reset_index()
 
 
-# In[ ]:
+# In[14]:
 
 
 departements = list(dict.fromkeys(list(df_incid['dep'].values))) 
@@ -152,7 +152,7 @@ zone_c = ["zone_c", "09", "11", "12", "30", "31", "32", "34", "46", "48", "65", 
 confines_mars_2021 = ["confines_mars_2021", "02", "06", "27", "59", "60", "62", "75", "76", "77", "78", "80", "91", "92", "93", "94", "95"]
 
 
-# In[ ]:
+# In[15]:
 
 
 def generate_data(data_incid=pd.DataFrame(), data_hosp=pd.DataFrame(), data_sursaud=pd.DataFrame(), data_new=pd.DataFrame(), data_vue_ensemble=pd.DataFrame(), data_metropole=pd.DataFrame(), data_vacsi=pd.DataFrame(), data_obepine=pd.DataFrame(), mode="", export_jour=False):## Incidence
@@ -244,7 +244,7 @@ def generate_data(data_incid=pd.DataFrame(), data_hosp=pd.DataFrame(), data_surs
  
 
 
-# In[ ]:
+# In[16]:
 
 
 def generate_data_age(data_incid, data_hosp, export_jour=False):## Incidence
@@ -299,7 +299,7 @@ def generate_data_age(data_incid, data_hosp, export_jour=False):## Incidence
  
 
 
-# In[ ]:
+# In[17]:
 
 
 def export_data(data, suffix=""):
@@ -307,13 +307,13 @@ def export_data(data, suffix=""):
         json.dump(data, outfile)
 
 
-# In[ ]:
+# In[18]:
 
 
 #df_vacsi
 
 
-# In[ ]:
+# In[19]:
 
 
 def dataexplorer():
@@ -370,7 +370,7 @@ def dataexplorer():
     export_data(dict_data, suffix="_compr")
 
 
-# In[ ]:
+# In[20]:
 
 
 import math
@@ -404,13 +404,13 @@ def dataexplorer_age():
     return dict_data
 
 
-# In[ ]:
+# In[21]:
 
 
 dataexplorer()
 
 
-# In[ ]:
+# In[22]:
 
 
 dict_data = dataexplorer_age()

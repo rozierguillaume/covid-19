@@ -4,7 +4,7 @@
 # # COVID-19 French Charts
 # Guillaume Rozier, 2020
 
-# In[1]:
+# In[94]:
 
 
 """
@@ -26,7 +26,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[2]:
+# In[95]:
 
 
 from multiprocessing import Pool
@@ -55,7 +55,7 @@ PATH = "../../"
 now = datetime.now()
 
 
-# In[3]:
+# In[96]:
 
 
 try:
@@ -71,7 +71,7 @@ except:
 
 # # Data download and import
 
-# In[4]:
+# In[97]:
 
 
 import time
@@ -96,13 +96,13 @@ while not success:
 
 # ## Data transformations
 
-# In[5]:
+# In[ ]:
 
 
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
 
 
-# In[6]:
+# In[ ]:
 
 
 data.download_data_vue_ensemble()
@@ -112,21 +112,21 @@ df_vue_ensemble.loc[df_vue_ensemble.date >= "2021-05-21", "total_cas_confirmes"]
 df_opencovid = data.import_data_opencovid()
 
 
-# In[7]:
+# In[ ]:
 
 
 df_sexes = data.import_data_df()
 df_sexes_tot = df_sexes[df_sexes.sexe==0]
 
 
-# In[8]:
+# In[ ]:
 
 
 df_incid_fra_clage = data.import_data_tests_sexe()
 df_incid_fra = df_incid_fra_clage[df_incid_fra_clage["cl_age90"]==0]
 
 
-# In[9]:
+# In[ ]:
 
 
 df_new_france = df_new.groupby(["jour"]).sum().reset_index()
@@ -165,7 +165,7 @@ regions = list(dict.fromkeys(list(df['regionName'].values)))
 departements_noms = list(dict.fromkeys(list(df['departmentName'].values))) 
 
 
-# In[10]:
+# In[ ]:
 
 
 #Calcul sorties de réa
@@ -666,7 +666,7 @@ df_dep_tests = df_tests_viros_departements[df_tests_viros_departements["departme
 df_dep_tests["P"].values[-7:].sum()/df_dep_tests["pop"].values[0]*100000
 
 
-# In[23]:
+# In[ ]:
 
 
 data.download_data_variants_deps()
