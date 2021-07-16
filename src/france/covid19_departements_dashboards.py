@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[10]:
 
 
 """
@@ -23,7 +23,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[2]:
+# In[11]:
 
 
 def nbWithSpaces(nb):
@@ -38,7 +38,7 @@ def nbWithSpaces(nb):
         return str_nb
 
 
-# In[3]:
+# In[12]:
 
 
 import pandas as pd
@@ -58,20 +58,20 @@ import locale
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
 
-# In[4]:
+# In[13]:
 
 
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
 
 
-# In[5]:
+# In[14]:
 
 
 data.download_data_variants_deps()
 df_variants = data.import_data_variants_deps()
 
 
-# In[6]:
+# In[15]:
 
 
 df_departements = df.groupby(["jour", "departmentName"]).sum().reset_index()
@@ -88,7 +88,7 @@ last_day_plot_plus2 = (datetime.strptime(max(dates), '%Y-%m-%d') + timedelta(day
 departements_nb = list(dict.fromkeys(list(df_tests_viros['dep'].values))) 
 
 
-# In[7]:
+# In[17]:
 
 
 lits_reas = pd.read_csv(PATH+'data/france/lits_rea.csv', sep=",")
@@ -96,7 +96,7 @@ lits_reas = pd.read_csv(PATH+'data/france/lits_rea.csv', sep=",")
 df_departements_lits = df_departements.merge(lits_reas, left_on="departmentName", right_on="nom_dpt")
 
 
-# In[8]:
+# In[18]:
 
 
 def cas_journ(departement):
@@ -248,7 +248,7 @@ def cas_journ(departement):
 #cas_journ("Savoie")
 
 
-# In[9]:
+# In[19]:
 
 
 def nombre_variants(departement):
@@ -260,47 +260,24 @@ def nombre_variants(departement):
     fig = go.Figure()
     n_days = len(df_variants_dep)
 
-    y=df_incid_dep["P_rolling"].values[-n_days:] * df_variants_dep.Prc_susp_501Y_V1.values/100
+    y=df_incid_dep["P_rolling"].values[-n_days:] * (100 - df_variants_dep.tx_C1.values)/100
     proportion = str(round(y[-1]/df_incid_dep["P_rolling"].values[-1]*100, 1)).replace(".", ",")
     fig.add_trace(
         go.Scatter(
             x=df_variants_dep.jour,
             y=y,
-            name="<b>Variant UK </b><br>" + str(nbWithSpaces(y[-1])) + " cas (" + proportion + " %)",
+            name="<b>Autres </b><br>" + str(nbWithSpaces(y[-1])) + " cas (" + proportion + " %)",
             stackgroup='one'
         )
     )
 
-    y=df_incid_dep["P_rolling"].values[-n_days:] * df_variants_dep.Prc_susp_501Y_V2_3.values/100
+    y=df_incid_dep["P_rolling"].values[-n_days:] * df_variants_dep.tx_C1.values/100
     proportion = str(round(y[-1]/df_incid_dep["P_rolling"].values[-1]*100, 1)).replace(".", ",")
     fig.add_trace(
         go.Scatter(
             x=df_variants_dep.jour,
             y=y,
-            name="<b>Variants SA + BZ </b><br>" + str(nbWithSpaces(y[-1])) + " cas (" + proportion + " %)",
-            showlegend=True,
-            stackgroup='one'
-        )
-    )
-
-    y=df_incid_dep["P_rolling"].values[-n_days:] * df_variants_dep.Prc_susp_IND.values/100
-    proportion = str(round(y[-1]/df_incid_dep["P_rolling"].values[-1]*100, 1)).replace(".", ",")
-    fig.add_trace(
-        go.Scatter(
-            x=df_variants_dep.jour,
-            y=y,
-            name="<b>Variants indéterminés </b><br>" + str(nbWithSpaces(y[-1])) + " cas (" + proportion + " %)",
-            showlegend=True,
-            stackgroup='one'
-        )
-    )
-    y=df_incid_dep["P_rolling"].values[-n_days:] * df_variants_dep.Prc_susp_ABS.values/100
-    proportion = str(round(y[-1]/df_incid_dep["P_rolling"].values[-1]*100, 1)).replace(".", ",")
-    fig.add_trace(
-        go.Scatter(
-            x=df_variants_dep.jour,
-            y=y,
-            name="<b>Souche classique </b><br>" + str(nbWithSpaces(y[-1])) + " cas (" + proportion + " %)",
+            name="Mutation L452R, dont <b>Delta </b><br>" + str(nbWithSpaces(y[-1])) + " cas (" + proportion + " %)",
             showlegend=True,
             stackgroup='one'
         )
@@ -330,7 +307,7 @@ def nombre_variants(departement):
     fig.write_image(PATH+"images/charts/france/departements_dashboards/{}.jpeg".format("variants_nombre_"+departement), scale=1.5, width=750, height=500)
 
 
-# In[10]:
+# In[20]:
 
 
 """import numpy as np
@@ -600,7 +577,7 @@ def cas_journ_departements_couvre_feu(departements):
 cas_journ_departements_couvre_feu(departements)"""
 
 
-# In[11]:
+# In[21]:
 
 
 """import numpy as np
@@ -834,7 +811,7 @@ def cas_journ_departements_couvre_feu_hosp(departements):
 cas_journ_departements_couvre_feu_hosp(departements)"""
 
 
-# In[12]:
+# In[22]:
 
 
 def incid_dep(departement):
@@ -964,7 +941,7 @@ def incid_dep(departement):
             
     folder = "covidep/"+class_dep
     
-    #fig.write_image(PATH+"images/charts/france/{}/{}.svg".format(folder, name_fig), scale=1.5, width=750, height=500)
+    fig.write_image(PATH+"images/charts/france/{}/{}.svg".format(folder, name_fig), scale=1.5, width=750, height=500)
 
     print("> " + name_fig)
     
@@ -972,7 +949,7 @@ def incid_dep(departement):
 #incid_dep("Savoie")
 
 
-# In[13]:
+# In[23]:
 
 
 def hosp_journ(departement):   
@@ -1123,7 +1100,7 @@ def hosp_journ(departement):
     print("> " + name_fig)
 
 
-# In[14]:
+# In[24]:
 
 
 def hosp_comparaison_vagues(departement):   
@@ -1285,7 +1262,7 @@ def hosp_comparaison_vagues(departement):
 #hosp_comparaison_vagues("Savoie")
 
 
-# In[15]:
+# In[25]:
 
 
 def hosp_journ_elias(dep):
@@ -1576,7 +1553,7 @@ def hosp_journ_elias(dep):
 #hosp_journ_elias("Savoie")
 
 
-# In[16]:
+# In[26]:
 
 
 def rea_journ(departement):
@@ -1722,7 +1699,7 @@ def rea_journ(departement):
 #rea_journ("Isère")
 
 
-# In[17]:
+# In[27]:
 
 
 def dc_journ(departement): 
@@ -1839,7 +1816,7 @@ def dc_journ(departement):
 #dc_journ("Paris")
 
 
-# In[18]:
+# In[28]:
 
 
 
@@ -1931,7 +1908,7 @@ def saturation_rea_journ(dep):
     return df_saturation.values[-1]
 
 
-# In[19]:
+# In[29]:
 
 
 import cv2
@@ -1978,7 +1955,7 @@ with open(PATH + 'images/charts/france/covidep/stats.json', 'w') as outfile:
     
 
 
-# In[20]:
+# In[30]:
 
 
 for dep in departements:
@@ -1986,7 +1963,7 @@ for dep in departements:
     nombre_variants(dep)
 
 
-# In[21]:
+# In[31]:
 
 
 with open(PATH_STATS + 'incidence_departements.json', 'r') as f:
@@ -2000,7 +1977,7 @@ with open(PATH_STATS + 'incidence_departements.json', 'w') as outfile:
     json.dump(incidence_departements, outfile)
 
 
-# In[22]:
+# In[32]:
 
 
 n_tot=1
@@ -2229,7 +2206,7 @@ for i in range(0, n_tot):
             plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/evolution_deps/evolution_deps_0.html', auto_open=False)
 
 
-# In[23]:
+# In[33]:
 
 
 #import glob
@@ -2271,7 +2248,7 @@ for (folder, n, fps) in [("evolution_deps", n_tot, 3)]:
         print("error conversion h265")
 
 
-# In[24]:
+# In[34]:
 
 
 """for idx,dep in enumerate(departements):
@@ -2287,7 +2264,7 @@ for (folder, n, fps) in [("evolution_deps", n_tot, 3)]:
 """
 
 
-# In[25]:
+# In[35]:
 
 
 """#print("<!-- wp:buttons --><div class=\"wp-block-buttons\">\n")

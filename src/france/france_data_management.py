@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[5]:
+# In[7]:
 
 
 import requests
@@ -12,7 +12,7 @@ PATH = '../../'
 PATH_STATS = "../../data/france/stats/"
 
 
-# In[3]:
+# In[5]:
 
 
 # Download data from Santé publique France and export it to local files
@@ -398,10 +398,11 @@ def import_data():
     
     pbar.update(8)
     import_data_opencovid()
+    df_tests_viro["dep"] = df_tests_viro["dep"].astype('str').str.replace(r"^([1-9])$", lambda m: "0"+m.group(0), regex=True)
     return df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viro
 
 
-# In[10]:
+# In[8]:
 
 
 #import_data_opencovid()

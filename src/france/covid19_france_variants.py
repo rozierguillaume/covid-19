@@ -58,26 +58,22 @@ data.download_data()
 df_tests =data.import_data_tests_sexe()
 df_tests = df_tests[df_tests.cl_age90 == 0]
 df_tests["P_rolling"] = df_tests["P"].rolling(window=7).mean()
-df_tests
-
-
-# In[5]:
-
-
-data.download_data_variants()
-df_variants = data.import_data_variants()
-df_variants
 
 
 # In[6]:
 
 
-df_variants["jour"] = df_variants.semaine.apply(lambda x: x[11:]) 
-df_variants = df_variants[df_variants.cl_age90==0]
-df_variants
+data.download_data_variants()
+df_variants = data.import_data_variants()
 
 
 # In[7]:
+
+
+df_variants["jour"] = df_variants.semaine.apply(lambda x: x[11:]) 
+
+
+# In[25]:
 
 
 fig = go.Figure()
@@ -85,8 +81,8 @@ fig = go.Figure()
 fig.add_trace(
     go.Scatter(
         x=df_variants.jour,
-        y=df_variants.Prc_susp_ABS,
-        name="% souche classique (" + str(df_variants.Prc_susp_ABS.values[-1]).replace(".", ",") + " %)",
+        y=df_variants.tx_A1,
+        name="% mutation E484K (" + str(df_variants.tx_A1.values[-1]).replace(".", ",") + " %)",
         showlegend=True,
     )
 )
@@ -94,25 +90,25 @@ fig.add_trace(
 fig.add_trace(
     go.Scatter(
         x=df_variants.jour,
-        y=df_variants.Prc_susp_501Y_V1,
-        name="% variant UK (" + str(df_variants.Prc_susp_501Y_V1.values[-1]).replace(".", ",") + " %)",
+        y=df_variants.tx_B1,
+        name="% mutation E484Q (" + str(df_variants.tx_B1.values[-1]).replace(".", ",") + " %)",
     )
 )
 
 fig.add_trace(
     go.Scatter(
         x=df_variants.jour,
-        y=df_variants.Prc_susp_IND,
-        name="% variants indéterminés (" + str(df_variants.Prc_susp_IND.values[-1]).replace(".", ",") + " %)",
+        y=df_variants.tx_C1,
+        name="% mutation L452R (" + str(df_variants.tx_C1.values[-1]).replace(".", ",") + " %)",
         showlegend=True,
     )
 )
-
+y=100 - df_variants.tx_A1 - df_variants.tx_B1 - df_variants.tx_C1
 fig.add_trace(
     go.Scatter(
         x=df_variants.jour,
-        y=df_variants.Prc_susp_501Y_V2_3,
-        name="% variants SA + BZ (" + str(df_variants.Prc_susp_501Y_V2_3.values[-1]).replace(".", ",") + " %)",
+        y=y,
+        name="% Autres (" + str(y.values[-1]).replace(".", ",") + " %)",
         showlegend=True,
     )
 )
@@ -141,51 +137,30 @@ fig.update_layout(
 fig.write_image(PATH+"images/charts/france/{}.jpeg".format("variants_pourcent"), scale=2, width=1000, height=600)
 
 
-# In[8]:
+# In[13]:
 
 
 fig = go.Figure()
 n_days = len(df_variants)
 
-y=df_tests["P_rolling"].values[-n_days:] * df_variants.Prc_susp_501Y_V2_3.values/100
+pourcent=100 - df_variants.tx_C1.values
+y=df_tests["P_rolling"].values[-n_days:] * pourcent/100
 fig.add_trace(
     go.Scatter(
         x=df_variants.jour,
         y=y,
-        name="<b>Variants SA + BZ </b><br>" + str(nbWithSpaces(y[-1])) + " (" + str(df_variants.Prc_susp_501Y_V2_3.values[-1]).replace(".", ",") + " %) ",
-        showlegend=True,
+        name="<b>Autres souches</b><br>" + str(nbWithSpaces(y[-1])).replace(".", ",") + " (" + str(pourcent[-1]).replace(".", ",") + " %) ",
         stackgroup='one'
     )
 )
 
-y=df_tests["P_rolling"].values[-n_days:] * df_variants.Prc_susp_IND.values/100
+pourcent=df_variants.tx_C1.values
+y=df_tests["P_rolling"].values[-n_days:] * pourcent/100
 fig.add_trace(
     go.Scatter(
         x=df_variants.jour,
         y=y,
-        name="<b>Variants indéterminés </b><br>" + str(nbWithSpaces(y[-1])) + " (" + str(df_variants.Prc_susp_IND.values[-1]).replace(".", ",") + " %) ",
-        showlegend=True,
-        stackgroup='one'
-    )
-)
-
-y=df_tests["P_rolling"].values[-n_days:] * df_variants.Prc_susp_501Y_V1.values/100
-fig.add_trace(
-    go.Scatter(
-        x=df_variants.jour,
-        y=y,
-        name="<b>Variant UK </b><br>" + str(nbWithSpaces(y[-1])).replace(".", ",") + " (" + str(df_variants.Prc_susp_501Y_V1.values[-1]).replace(".", ",") + " %) ",
-        stackgroup='one'
-    )
-)
-
-y=df_tests["P_rolling"].values[-n_days:] * df_variants.Prc_susp_ABS.values/100
-fig.add_trace(
-    go.Scatter(
-        x=df_variants.jour,
-        y=y,
-        name="<b>Souche classique </b><br>" + str(nbWithSpaces(y[-1])) + " (" + str(df_variants.Prc_susp_ABS.values[-1]).replace(".", ",") + " %) ",
-        showlegend=True,
+        name="Mutation L452R, dont <b>Delta </b><br>" + str(nbWithSpaces(y[-1])).replace(".", ",") + " (" + str(pourcent[-1]).replace(".", ",") + " %) ",
         stackgroup='one'
     )
 )
