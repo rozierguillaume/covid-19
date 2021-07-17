@@ -88,11 +88,12 @@ def import_data_hosp_clage():
 
 def import_data_tests_viros():
     df = pd.read_csv(PATH + 'data/france/tests_viro-dep-quot.csv', sep=";")
-    
+
     df_reg_pop = pd.read_csv(PATH + 'data/france/population_grandes_regions.csv', sep=",")
     df_dep_reg = pd.read_csv(PATH + 'data/france/departments_regions_france_2016.csv', sep=",")
     
     df["dep"] = df["dep"].astype(str)
+    df["dep"] = df["dep"].astype('str').str.replace(r"^([1-9])$", lambda m: "0"+m.group(0), regex=True)
     df_dep_reg["departmentCode.astype"] = df_dep_reg.departmentCode.astype(str)
     
     df = df.merge(df_dep_reg, left_on="dep", right_on="departmentCode", how="left")
