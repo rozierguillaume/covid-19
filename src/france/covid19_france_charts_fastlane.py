@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[40]:
+# In[1]:
 
 
 """
@@ -23,7 +23,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[41]:
+# In[2]:
 
 
 from multiprocessing import Pool
@@ -53,14 +53,14 @@ PATH = "../../"
 now = datetime.now()
 
 
-# In[42]:
+# In[3]:
 
 
 #time.sleep(300)
 data.download_data()
 
 
-# In[43]:
+# In[4]:
 
 
 import time
@@ -83,7 +83,7 @@ while not success:
         continue
 
 
-# In[44]:
+# In[5]:
 
 
 
@@ -94,7 +94,7 @@ df_incid_fra = df_incid_fra_clage[df_incid_fra_clage["cl_age90"]==0]
 dates_incid = list(dict.fromkeys(list(df_incid_fra['jour'].values))) 
 
 
-# In[45]:
+# In[6]:
 
 
 df_new = data.import_data_new()
@@ -103,7 +103,7 @@ df_new_france = df_new.groupby("jour").sum().reset_index()
 dates_new = sorted(list(dict.fromkeys(list(df_new_france['jour'].values))))
 
 
-# In[46]:
+# In[7]:
 
 
 df = data.import_data_df()
@@ -112,7 +112,7 @@ dates = sorted(list(dict.fromkeys(list(df['jour'].values))))
 df_france = df.groupby("jour").sum().reset_index()
 
 
-# In[47]:
+# In[8]:
 
 
 last_day_plot_dashboard = (datetime.strptime(max(dates), '%Y-%m-%d') + timedelta(days=3)).strftime("%Y-%m-%d")
@@ -120,7 +120,7 @@ first_day_plot_adm = (datetime.strptime(max(dates), '%Y-%m-%d') - timedelta(days
 last_day_plot = (datetime.strptime(max(dates), '%Y-%m-%d') + timedelta(days=1)).strftime("%Y-%m-%d")
 
 
-# In[48]:
+# In[9]:
 
 
 def nbWithSpaces(nb):
@@ -135,13 +135,13 @@ def nbWithSpaces(nb):
         return str_nb
 
 
-# In[49]:
+# In[10]:
 
 
 #df_incid_fra.loc[df_incid_fra.jour == "2021-04-05", "P"] = 45000
 
 
-# In[50]:
+# In[11]:
 
 
 df_incid_fra_corrige = df_incid_fra.copy()
@@ -155,13 +155,13 @@ df_incid_fra_corrige.loc[df_incid_fra.jour == "2021-05-13", "P"] = 0.7 * df_inci
 df_incid_fra_corrige.loc[df_incid_fra.jour == "2021-05-24", "P"] = 0.7 * df_incid_fra_corrige[df_incid_fra_corrige.jour == "2021-05-17"]["P"].values[0]
 
 
-# In[51]:
+# In[12]:
 
 
 df_incid_fra.loc[df_incid_fra.jour == "2021-05-01", "P"].values[0] * 0.7
 
 
-# In[52]:
+# In[13]:
 
 
 """from sklearn.ensemble import IsolationForest
@@ -183,7 +183,7 @@ fig.add_trace(go.Scatter(
 fig.show()"""
 
 
-# In[53]:
+# In[14]:
 
 
 suffixe=""
@@ -470,7 +470,7 @@ for (date_deb, date_fin) in [("2020-09-18", last_day_plot_dashboard), (dates[-10
         suffixe="_recent"
 
 
-# In[54]:
+# In[15]:
 
 
 
@@ -569,16 +569,16 @@ if show_charts:
     fig.show()
 
 
-# In[64]:
+# In[20]:
 
 
 #Comparaison J-7
 name_fig = "cas_comp_j7"
 fig = go.Figure()
-df_temp = df_incid_fra[df_incid_fra.jour > dates[-150]]
+df_temp = df_incid_fra[df_incid_fra.jour > dates[-400]]
 df_incid_france_cas_rolling = df_temp["P"] #.rolling(window=7, center=True).mean()
 croissance = ((df_incid_france_cas_rolling-df_incid_france_cas_rolling.shift(7))/df_incid_france_cas_rolling.shift(7)*100)
-croissance[croissance>100]=100
+croissance[croissance>200]=50
 
 fig.add_trace(go.Bar(
     x=df_temp["jour"],

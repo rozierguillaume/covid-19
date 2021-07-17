@@ -4,7 +4,7 @@
 # # COVID-19 French Charts
 # Guillaume Rozier, 2020
 
-# In[4]:
+# In[1]:
 
 
 """
@@ -26,7 +26,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[5]:
+# In[2]:
 
 
 from multiprocessing import Pool
@@ -55,7 +55,7 @@ PATH = "../../"
 now = datetime.now()
 
 
-# In[6]:
+# In[3]:
 
 
 try:
@@ -71,7 +71,7 @@ except:
 
 # # Data download and import
 
-# In[7]:
+# In[4]:
 
 
 import time
@@ -96,13 +96,13 @@ while not success:
 
 # ## Data transformations
 
-# In[8]:
+# In[5]:
 
 
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
 
 
-# In[9]:
+# In[6]:
 
 
 data.download_data_vue_ensemble()
@@ -112,21 +112,21 @@ df_vue_ensemble.loc[df_vue_ensemble.date >= "2021-05-21", "total_cas_confirmes"]
 df_opencovid = data.import_data_opencovid()
 
 
-# In[10]:
+# In[7]:
 
 
 df_sexes = data.import_data_df()
 df_sexes_tot = df_sexes[df_sexes.sexe==0]
 
 
-# In[11]:
+# In[8]:
 
 
 df_incid_fra_clage = data.import_data_tests_sexe()
 df_incid_fra = df_incid_fra_clage[df_incid_fra_clage["cl_age90"]==0]
 
 
-# In[12]:
+# In[9]:
 
 
 df_new_france = df_new.groupby(["jour"]).sum().reset_index()
@@ -165,7 +165,7 @@ regions = list(dict.fromkeys(list(df['regionName'].values)))
 departements_noms = list(dict.fromkeys(list(df['departmentName'].values))) 
 
 
-# In[13]:
+# In[10]:
 
 
 #Calcul sorties de réa
@@ -184,7 +184,7 @@ df_france_last15 = df_france[ df_france["jour"].isin(dates[-19:]) ]
 df_tests_tot_last15 = df_tests_tot[ df_tests_tot["jour"].isin(dates[-19:]) ]
 
 
-# In[14]:
+# In[11]:
 
 
 """y = np.array(np.log([3.3, 14.7, 22.5, 41])).reshape(-1, 1)
@@ -291,7 +291,7 @@ fig.write_image(PATH + "images/charts/france/proportion_variants.jpeg", scale=2,
 """
 
 
-# In[15]:
+# In[12]:
 
 
 def nbWithSpaces(nb):
@@ -306,7 +306,7 @@ def nbWithSpaces(nb):
         return str_nb
 
 
-# In[16]:
+# In[13]:
 
 
 departements_name = {}
@@ -320,7 +320,7 @@ for dep in departements:
         departements_name[dep] = "St-Pierre-et-Miquelon"
 
 
-# In[17]:
+# In[14]:
 
 
 def objectif_deconfinement():
@@ -379,7 +379,7 @@ def objectif_deconfinement():
 objectif_deconfinement()
 
 
-# In[18]:
+# In[15]:
 
 
 """def stats_immunite_collective(): 
@@ -417,7 +417,7 @@ objectif_deconfinement()
 pop_immun_france, pop_immun_deps = stats_immunite_collective()"""
 
 
-# In[19]:
+# In[16]:
 
 
 import random
@@ -433,7 +433,7 @@ for idx, death in enumerate(df_new_france["incid_dc"].rolling(window=7).mean().d
     
 
 
-# In[20]:
+# In[17]:
 
 
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
@@ -474,7 +474,7 @@ fig.update_layout(
 fig.write_image(PATH + "images/charts/france/points_deces.jpeg", scale=4, width=800, height=350)
 
 
-# In[21]:
+# In[18]:
 
 
 """clrs_sun_ref = ["#3c0000", "#4c0000", "#6a0000", "#840000", "#a00000", "#c40001", "#d50100", "#e20001", "#f50e07", "#f95228", "#fb9449", "#98ac3b", "#118408"]
@@ -507,7 +507,7 @@ fig.update_layout(margin = dict(t=0, l=0, r=0, b=0))
 """
 
 
-# In[22]:
+# In[19]:
 
 
 """fig = go.Figure()
@@ -584,7 +584,7 @@ fig.write_image(PATH + "images/charts/france/immunite.jpeg", scale=2, width=800,
 #fig.show()"""
 
 
-# In[23]:
+# In[20]:
 
 
 def stats_dep_vague(nb_first_values):
@@ -638,7 +638,7 @@ def stats_dep_vague(nb_first_values):
 stats_dep_vague(len(dates)-1)
 
 
-# In[24]:
+# In[21]:
 
 
 def caracterisation_valeur(valeur, valeur_j1, seuils=[1, 2, 3], step=0.02):
@@ -665,13 +665,7 @@ def caracterisation_valeur(valeur, valeur_j1, seuils=[1, 2, 3], step=0.02):
     return caract
 
 
-# In[26]:
-
-
-df_tests_viros
-
-
-# In[25]:
+# In[23]:
 
 
 df_temp = df_new[["jour", "incid_dc", "incid_hosp", "incid_rea", "departmentName", "dep", "departmentPopulation"]][ df_new["jour"] >= dates[-14]]
@@ -681,20 +675,14 @@ df_dep_tests = df_tests_viros_departements[df_tests_viros_departements["departme
 df_dep_tests["P"].values[-7:].sum()/df_dep_tests["pop"].values[0]*100000
 
 
-# In[ ]:
+# In[24]:
 
 
 data.download_data_variants_deps()
 df_variants = data.import_data_variants_deps()
 
 
-# In[ ]:
-
-
-df_tests_viros
-
-
-# In[104]:
+# In[25]:
 
 
 

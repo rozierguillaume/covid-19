@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[7]:
+# In[2]:
 
 
 import requests
@@ -302,8 +302,10 @@ def import_data():
     df_deconf = pd.read_csv(PATH + 'data/france/indicateurs-deconf.csv', sep=",")
     df_incid = pd.read_csv(PATH + 'data/france/taux-incidence-dep-quot.csv', sep=";")
     df_incid["dep"] = df_incid["dep"].astype('str')
-    
+    df_incid["dep"] = df_incid["dep"].astype('str').str.replace(r"^([1-9])$", lambda m: "0"+m.group(0), regex=True)
+
     df_tests_viro = pd.read_csv(PATH + 'data/france/tests_viro-dep-quot.csv', sep=";")
+    df_tests_viro["dep"] = df_tests_viro["dep"].astype('str').str.replace(r"^([1-9])$", lambda m: "0"+m.group(0), regex=True)
     
     pbar.update(2)
     
@@ -398,7 +400,6 @@ def import_data():
     
     pbar.update(8)
     import_data_opencovid()
-    df_tests_viro["dep"] = df_tests_viro["dep"].astype('str').str.replace(r"^([1-9])$", lambda m: "0"+m.group(0), regex=True)
     return df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viro
 
 
