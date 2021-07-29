@@ -134,6 +134,10 @@ def try_update_france():
         push("France GIF")
         print("update France GIF: " + str(now.hour) + ":" + str(now.minute))
         
+        subprocess.run(["sudo", "python3", PATH_FRANCE+"covid19_france_charts_cas_hospitalisations.py.py"])
+        push("France Cas Hosp Comparaison")
+        print("update France Cas Hosp Comparaison: " + str(now.hour) + ":" + str(now.minute))
+        
         os.chdir(BASE_CWD)
         
     return datetime_spf
