@@ -51,7 +51,7 @@ locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 now = datetime.now()
 
 
-# In[4]:
+# In[24]:
 
 
 data.download_data()
@@ -60,20 +60,20 @@ df_tests = df_tests[df_tests.cl_age90 == 0]
 df_tests["P_rolling"] = df_tests["P"].rolling(window=7).mean()
 
 
-# In[6]:
+# In[25]:
 
 
 data.download_data_variants()
 df_variants = data.import_data_variants()
 
 
-# In[7]:
+# In[26]:
 
 
 df_variants["jour"] = df_variants.semaine.apply(lambda x: x[11:]) 
 
 
-# In[25]:
+# In[27]:
 
 
 fig = go.Figure()
@@ -82,7 +82,7 @@ fig.add_trace(
     go.Scatter(
         x=df_variants.jour,
         y=df_variants.tx_A1,
-        name="% mutation E484K (" + str(df_variants.tx_A1.values[-1]).replace(".", ",") + " %)",
+        name="Mutation E484K (" + str(df_variants.tx_A1.values[-1]).replace(".", ",") + " %)<br>dont Beta",
         showlegend=True,
     )
 )
@@ -91,7 +91,7 @@ fig.add_trace(
     go.Scatter(
         x=df_variants.jour,
         y=df_variants.tx_B1,
-        name="% mutation E484Q (" + str(df_variants.tx_B1.values[-1]).replace(".", ",") + " %)",
+        name="Mutation E484Q (" + str(df_variants.tx_B1.values[-1]).replace(".", ",") + " %)<br>dont Kappa",
     )
 )
 
@@ -99,7 +99,7 @@ fig.add_trace(
     go.Scatter(
         x=df_variants.jour,
         y=df_variants.tx_C1,
-        name="% mutation L452R (" + str(df_variants.tx_C1.values[-1]).replace(".", ",") + " %)",
+        name="Mutation L452R (" + str(df_variants.tx_C1.values[-1]).replace(".", ",") + " %)<br>dont Delta",
         showlegend=True,
     )
 )
@@ -108,7 +108,7 @@ fig.add_trace(
     go.Scatter(
         x=df_variants.jour,
         y=y,
-        name="% Autres (" + str(y.values[-1]).replace(".", ",") + " %)",
+        name="Autres (" + str(round(y.values[-1], 1)).replace(".", ",") + " %)",
         showlegend=True,
     )
 )
@@ -137,7 +137,7 @@ fig.update_layout(
 fig.write_image(PATH+"images/charts/france/{}.jpeg".format("variants_pourcent"), scale=2, width=1000, height=600)
 
 
-# In[13]:
+# In[28]:
 
 
 fig = go.Figure()
@@ -149,7 +149,7 @@ fig.add_trace(
     go.Scatter(
         x=df_variants.jour,
         y=y,
-        name="<b>Autres souches</b><br>" + str(nbWithSpaces(y[-1])).replace(".", ",") + " (" + str(pourcent[-1]).replace(".", ",") + " %) ",
+        name="<b>Autres souches</b><br>" + str(nbWithSpaces(y[-1])).replace(".", ",") + " (" + str(round(pourcent[-1], 1)).replace(".", ",") + " %) ",
         stackgroup='one'
     )
 )

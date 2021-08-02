@@ -4,7 +4,7 @@
 # # COVID-19 French Maps
 # Guillaume Rozier, 2020
 
-# In[20]:
+# In[24]:
 
 
 """
@@ -24,7 +24,7 @@ Requirements: please see the imports below (use pip3 to install them).
 """
 
 
-# In[21]:
+# In[25]:
 
 
 import france_data_management as data
@@ -46,7 +46,7 @@ import subprocess
 
 # ## Data import
 
-# In[22]:
+# In[26]:
 
 
 # Import data from Santé publique France
@@ -54,7 +54,7 @@ df, df_confirmed, dates, _, _, df_deconf, df_sursaud, df_incid, _ = data.import_
 df_incid = df_incid[df_incid["cl_age90"] == 0]
 
 
-# In[23]:
+# In[27]:
 
 
 #df_incid["incidence"] = df_incid["P"]/df_incid["pop"]*100
@@ -64,7 +64,7 @@ for dep in pd.unique(df_incid["dep"].values):
 df_incid.loc[:,"incidence_color"] = ['Rouge (>50)' if x >= 50 else 'Orange (25-50)' if x >= 25 else 'Vert (<25)' for x in df_incid['incidence']]
 
 
-# In[24]:
+# In[28]:
 
 
 """# Download and import data from INSEE
@@ -86,7 +86,7 @@ df_insee['jour'] = df_insee['jour'].dt.strftime('%Y-%m-%d')
 dates_insee = list(dict.fromkeys(list(df_insee.dropna()['jour'].values))) """
 
 
-# In[25]:
+# In[29]:
 
 
 """df_insee_france = df_insee.groupby('jour').sum().reset_index()
@@ -98,14 +98,14 @@ df_insee_france["surmortalite20"] = (df_insee_france["dc20"] - df_insee_france["
 # 
 # ## Function definition
 
-# In[26]:
+# In[30]:
 
 
 with open(PATH+'data/france/dep.geojson') as response:
     depa = json.load(response)
 
 
-# In[27]:
+# In[31]:
 
 
 def map_gif(dates, imgs_folder, df, type_ppl, legend_title, min_scale, max_scale, colorscale, subtitle, clean_before=True, clean_after=False):
@@ -283,13 +283,13 @@ def build_gif(file_gif, imgs_folder, dates):
     os.remove(file_gif)
 
 
-# In[28]:
+# In[32]:
 
 
 #build_map(df_deconf, img_folder="images/charts/france/deconf_synthese/{}.png", title="Départements déconfinés le 11/05")
 
 
-# In[29]:
+# In[33]:
 
 
 def build_map_indic1(data_df, img_folder, legend_title="legend_title", title="title"):
@@ -371,7 +371,7 @@ def build_map_indic1(data_df, img_folder, legend_title="legend_title", title="ti
 # 
 # ## Function calls
 
-# In[30]:
+# In[34]:
 
 
 def dep_map():
@@ -383,7 +383,7 @@ def dep_map():
 #dep_map()
 
 
-# In[31]:
+# In[35]:
 
 
 def dep_map_dc_cum():
@@ -394,7 +394,7 @@ def dep_map_dc_cum():
     build_gif(file_gif = PATH+"images/charts/france/dep-map-dc-cum.gif", imgs_folder = PATH+"images/charts/france/dep-map-img-dc-cum", dates=dates[-30:])
 
 
-# In[32]:
+# In[36]:
 
 
 def dep_map_dc_journ():
@@ -405,7 +405,7 @@ def dep_map_dc_journ():
     build_gif(file_gif = PATH+"images/charts/france/dep-map-dc-journ.gif", imgs_folder = PATH+"images/charts/france/dep-map-img-dc-journ", dates=dates[-30:])
 
 
-# In[33]:
+# In[37]:
 
 
 def dep_map_incidence():
@@ -420,7 +420,7 @@ def dep_map_incidence():
 #dep_map_incidence()
 
 
-# In[34]:
+# In[38]:
 
 
 dep_map_incidence()
@@ -429,14 +429,14 @@ dep_map()
 dep_map_dc_journ()
 
 
-# In[35]:
+# In[39]:
 
 
 df_incid_departements = df_incid[df_incid["cl_age90"]==0].groupby(["jour", "departmentName", "dep"]).sum().reset_index()
 departements = list(dict.fromkeys(list(df_incid_departements['departmentName'].values))) 
 
 
-# In[36]:
+# In[40]:
 
 
 dep = "Savoie"
@@ -484,14 +484,14 @@ df_incid_pred["pred_incidence"] = incid_dataframe
 df_incid_pred["jour"] = dates_dataframe
 
 
-# In[37]:
+# In[41]:
 
 
 with open(PATH + 'data/france/stats/pred_dep_incid.json', 'w') as outfile:
     json.dump(dict_json, outfile)
 
 
-# In[38]:
+# In[42]:
 
 
 """import plotly.graph_objects as go
@@ -508,7 +508,7 @@ fig.add_trace(go.Scatter(
 fig.show()"""
 
 
-# In[39]:
+# In[43]:
 
 
 """import plotly.graph_objects as go
@@ -534,7 +534,7 @@ fig.update_xaxes(range=["2020-07-01", "2020-12-18"])
 fig.show()"""
 
 
-# In[40]:
+# In[44]:
 
 
 import plotly.graph_objects as go
@@ -565,7 +565,7 @@ fig.update_layout(title="Nombre de cas et des températures")
 fig.show()
 
 
-# In[41]:
+# In[45]:
 
 
 """
@@ -578,7 +578,7 @@ map_gif(dates_insee, imgs_folder, df = df_insee.dropna(), type_ppl = ppl, legend
 build_gif(file_gif = "images/charts/france/dep-map-surmortalite.gif", imgs_folder = imgs_folder, dates=dates_insee)"""
 
 
-# In[42]:
+# In[46]:
 
 
 """# Line chart évolution de la mortalité

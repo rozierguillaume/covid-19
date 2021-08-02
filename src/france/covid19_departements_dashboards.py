@@ -949,6 +949,75 @@ def incid_dep(departement):
 #incid_dep("Savoie")
 
 
+# In[44]:
+
+
+df_new_departements
+
+
+# In[75]:
+
+
+def comparaison_cas_dc(departement):
+    df_incid_dep = df_incid_departements[df_incid_departements["departmentName"] == departement]
+    df_dep = df_new_departements[df_new_departements["departmentName"] == departement]
+    
+    y1 = df_incid_dep.incidence
+    y2 = (df_dep.incid_dc/df_dep.departmentPopulation).rolling(window=7).mean().shift(-10)
+
+    coef_normalisation = y1.max()/y2.max()
+
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(
+        x=df_incid_dep.jour,
+        y=y1,
+        name="Cas pour 100 k",
+        marker_color='rgb(8, 115, 191)',
+        fillcolor="rgba(8, 115, 191, 0.3)",
+        fill='tozeroy'))
+    fig.add_trace(go.Scatter(
+        x=df_incid_dep.jour,
+        y=-y1,
+        name="Miroir des cas",
+        marker_color='rgba(8, 115, 191, 0.2)',
+        line=dict(
+            dash="dot")
+    ))
+    fig.add_trace(go.Scatter(
+        x=df_dep.jour,
+        y=-y2*coef_normalisation,
+        marker_color='black',
+        fillcolor="rgba(0,0,0,0.3)",
+        name="Décès hospitaliers<br>avancés de 10 j.<br>pour {} Mio".format(round(coef_normalisation/1000000)),
+        fill='tozeroy'))
+    fig.update_yaxes()
+    fig.update_layout(
+        title={
+                    'text': "Cas vs. Décès hospitaliers - {}".format(departement),
+                    'y':0.97,
+                    'x':0.5,
+                    'xanchor': 'center',
+                    'yanchor': 'top'},
+        titlefont = dict(
+                        size=30),
+        annotations = [
+                            dict(
+                                x=0.5,
+                                y=1.12,
+                                xref='paper',
+                                yref='paper',
+                                font=dict(size=14),
+                                text="Cas pour 100 000 habitants et décès hospitaliers avancés de 10 j. pour {} Millions d'habitants<br>{} - @GuillaumeRozier - covidtracker.fr".format(round(coef_normalisation/1000000), datetime.strptime(df.jour.max(), '%Y-%m-%d').strftime('%d %B %Y')),#'Date : {}. Source : Santé publique France. Auteur : GRZ - covidtracker.fr.'.format(),                    showarrow = False
+                                showarrow=False
+                            ),
+                            ]
+    )
+
+    fig.write_image(PATH + "images/charts/france/departements_dashboards/comparaison_cas_dc_{}.jpeg".format(departement), scale=2, width=900, height=600)
+    #plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
+#comparaison_cas_dc("Pyrénées-Orientales")
+
+
 # In[13]:
 
 
@@ -1908,7 +1977,14 @@ def saturation_rea_journ(dep):
     return df_saturation.values[-1]
 
 
-# In[ ]:
+# In[76]:
+
+
+#for dep in departements:
+    #comparaison_cas_dc(dep)
+
+
+# In[19]:
 
 
 import cv2
@@ -1923,7 +1999,6 @@ os.mkdir(PATH+"images/charts/france/covidep/higher_high")
 stats = {"higher_low": [], "higher_high": [], "lower_low": [], "lower_high": [], "update": dates[-1][-2:] + "/" + dates[-1][-5:-3]}
 
 for dep in departements:
-    #GOTO
     hosp_journ_elias(dep)
     class_dep = incid_dep(dep)
     stats[class_dep] += [dep]
@@ -1932,6 +2007,7 @@ for dep in departements:
     rea_journ(dep)
     dc_journ(dep)
     hosp_comparaison_vagues(dep)
+    comparaison_cas_dc(dep)
     
     im1 = cv2.imread(PATH+'images/charts/france/departements_dashboards/cas_journ_{}.jpeg'.format(dep))
     im2 = cv2.imread(PATH+'images/charts/france/departements_dashboards/hosp_journ_{}.jpeg'.format(dep))
@@ -1955,7 +2031,7 @@ with open(PATH + 'images/charts/france/covidep/stats.json', 'w') as outfile:
     
 
 
-# In[ ]:
+# In[20]:
 
 
 for dep in departements:
@@ -1963,7 +2039,7 @@ for dep in departements:
     nombre_variants(dep)
 
 
-# In[ ]:
+# In[21]:
 
 
 with open(PATH_STATS + 'incidence_departements.json', 'r') as f:
@@ -1977,7 +2053,7 @@ with open(PATH_STATS + 'incidence_departements.json', 'w') as outfile:
     json.dump(incidence_departements, outfile)
 
 
-# In[ ]:
+# In[22]:
 
 
 n_tot=1
@@ -2206,7 +2282,7 @@ for i in range(0, n_tot):
             plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/evolution_deps/evolution_deps_0.html', auto_open=False)
 
 
-# In[ ]:
+# In[23]:
 
 
 #import glob
@@ -2248,7 +2324,7 @@ for (folder, n, fps) in [("evolution_deps", n_tot, 3)]:
         print("error conversion h265")
 
 
-# In[34]:
+# In[24]:
 
 
 """for idx,dep in enumerate(departements):
@@ -2264,7 +2340,7 @@ for (folder, n, fps) in [("evolution_deps", n_tot, 3)]:
 """
 
 
-# In[35]:
+# In[25]:
 
 
 """#print("<!-- wp:buttons --><div class=\"wp-block-buttons\">\n")
