@@ -63,6 +63,24 @@ def download_data_obepine():
     data = requests.get("https://www.data.gouv.fr/fr/datasets/r/031b79a4-5ee1-4f40-a804-b8abec3e99a6") #https://www.data.gouv.fr/fr/datasets/r/ba71be57-5932-4298-81ea-aff3a12a440c        
     with open(PATH + 'data/france/donnees_obepine_regions.csv', 'wb') as f:
         f.write(data.content)
+        
+def download_data_donnees_vaccination_par_pathologie():
+    data = requests.get("https://datavaccin-covid.ameli.fr/explore/dataset/donnees-vaccination-par-pathologie/download/?format=csv&timezone=Europe/Berlin&lang=fr&use_labels_for_header=true&csv_separator=%3B")
+    with open(PATH + 'data/france/donnees-vaccination-par-pathologie.csv', 'wb') as f:
+        f.write(data.content)
+        
+def import_data_donnees_vaccination_par_pathologie():
+    df = pd.read_csv(PATH + 'data/france/donnees-vaccination-par-pathologie.csv', sep=None)
+    return df
+
+def download_donnees_vaccination_par_tranche_dage_type_de_vaccin_et_departement():
+    data = requests.get("https://datavaccin-covid.ameli.fr/explore/dataset/donnees-vaccination-par-tranche-dage-type-de-vaccin-et-departement/download/?format=csv&timezone=Europe/Berlin&lang=fr&use_labels_for_header=true&csv_separator=%3B")
+    with open(PATH + 'data/france/donnees-tranche-dage-departement.csv', 'wb') as f:
+        f.write(data.content)
+        
+def import_donnees_vaccination_par_tranche_dage_type_de_vaccin_et_departement():
+    df = pd.read_csv(PATH + 'data/france/donnees-tranche-dage-departement.csv', sep=None)
+    return df
 
 def import_data_obepine():
     df = pd.read_csv(PATH + 'data/france/donnees_obepine_regions.csv', sep=None)

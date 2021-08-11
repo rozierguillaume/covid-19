@@ -90,7 +90,7 @@ df_tests_viros
 df_new_dep
 
 
-# In[98]:
+# In[127]:
 
 
 from sklearn import datasets, linear_model
@@ -103,14 +103,17 @@ for dep in df_ameli_filtre["departement_residence"]:
     if dep in df_tests_viros["dep"].values:
         
         df_tests_viros_dep = df_tests_viros[df_tests_viros["dep"] == dep]
-        df_tests_viros_dep["taux_incid"] = df_tests_viros_dep["P"].rolling(window=7).sum() #/ df_tests_viros_dep["pop"] * 100000
+        df_tests_viros_dep["taux_incid"] = df_tests_viros_dep["P"].rolling(window=7).sum() / df_tests_viros_dep["pop"] * 100000
         
         df_new_dep = df_new[df_new["dep"] == dep]
-        df_new_dep["incid_hosp"] = df_new_dep["incid_hosp"] / df_tests_viros_dep["pop"].values[-1] * 100000
-        
-        yes.append(df_new_dep["incid_hosp"].rolling(window=7).mean().values[-1])
+        df_new_dep["incid_dc"] = df_new_dep["incid_dc"].rolling(window=7).sum() / df_tests_viros_dep["pop"].values[-1] * 100000
+
+        #yes.append(df_new_dep["incid_hosp"].values[-1])
+        yes.append(df_new_dep["incid_dc"].values[-1])
+
+        #xes.append(df_tests_viros_dep["taux_incid"].values[-10])
         xes.append(df_ameli_filtre[df_ameli_filtre["departement_residence"]==dep]["taux_cumu_1_inj"].values[-1]*100)
-        
+
         fig.add_trace(go.Scatter(
             y=[yes[-1]],
             x=[xes[-1]], #[df_tests_viros_dep["taux_incid"].values[-1]], #
@@ -131,7 +134,7 @@ score = regr.score(np.array(xes).reshape(-1, 1), np.array(yes).reshape(-1, 1))
 a = regr.coef_[0][0]
 b = regr.intercept_[0]
 
-fig.add_trace(go.Scatter(
+"""fig.add_trace(go.Scatter(
     x=[0, 70],
     y=[y[0] for y in y_pred],
     mode="lines",
@@ -140,7 +143,41 @@ fig.add_trace(go.Scatter(
     opacity=0.5,
     text="Corrélation",
     showlegend=False
+))"""
+
+
+"""fig.add_trace(go.Scatter(
+    x=[0, 500],
+    y=[0, 50],
+    mode="lines",
+    marker_color="red",
+    line=dict(dash="dot"),
+    opacity=0.5,
+    text="Corrélation",
+    showlegend=False
 ))
+
+fig.add_trace(go.Scatter(
+    x=[0, 500],
+    y=[0, 25],
+    mode="lines",
+    marker_color="orange",
+    line=dict(dash="dot"),
+    opacity=0.5,
+    text="Corrélation",
+    showlegend=False
+))
+
+fig.add_trace(go.Scatter(
+    x=[0, 500],
+    y=[0, 12,5],
+    mode="lines",
+    marker_color="green",
+    line=dict(dash="dot"),
+    opacity=0.5,
+    text="Corrélation",
+    showlegend=False
+))"""
 
         
 fig.update_layout(
@@ -170,7 +207,7 @@ fig.update_layout(
                 )]
 )
 
-fig.add_annotation(x=4, y=4.5,
+fig.add_annotation(x=4, y=0.1,
             text="y = {} x + {} ; R2 = {}".format(round(a, 2), round(b, 2), round(score, 2)),
             font=dict(size=8),
             showarrow=False,
@@ -178,6 +215,18 @@ fig.add_annotation(x=4, y=4.5,
 
 fig.write_image(PATH + "images/charts/france/cas_vaccination_dep_comp.jpeg", scale=2, width=900, height=600)
 plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/cas_vaccination_dep_comp.html', auto_open=False)
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 
 
 # In[9]:
