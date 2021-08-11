@@ -64812,9 +64812,6 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-08-10,region,REG-76,Occitanie,,,,,4706,,264,1048,126,32,22972,,OpenCOVID19-fr,,,opencovid19-fr
 2021-08-10,region,REG-84,Auvergne-Rhône-Alpes,,,,,11746,,148,910,91,16,52431,,OpenCOVID19-fr,,,opencovid19-fr
 2021-08-10,region,REG-93,Provence-Alpes-Côte d'Azur,,,,,8168,,270,1364,180,36,42187,,OpenCOVID19-fr,,,opencovid19-fr
-<<<<<<< HEAD
-2021-08-10,region,REG-94,Corse,,,,,213,,18,80,9,3,1042,,OpenCOVID19-fr,,,opencovid19-fr
-=======
 2021-08-10,region,REG-94,Corse,,,,,213,,18,80,9,3,1042,,OpenCOVID19-fr,,,opencovid19-fr
 2021-08-11,departement,DEP-01,Ain,,,,,626,,7,71,3,2,2929,,Santé publique France Data,,,sante-publique-france-data
 2021-08-11,departement,DEP-02,Aisne,,,,,1119,,2,35,5,0,4390,,Santé publique France Data,,,sante-publique-france-data
@@ -64936,4 +64933,3 @@ date,granularite,maille_code,maille_nom,cas_confirmes,cas_ehpad,cas_confirmes_eh
 2021-08-11,region,REG-84,Auvergne-Rhône-Alpes,,,,,11754,,154,920,103,17,52510,,OpenCOVID19-fr,,,opencovid19-fr
 2021-08-11,region,REG-93,Provence-Alpes-Côte d'Azur,,,,,8181,,276,1403,176,26,42299,,OpenCOVID19-fr,,,opencovid19-fr
 2021-08-11,region,REG-94,Corse,,,,,215,,15,80,10,1,1048,,OpenCOVID19-fr,,,opencovid19-fr
->>>>>>> 83e527253b184714c14e2090b949c50db9d833f9
