@@ -101,6 +101,10 @@ departmentCode,departmentName,regionCode,regionName
 974,"La Réunion",04,"La Réunion"
 975,"St-Pierre-et-Miquelon",NULL,NULL
 976,Mayotte,06,Mayotte
+977,"Saint-Barthélémy",NULL,NULL
 978,"Saint-Martin",NULL,NULL
+984,"Terres australes et antarctiques",NULL,NULL
+986,"Wallis-et-Futuna",NULL,NULL
 987,"Polynésie Française",NULL,NULL
 988,"Nouvelle Calédonie",NULL,NULL
+989,"Île Clipperton",NULL,NULL
