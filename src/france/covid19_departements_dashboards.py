@@ -64,14 +64,14 @@ locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 df, df_confirmed, dates, df_new, df_tests, df_deconf, df_sursaud, df_incid, df_tests_viros = data.import_data()
 
 
-# In[ ]:
+# In[5]:
 
 
 data.download_data_variants_deps()
 df_variants = data.import_data_variants_deps()
 
 
-# In[ ]:
+# In[6]:
 
 
 df_departements = df.groupby(["jour", "departmentName"]).sum().reset_index()
@@ -88,7 +88,7 @@ last_day_plot_plus2 = (datetime.strptime(max(dates), '%Y-%m-%d') + timedelta(day
 departements_nb = list(dict.fromkeys(list(df_tests_viros['dep'].values))) 
 
 
-# In[ ]:
+# In[7]:
 
 
 lits_reas = pd.read_csv(PATH+'data/france/lits_rea.csv', sep=",")
@@ -96,14 +96,15 @@ lits_reas = pd.read_csv(PATH+'data/france/lits_rea.csv', sep=",")
 df_departements_lits = df_departements.merge(lits_reas, left_on="departmentName", right_on="nom_dpt")
 
 
-# In[5]:
-
-
-data.download_data_donnees_vaccination_par_pathologie()
-data.import_data_donnees_vaccination_par_pathologie()
-
-
 # In[8]:
+
+
+data.download_donnees_vaccination_par_tranche_dage_type_de_vaccin_et_departement()
+df_vaccination = data.import_donnees_vaccination_par_tranche_dage_type_de_vaccin_et_departement()
+df_vaccination = df_vaccination[df_vaccination["libelle_classe_age"] != "Tout âge"]
+
+
+# In[9]:
 
 
 def cas_journ(departement):
@@ -255,7 +256,7 @@ def cas_journ(departement):
 #cas_journ("Savoie")
 
 
-# In[9]:
+# In[10]:
 
 
 def nombre_variants(departement):
@@ -314,7 +315,7 @@ def nombre_variants(departement):
     fig.write_image(PATH+"images/charts/france/departements_dashboards/{}.jpeg".format("variants_nombre_"+departement), scale=1.5, width=750, height=500)
 
 
-# In[10]:
+# In[11]:
 
 
 """import numpy as np
@@ -584,7 +585,7 @@ def cas_journ_departements_couvre_feu(departements):
 cas_journ_departements_couvre_feu(departements)"""
 
 
-# In[11]:
+# In[12]:
 
 
 """import numpy as np
@@ -818,7 +819,7 @@ def cas_journ_departements_couvre_feu_hosp(departements):
 cas_journ_departements_couvre_feu_hosp(departements)"""
 
 
-# In[12]:
+# In[13]:
 
 
 def incid_dep(departement):
@@ -956,7 +957,7 @@ def incid_dep(departement):
 #incid_dep("Savoie")
 
 
-# In[8]:
+# In[14]:
 
 
 def comparaison_cas_dc(departement):
@@ -1020,7 +1021,7 @@ def comparaison_cas_dc(departement):
 #comparaison_cas_dc("Pyrénées-Orientales")
 
 
-# In[14]:
+# In[15]:
 
 
 def hosp_journ(departement):   
@@ -1171,7 +1172,7 @@ def hosp_journ(departement):
     print("> " + name_fig)
 
 
-# In[15]:
+# In[16]:
 
 
 def hosp_comparaison_vagues(departement):   
@@ -1333,7 +1334,7 @@ def hosp_comparaison_vagues(departement):
 #hosp_comparaison_vagues("Savoie")
 
 
-# In[16]:
+# In[17]:
 
 
 def hosp_journ_elias(dep):
@@ -1624,7 +1625,7 @@ def hosp_journ_elias(dep):
 #hosp_journ_elias("Savoie")
 
 
-# In[17]:
+# In[18]:
 
 
 def rea_journ(departement):
@@ -1770,7 +1771,7 @@ def rea_journ(departement):
 #rea_journ("Isère")
 
 
-# In[18]:
+# In[19]:
 
 
 def dc_journ(departement): 
@@ -1887,7 +1888,7 @@ def dc_journ(departement):
 #dc_journ("Paris")
 
 
-# In[19]:
+# In[20]:
 
 
 
@@ -1979,14 +1980,14 @@ def saturation_rea_journ(dep):
     return df_saturation.values[-1]
 
 
-# In[9]:
+# In[21]:
 
 
 #for dep in departements:
     #comparaison_cas_dc(dep)
 
 
-# In[21]:
+# In[22]:
 
 
 import cv2
@@ -2033,7 +2034,7 @@ with open(PATH + 'images/charts/france/covidep/stats.json', 'w') as outfile:
     
 
 
-# In[22]:
+# In[23]:
 
 
 for dep in departements:
@@ -2041,7 +2042,7 @@ for dep in departements:
     nombre_variants(dep)
 
 
-# In[23]:
+# In[24]:
 
 
 with open(PATH_STATS + 'incidence_departements.json', 'r') as f:
@@ -2055,7 +2056,7 @@ with open(PATH_STATS + 'incidence_departements.json', 'w') as outfile:
     json.dump(incidence_departements, outfile)
 
 
-# In[24]:
+# In[25]:
 
 
 n_tot=1
@@ -2284,7 +2285,7 @@ for i in range(0, n_tot):
             plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/evolution_deps/evolution_deps_0.html', auto_open=False)
 
 
-# In[25]:
+# In[26]:
 
 
 #import glob
@@ -2326,7 +2327,7 @@ for (folder, n, fps) in [("evolution_deps", n_tot, 3)]:
         print("error conversion h265")
 
 
-# In[26]:
+# In[27]:
 
 
 """for idx,dep in enumerate(departements):
@@ -2342,7 +2343,7 @@ for (folder, n, fps) in [("evolution_deps", n_tot, 3)]:
 """
 
 
-# In[27]:
+# In[28]:
 
 
 """#print("<!-- wp:buttons --><div class=\"wp-block-buttons\">\n")

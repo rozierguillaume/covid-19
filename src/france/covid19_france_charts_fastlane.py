@@ -492,6 +492,193 @@ for (date_deb, date_fin) in [("2020-09-18", last_day_plot_dashboard), (dates[-10
 # In[15]:
 
 
+suffixe=""
+for (date_deb, date_fin) in [("2020-09-18", last_day_plot_dashboard), (dates[-100], last_day_plot)]:
+    range_x, name_fig, range_y = [date_deb, date_fin], "tests_journ"+suffixe, [0, df_incid_fra["T"].max()*1]
+    
+    title = "<b>Tests</b> de Covid19"
+
+    #fig = go.Figure()
+    for i in ("", "log"):
+        if i=="log":
+            title += " [log.]"
+            range_y=[3, math.log(df_incid_fra["T"].rolling(window=7).mean().values[-100:].max())/2]
+
+        fig = make_subplots(rows=1, cols=1, shared_yaxes=True, subplot_titles=[""], vertical_spacing = 0.08, horizontal_spacing = 0.1, specs=[[{"secondary_y": True}]])
+
+        #df_incid_france_cas_rolling = df_incid_fra[""].rolling(window=7, center=True).mean()#df_incid_france["P"].rolling(window=7, center=True).mean()
+        #df_incid_france_cas_rolling_corrige = df_incid_fra_corrige["P"].rolling(window=7, center=True).mean()#df_incid_france["P"].rolling(window=7, center=True).mean()
+        df_incid_france_tests_rolling = df_incid_fra["T"].rolling(window=7, center=True).mean()
+    
+        
+        fig.add_trace(go.Scatter(
+            x = df_incid_fra["jour"],
+            y = df_incid_france_tests_rolling,
+            name = "Tests (moyenne 7 j.)",
+            marker_color='rgba(60, 60, 60, 1)',
+            line_width=4,
+            opacity=0.8,
+            fill='tozeroy',
+            fillcolor="rgba(0, 0, 0, 0.3)",
+            showlegend=True
+        ), secondary_y=True)
+        
+        fig.add_trace(go.Bar(
+            x = df_incid_fra["jour"],
+            y = df_incid_fra["T"],
+            name = "",
+            #opacity=0.5,
+            #mode="markers",
+            marker_color='rgba(0, 0, 0, 0.05)',
+            #line_width=4,
+            showlegend=False
+        ), secondary_y=True)
+        
+        fig.add_trace(go.Scatter(
+            x = [df_incid_fra["jour"].values[-4]],
+            y = [df_incid_france_tests_rolling.values[-4]],
+            name = "",
+            mode="markers",
+            marker_color='rgba(255, 255, 255, 0.6)',
+            marker_size=12,
+            opacity=1,
+            showlegend=False
+        ), secondary_y=True)
+
+        fig.add_trace(go.Scatter(
+            x = [dates_incid[-4]],
+            y = [df_incid_france_tests_rolling.values[-4]],
+            name = "",
+            mode="markers",
+            marker_color='rgba(255, 255, 255, 0.6)',
+            marker_size=12,
+            opacity=1,
+            showlegend=False
+        ), secondary_y=True)
+
+        fig.add_trace(go.Scatter(
+            x = [dates_incid[-4]],
+            y = [df_incid_france_tests_rolling.values[-4]],
+            name = "",
+            mode="markers",
+            marker_color='rgb(60, 60, 60)',
+            marker_size=8,
+            opacity=1,
+            showlegend=False
+        ), secondary_y=True)
+
+        ###
+        if i=="log":
+            fig.update_yaxes(zerolinecolor='Grey', range=range_y, tickfont=dict(size=13), type="log", secondary_y=True)
+            #fig.update_yaxes(zerolinecolor='Grey', range=range_y, tickfont=dict(size=13), type="log", secondary_y=False)
+        else:
+            fig.update_yaxes(zerolinecolor='Grey', range=range_y, tickfont=dict(size=13, color="rgba(8, 115, 191, 1)"), secondary_y=True,)
+            #fig.update_yaxes(zerolinecolor='blue', tickfont=dict(size=13, color="Grey"), secondary_y=False)
+
+        fig.update_xaxes(nticks=10, ticks='inside', tickangle=0, tickfont=dict(size=16), range=range_x)
+
+        # Here we modify the tickangle of the xaxis, resulting in rotated labels.
+        fig.update_layout(
+            bargap=0,
+            margin=dict(
+                    l=50,
+                    r=0,
+                    b=0,
+                    t=70,
+                    pad=10
+                ),
+            legend_orientation="h",
+            barmode='group',
+            title={
+                        'text': title,
+                        'y':0.99,
+                        'x':0.5,
+                        'xanchor': 'center',
+                        'yanchor': 'top'},
+            titlefont = dict(
+                        size=30),
+            xaxis=dict(
+                    title='',
+                    tickformat='%d/%m'),
+
+            annotations = [
+                        dict(
+                            x=0.5,
+                            y=1.08,
+                            xref='paper',
+                            yref='paper',
+                            font=dict(size=14),
+                            text="Par date de prélèvement sur le patient - @GuillaumeRozier - covidtracker.fr",#'Date : {}. Source : Santé publique France. Auteur : GRZ - covidtracker.fr.'.format(datetime.strptime(max(dates), '%Y-%m-%d').strftime('%d %B %Y')),                    showarrow = False
+                            showarrow=False
+                        ),
+                        ]
+                         )
+
+        croissance = round(((df_incid_france_tests_rolling.values[-4]-df_incid_france_tests_rolling.values[-4-7]) / df_incid_france_tests_rolling.values[-4-7])*100, 1)
+
+        if croissance >= 0:
+            croissance="+"+str(abs(croissance))
+            
+        croissance = str(croissance).replace(".", ",")
+        
+        if i=="log":
+            y=math.log(df_incid_france_tests_rolling.values[-4])
+        else:
+            y=df_incid_france_tests_rolling.values[-4]
+            
+        ax=-60
+        ax2=-100
+        if(suffixe=="_recent"):
+            ax=-100
+            ax2=0
+            
+        fig['layout']['annotations'] += (
+            dict(
+                x = dates_incid[-4], y = y, # annotation point
+                xref='x1', 
+                yref='y2',
+                text=" <b>{} {}".format('%s' % nbWithSpaces(df_incid_france_tests_rolling.values[-4]), "tests quotidiens<br></b>en moyenne<br>prélevés du {} au {}.<br> {} % en 7 jours<br>".format(datetime.strptime(dates_incid[-7], '%Y-%m-%d').strftime('%d'), datetime.strptime(dates_incid[-1], '%Y-%m-%d').strftime('%d %b'), croissance, nbWithSpaces(df_incid_france_cas_rolling_corrige.values[-4]), croissance_corrige)),
+                #<br><span style='color:red;'>Avec correction :<br> {} cas en moyenne<br>{} % en 7 jours</span>
+                xshift=-2,
+                yshift=0,
+                xanchor="center",
+                align='center',
+                font=dict(
+                    color="rgb(60, 60, 60)",
+                    size=12
+                    ),
+                bgcolor="rgba(255, 255, 255, 0.6)",
+                opacity=1,
+                ax=ax,
+                ay=-50,
+                arrowcolor="rgb(60, 60, 60)",
+                arrowsize=1.5,
+                arrowwidth=1,
+                arrowhead=0,
+                showarrow=True
+            ),
+             dict(
+                x=0.5,
+                y=-0.1,
+                font=dict(size=10),
+                xref='paper',
+                yref='paper',
+                text="Données Santé publique France",#'Date : {}. Source : Santé publique France. Auteur : guillaumerozier.fr.'.format(datetime.strptime(max(dates), '%Y-%m-%d').strftime('%d %B %Y')),                    showarrow = False
+                showarrow=False
+                        ))
+
+        fig.write_image(PATH + "images/charts/france/{}.jpeg".format(name_fig+i), scale=2, width=900, height=600)
+
+        plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/{}.html'.format(name_fig+i), auto_open=False)
+        print("> " + name_fig)
+        if show_charts:
+            fig.show()
+        suffixe="_recent"
+
+
+# In[16]:
+
+
 
     
 
@@ -588,7 +775,7 @@ if show_charts:
     fig.show()
 
 
-# In[16]:
+# In[17]:
 
 
 #Comparaison J-7
@@ -639,13 +826,13 @@ fig.write_image(PATH + "images/charts/france/{}.jpeg".format(name_fig), scale=2,
 plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
 
 
-# In[17]:
+# In[18]:
 
 
 df_incid_fra
 
 
-# In[18]:
+# In[19]:
 
 
 #Comparaison J-7
@@ -696,7 +883,7 @@ fig.write_image(PATH + "images/charts/france/{}.jpeg".format(name_fig), scale=2,
 plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
 
 
-# In[19]:
+# In[20]:
 
 
 
@@ -906,7 +1093,7 @@ for i in ("", "log"):
         fig.show()
 
 
-# In[20]:
+# In[21]:
 
 
 range_x, name_fig, range_y = ["2020-03-29", last_day_plot], "hosp_journ", [0, df_france["hosp"].max()*1.1]
@@ -1167,7 +1354,7 @@ for i in ("", "log"):
         fig.show()
 
 
-# In[21]:
+# In[22]:
 
 
 range_x, name_fig, range_y = ["2020-03-29", last_day_plot], "dc_journ", [0, df_new_france["incid_dc"].max()]
@@ -1321,7 +1508,7 @@ for i in ("", "log"):
         fig.show()
 
 
-# In[22]:
+# In[23]:
 
 
 
@@ -1531,7 +1718,7 @@ for i in ("", "log"):
         fig.show()
 
 
-# In[23]:
+# In[24]:
 
 
 
@@ -1740,7 +1927,7 @@ for i in ("", "log"):
         fig.show()
 
 
-# In[24]:
+# In[25]:
 
 
 for croiss in [""]:
@@ -1758,7 +1945,7 @@ for croiss in [""]:
     
 
 
-# In[25]:
+# In[26]:
 
 
 data.download_data_vue_ensemble()
@@ -1767,7 +1954,7 @@ df_vue_ensemble.loc[df_vue_ensemble.date >= "2021-05-21", "total_cas_confirmes"]
 #df_vue_ensemble=df_vue_ensemble.append({"date": "2021-03-30", "total_cas_confirmes": 4554683}, ignore_index=True)
 
 
-# In[26]:
+# In[27]:
 
 
 suffixe=""
@@ -1981,4 +2168,55 @@ for (date_deb, date_fin) in [("2020-01-18", datetime.strptime(df_vue_ensemble.da
         if show_charts:
             fig.show()
         suffixe="_recent"
+
+
+# In[28]:
+
+
+#Comparaison J-7
+name_fig = "tests_comp_j7"
+fig = go.Figure()
+df_temp = df_incid_fra[df_incid_fra.jour > dates[-400]]
+df_incid_france_cas_rolling = df_temp["T"] #.rolling(window=7, center=True).mean()
+croissance = ((df_incid_france_cas_rolling-df_incid_france_cas_rolling.shift(7))/df_incid_france_cas_rolling.shift(7)*100)
+croissance[croissance>200]=50
+
+fig.add_trace(go.Bar(
+    x=df_temp["jour"],
+    y=croissance,
+    name = "% d'évolution J-7/J-0",
+    marker_color='rgba(0, 0, 0, 0.4)',
+#line_width=4,
+))
+
+fig.add_trace(go.Scatter(
+    x=df_temp["jour"],
+    y=croissance.rolling(window=7, center=True).mean(),
+    name = "Moyenne mobile du % d'évolution",
+    marker_color='black',
+#line_width=4,
+))
+
+fig.update_yaxes(ticksuffix="%")
+fig.update_layout(
+    legend_orientation="h",
+    annotations=[dict(
+                            x=0.5,
+                            y=1.08,
+                            xref='paper',
+                            yref='paper',
+                            font=dict(size=14),
+                            text="Par date de prélèvement sur le patient - @GuillaumeRozier - covidtracker.fr",#'Date : {}. Source : Santé publique France. Auteur : GRZ - covidtracker.fr.'.format(datetime.strptime(max(dates), '%Y-%m-%d').strftime('%d %B %Y')),                    showarrow = False
+                            showarrow=False
+                        ),],
+    title={
+                        'text': "Évolution en % du nombre de tests entre J-0 et J-7",
+                        'y':0.95,
+                        'x':0.5,
+                        'xanchor': 'center',
+                        'yanchor': 'top'},
+                        titlefont = dict(
+                        size=30),)
+fig.write_image(PATH + "images/charts/france/{}.jpeg".format(name_fig), scale=2, width=900, height=600)
+plotly.offline.plot(fig, filename = PATH + 'images/html_exports/france/{}.html'.format(name_fig), auto_open=False)
 

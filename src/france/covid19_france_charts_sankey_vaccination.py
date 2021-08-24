@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[6]:
+# In[1]:
 
 
 import pandas as pd
@@ -15,7 +15,7 @@ hv.extension('bokeh')
 PATH = "../../"
 
 
-# In[38]:
+# In[2]:
 
 
 women_bins = np.array([-600, -623, -653, -650, -670, -578, -541, -411, -322, -230])
@@ -52,7 +52,7 @@ fig = go.Figure(dict(data=data, layout=layout))
 fig
 
 
-# In[33]:
+# In[3]:
 
 
 fig = make_subplots(rows=1, cols=2, start_cell="bottom-left")
@@ -74,83 +74,33 @@ fig.update_xaxes(range=[0, 30], row=1, col=2)
 fig.show()
 
 
-# In[4]:
+# In[72]:
 
 
-import plotly.express as px
-import pandas as pd
-stages = ["<b>Population générale</b>", "<b>Cas positifs symptomatiques</b>"]
-df_mtl = pd.DataFrame(dict(number=[32, 4], stage=stages))
-df_mtl['État vaccinal'] = 'Complètement vacciné (%)'
-df_toronto = pd.DataFrame(dict(number=[68, 96], stage=stages))
-df_toronto['État vaccinal'] = 'Non vacciné (%)'
-df = pd.concat([df_mtl, df_toronto], axis=0)
-fig = px.funnel(df, y='number', x='stage', color='État vaccinal', height=700, width=700, orientation="v", title="<b>Efficacité vaccinale</b><br><span style='font-size: 10px;'>Données DREES - Guillaume Rozier</span>")
-fig.show()
+df_drees = pd.read_csv("https://data.drees.solidarites-sante.gouv.fr/explore/dataset/covid-19-resultats-issus-des-appariements-entre-si-vic-si-dep-et-vac-si/download/?format=csv&timezone=Europe/Berlin&lang=fr&use_labels_for_header=true&csv_separator=%3B", sep=";")
+df_drees = df_drees.sort_values(by="date")
 
 
-# In[ ]:
+# In[81]:
 
 
 
 
 
-# In[5]:
+# In[43]:
 
 
-import plotly.express as px
-import pandas as pd
-stages = ["<b><br><span style='font-size:15px;'>Non vacciné</b></span>", "<b><br><span style='font-size:15px;'>Vacciné</span></b>"]
-df_mtl = pd.DataFrame(dict(number=[8.4, 1.8], stage=stages))
-df_mtl['Résultat'] = '<b>Positif</b> (%)'
-df_toronto = pd.DataFrame(dict(number=[91.6, 98.2], stage=stages))
-df_toronto['Résultat'] = '<b>Négatif</b> (%)'
-df = pd.concat([df_toronto, df_mtl], axis=0)
-fig = px.funnel(df, y='number', x='stage', color='Résultat', height=700, width=600, orientation="v", title="<b>Résultat des tests des personnes symptomatiques</b><br><span style='font-size: 10px;'>Données DREES - Guillaume Rozier</span>")
-fig.show()
+df_drees = df_drees[df_drees["vac_statut"]!="Ensemble"]
+df_drees_ensemble = df_drees.groupby("date").sum().reset_index()
 
+df_drees_non_vaccines = df_drees[df_drees["vac_statut"]=="Non-vaccinés"]
+df_drees_non_vaccines["effectif J-7"] = df_drees_non_vaccines["effectif J-7"].rolling(window=7).mean()
 
-# In[74]:
+df_drees_completement_vaccines = df_drees[df_drees["vac_statut"].isin(["Vaccination complète",])].groupby("date").sum().reset_index()
+df_drees_completement_vaccines["effectif J-7"] = df_drees_completement_vaccines["effectif J-7"].rolling(window=7).mean()
 
-
-df = pd.concat([df_completement_vaccine, df_partiellement_vaccine, df_non_vaccine], axis=0)
-x=["<b>Population générale</b>", "<b>Hospitalisés</b>"]
-fig = go.Figure()
-fig.add_trace(go.Funnel(
-    name = 'Non vaccinés',
-    orientation = "v",
-    x = x,
-    marker=dict(color="#e76f41"),
-    text=["45 %", "82 %"],
-    textinfo="text",
-    y = [45, 82],
-))
-
-fig.add_trace(go.Funnel(
-    name = 'Partiellement vaccinés',
-    orientation = "v",
-    x = x,
-    y = [20, 10],
-    marker=dict(color="#e9c46a"),
-    text=["20 %", "10 %"],
-    textinfo="text",
-    textposition = "inside",
-))
-
-fig.add_trace(go.Funnel(
-    name = 'Totalement vaccinés',
-    orientation = "v",
-    x = x,
-    y = [35, 8],
-    marker=dict(color="#2a9d8f"),
-    text=["35 %", "8 %"],
-    textinfo="text"
-    ))
-fig.update_layout(
-    title="<b>État vaccinal des personnes hospitalisées</b><br><span style='font-size: 10px;'>Données DREES 20 juillet 2021 - Guillaume Rozier</span>",
-    font=dict(size=10)
-)
-fig.show()
+df_drees_partiellement_vaccines = df_drees[df_drees["vac_statut"].isin(["Primo dose récente", "Primo dose efficace"])].groupby("date").sum().reset_index()
+df_drees_partiellement_vaccines["effectif J-7"] = df_drees_partiellement_vaccines["effectif J-7"].rolling(window=7).mean()
 
 
 # In[75]:
