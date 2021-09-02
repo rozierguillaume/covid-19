@@ -69,7 +69,7 @@ df_drees_partiellement_vaccines["effectif J-7"] = df_drees_partiellement_vaccine
 df_drees_ensemble = df_drees.groupby("date").sum().reset_index()
 
 
-# In[15]:
+# In[6]:
 
 
 locale.setlocale(locale.LC_TIME, 'fr_FR')
@@ -201,7 +201,7 @@ name_fig = "pcr_plus_sympt_proportion_selon_statut_vaccinal"
 fig.write_image(PATH + "images/charts/france/{}.jpeg".format(name_fig), scale=2, width=900, height=600)
 
 
-# In[23]:
+# In[7]:
 
 
 fig = go.Figure()
@@ -343,7 +343,7 @@ name_fig = "hc_proportion_selon_statut_vaccinal"
 fig.write_image(PATH + "images/charts/france/{}.jpeg".format(name_fig), scale=2, width=900, height=600)
 
 
-# In[16]:
+# In[8]:
 
 
 fig = go.Figure()
@@ -474,7 +474,7 @@ name_fig = "sc_proportion_selon_statut_vaccinal"
 fig.write_image(PATH + "images/charts/france/{}.jpeg".format(name_fig), scale=2, width=900, height=600)
 
 
-# In[22]:
+# In[9]:
 
 
 fig = go.Figure()
@@ -605,19 +605,7 @@ fig.write_image(PATH + "images/charts/france/{}.jpeg".format(name_fig), scale=2,
 # In[10]:
 
 
-positif_vax = round((df_drees_completement_vaccines["HC"].values[-1]/df_drees_ensemble["HC"].values[-1])*100)
-pop_vax = round((df_drees_completement_vaccines["effectif J-7"].values[-1]/df_drees_ensemble["effectif J-7"].values[-1])*100)
 
-stages = ["<b>Population générale</b>", "<b>Cas positifs symptomatiques</b>"]
-df_mtl = pd.DataFrame(dict(number=[pop_vax, positif_vax], stage=stages))
-df_mtl['État vaccinal'] = 'Complètement vacciné (%)'
-
-df_toronto = pd.DataFrame(dict(number=[100-pop_vax, 100-positif_vax], stage=stages))
-df_toronto['État vaccinal'] = 'Non vacciné (%)'
-
-df = pd.concat([df_mtl, df_toronto], axis=0)
-fig = px.funnel(df, y='number', x='stage', color='État vaccinal', height=700, width=700, orientation="v", title="<b>Statut vaccinal des hospitalisations</b><br><span style='font-size: 10px;'>Données DREES au 01/08/21 - Guillaume Rozier</span>")
-fig.show()
 
 
 # In[11]:
@@ -654,7 +642,7 @@ fig = px.funnel(df, y='number', x='stage', color='Résultat', height=700, width=
 fig.show()
 
 
-# In[13]:
+# In[22]:
 
 
 #df = pd.concat([df_completement_vaccine, df_partiellement_vaccine, df_non_vaccine], axis=0)
@@ -666,43 +654,44 @@ pop_vax = int(round((df_drees_completement_vaccines["effectif J-7"].values[-1]/d
 pop_partiellement_vax = int(round((df_drees_partiellement_vaccines["effectif J-7"].values[-1]/df_drees_ensemble["effectif J-7"].values[-1])*100))
 
 x=["<b>Population générale</b>", "<b>Hospitalisés</b>"]
-y = [100-pop_vax-pop_partiellement_vax, 100-hosp_partiellement_vax-hosp_vax]
+y1 = [100-pop_vax-pop_partiellement_vax, 100-hosp_partiellement_vax-hosp_vax]
 fig = go.Figure()
 fig.add_trace(go.Funnel(
     name = 'Non vaccinés',
     orientation = "v",
     x = x,
     marker=dict(color="#e76f41"),
-    text=[str(val) + " %" for val in y],
+    text=[str(val) + " %" for val in y1],
     textinfo="text",
-    y = y,
+    y = y1,
 ))
 
-y = [pop_partiellement_vax, hosp_partiellement_vax]
+y2 = [pop_partiellement_vax, hosp_partiellement_vax]
 fig.add_trace(go.Funnel(
     name = 'Partiellement vaccinés',
     orientation = "v",
     x = x,
-    y = y,
+    y = y2,
     marker=dict(color="#e9c46a"),
-    text=[str(val) + " %" for val in y],
+    text=[str(val) + " %" for val in y2],
     textinfo="text",
     textposition = "inside",
 ))
 
-y = [pop_vax, hosp_vax]
+y3 = [pop_vax, hosp_vax]
 fig.add_trace(go.Funnel(
     name = 'Totalement vaccinés',
     orientation = "v",
     x = x,
-    y = y,
+    y = y3,
     marker=dict(color="#2a9d8f"),
-    text=[str(val) + " %" for val in y],
+    text=[str(val) + " %" for val in y3],
     textinfo="text"
     ))
 fig.update_layout(
-    title="<b>État vaccinal des personnes admises à l'hôpital</b><br><span style='font-size: 10px;'>Données DREES 01 août 2021 - Guillaume Rozier</span>",
+    title=f"<b>État vaccinal des personnes admises à l'hôpital</b><br><span style='font-size: 10px;'><b>Lecture :</b> {y3[0]}% des Français sont vaccinés, mais ils représentent {y3[1]}% des admissions à l'hôpital.<br>Données DREES {datetime.strptime(df_drees.date.max(), '%Y-%m-%d').strftime('%d %B %Y')} - @GuillaumeRozier</span>",
     font=dict(size=10)
 )
-fig.show()
+name_fig = "popgen_hosp_statut_vaccinal"
+fig.write_image(PATH + "images/charts/france/{}.jpeg".format(name_fig), scale=2, width=600, height=600)
 

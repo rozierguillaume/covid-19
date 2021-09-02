@@ -119,6 +119,10 @@ def import_data_tests_viros():
     
     return df
 
+def import_data_hosp_ad_age():
+    df = pd.read_csv('https://www.data.gouv.fr/fr/datasets/r/dc7663c7-5da9-4765-a98b-ba4bc9de9079', sep=";")
+    return df
+    
 def import_data_new():
     df_new = pd.read_csv(PATH + 'data/france/donnes-hospitalieres-covid19-nouveaux.csv', sep=";")
     return df_new
