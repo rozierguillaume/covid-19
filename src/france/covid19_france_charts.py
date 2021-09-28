@@ -6017,7 +6017,7 @@ fig.update_layout(
         ),
     legend_orientation="h",
     title={
-                'text': "Estimation du <b>taux de reproduction R<sub>effectif</sub></b><br><sub>Différence entre le nb de suspicion Covid19 aux urgences à 7 jours d'intervalle (moyenne mobile de 7j)".format(),
+                'text': "Estimation du <b>taux de reproduction R<sub>effectif</sub></b><br><sub>Différence entre le nb de suspicions Covid19 aux urgences à 7 jours d'intervalle (moyenne mobile de 7j)".format(),
                 'y':0.95,
                 'x':0.5,
                 'xanchor': 'center',
