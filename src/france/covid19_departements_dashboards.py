@@ -1965,8 +1965,11 @@ def saturation_rea_journ(dep):
                 size=20
                 ),
             opacity=1,
-            ax=-250,
-            ay=-70,
+            axref="x",
+            ayref="y",
+            ax=dates[len(dates)//2],
+            ay=min(df_saturation.values, key=lambda df_saturation_list : abs(df_saturation_list - df_saturation.max()//2)),
+            bgcolor="rgba(255, 255, 255, 0.6)",
             arrowcolor=colors_sat[-1],
             arrowsize=1.5,
             arrowwidth=1,
